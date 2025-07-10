@@ -17,7 +17,7 @@ export const Pages: CollectionConfig = {
       required: true,
       unique: true,
       admin: {
-        description: 'URL path for this page (e.g., "homepage", "about", "services")',
+        description: 'URL path for this page (e.g., "homepage", "about", "services", "portfolio")',
       },
     },
     {
@@ -167,6 +167,50 @@ export const Pages: CollectionConfig = {
             description: 'Description text for the rates section',
             condition: (data) => data.slug === 'services',
           },
+        },
+
+        // Portfolio page specific fields
+        {
+          name: 'portfolioCategories',
+          type: 'array',
+          label: 'Portfolio Categories',
+          admin: {
+            description: 'Portfolio category cards displayed on the portfolio page',
+            condition: (data) => data.slug === 'portfolio',
+          },
+          fields: [
+            {
+              name: 'title',
+              type: 'text',
+              required: true,
+              admin: {
+                description: 'Category title (e.g., "business", "food", "portraits")',
+              },
+            },
+            {
+              name: 'slug',
+              type: 'text',
+              required: true,
+              admin: {
+                description: 'URL path (e.g., "business", "food", "portraits")',
+              },
+            },
+            {
+              name: 'icon',
+              type: 'text',
+              admin: {
+                description: 'Path to SVG icon (optional)',
+              },
+            },
+            {
+              name: 'hasIcon',
+              type: 'checkbox',
+              defaultValue: false,
+              admin: {
+                description: 'Whether this category should display an icon',
+              },
+            },
+          ],
         },
       ],
     },
