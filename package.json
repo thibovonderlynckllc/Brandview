@@ -9,6 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@niledatabase/react": "^4.2.0",
+    "@niledatabase/server": "^4.2.0",
     "@payloadcms/db-postgres": "^3.46.0",
     "@payloadcms/next": "^3.46.0",
     "@payloadcms/payload-cloud": "^3.46.0",
