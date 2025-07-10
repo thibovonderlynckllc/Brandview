@@ -118,7 +118,7 @@ const ServicesPage = async () => {
             {/* 1st Services section */}
             <div className="bg-blue py-8 md:py-10 px-6 md:px-16">
                 <div className="flex flex-col gap-10">
-                    {firstSectionServices.map((service, index) => (
+                    {firstSectionServices.map((service) => (
                         <div key={service.title} className="flex flex-col lg:flex-row items-center gap-6 relative">
                             <Image src="/images/services/image.png" alt={service.title} width={600} height={400} className="w-full lg:w-1/2 border-[.5px] border-red" />
                             {renderIcon(service)}
@@ -220,7 +220,7 @@ const ServicesPage = async () => {
             <div className="bg-blue">
                 <div className="py-8 md:py-10 px-6 md:px-16">
                     <div className="flex flex-col gap-10">
-                        {secondSectionServices.map((service, index) => (
+                        {secondSectionServices.map((service) => (
                             <div key={service.title} className="flex flex-col lg:flex-row items-center gap-6 relative">
                                 <Image src="/images/services/image.png" alt={service.title} width={600} height={400} className="w-full lg:w-1/2 border-[.5px] border-red" />
                                 {renderIcon(service)}

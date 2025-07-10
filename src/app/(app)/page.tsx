@@ -29,7 +29,7 @@ export default async function Home() {
         <div>
             <div className="px-8 sm:px-16 bg-blue pt-1">
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                    {portfolioItems.map((item: PortfolioItem, index: number) => (
+                    {portfolioItems.map((item: PortfolioItem) => (
                         <Link 
                             key={item.slug} 
                             href={`/portfolio/${item.slug}`} 
