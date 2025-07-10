@@ -2,13 +2,14 @@
 
 import Masonry from 'react-masonry-css';
 import Image from 'next/image';
+import { useMemo } from 'react';
 
-export default function BusinessMasonryGallery() {
-    const breakpointColumnsObj = {
+export default function ProductsMasonryGallery() {
+    const breakpointColumnsObj = useMemo(() => ({
         default: 3,
         1100: 2,
         768: 1  // Changed to match Tailwind's md breakpoint
-    };
+    }), []);
 
     return (
         <div className="space-y-0">
@@ -19,30 +20,88 @@ export default function BusinessMasonryGallery() {
             >
                 {/* First row (3-3-2) */}
                 <div className="gallery-item h-[600px] relative mb-0">
-
+                    <Image 
+                        src="/images/products/Snowball-031.webp" 
+                        alt="Product Photography" 
+                        fill 
+                        sizes="(max-width: 768px) 100vw, (max-width: 1100px) 50vw, 33vw"
+                        className="object-cover"
+                    />
                 </div>
 
                 <div className="gallery-item h-[600px] relative mb-0">
+                    <Image 
+                        src="/images/products/Snowball-.webp" 
+                        alt="Product Photography" 
+                        fill 
+                        sizes="(max-width: 768px) 100vw, (max-width: 1100px) 50vw, 33vw"
+                        className="object-cover"
+                    />
                     <Image src="/images/icons/megaphone.svg" alt="Megaphone" width={248} height={200} className="absolute hidden lg:block bottom-30 -right-48 z-10" />
                     <Image src="/images/icons/megaphone.svg" alt="Megaphone" width={248} height={200} className="absolute lg:hidden -bottom-20 right-10 z-10" />
                 </div>
 
-                <div className="gallery-item h-[400px] mb-0">
+                <div className="gallery-item h-[400px] mb-0 relative">
+                    <Image 
+                        src="/images/products/Snowball--2.webp" 
+                        alt="Product Photography" 
+                        fill 
+                        sizes="(max-width: 768px) 100vw, (max-width: 1100px) 50vw, 33vw"
+                        className="object-cover"
+                    />
                 </div>
 
                 {/* Second row (3-2-3) */}
-                <div className="gallery-item h-[600px] mb-0"></div>
-
-                <div className="gallery-item h-[400px] mb-0">
+                <div className="gallery-item h-[600px] mb-0 relative">
+                    <Image 
+                        src="/images/products/Hairaffair-5 kopie.webp" 
+                        alt="Product Photography" 
+                        fill 
+                        sizes="(max-width: 768px) 100vw, (max-width: 1100px) 50vw, 33vw"
+                        className="object-cover"
+                    />
                 </div>
 
-                <div className="gallery-item h-[600px] relative mb-0"></div>
+                <div className="gallery-item h-[400px] mb-0 relative">
+                    <Image 
+                        src="/images/products/HAIRAFFAIR-6.webp" 
+                        alt="Product Photography" 
+                        fill 
+                        sizes="(max-width: 768px) 100vw, (max-width: 1100px) 50vw, 33vw"
+                        className="object-cover"
+                    />
+                </div>
+
+                <div className="gallery-item h-[600px] relative mb-0">
+                    <Image 
+                        src="/images/products/HAIRAFFAIR-34.webp" 
+                        alt="Product Photography" 
+                        fill 
+                        sizes="(max-width: 768px) 100vw, (max-width: 1100px) 50vw, 33vw"
+                        className="object-cover"
+                    />
+                </div>
 
                 {/* Third row (2-3-3) */}
-                <div className="gallery-item h-[400px] mb-0">
+                <div className="gallery-item h-[400px] mb-0 relative">
+                    <Image 
+                        src="/images/products/HAIRAFFAIR-16.webp" 
+                        alt="Product Photography" 
+                        fill 
+                        sizes="(max-width: 768px) 100vw, (max-width: 1100px) 50vw, 33vw"
+                        className="object-cover"
+                    />
                 </div>
 
-                <div className="gallery-item h-[600px] mb-0"></div>
+                <div className="gallery-item h-[600px] mb-0 relative">
+                    <Image 
+                        src="/images/products/HAIRAFFAIR-15.webp" 
+                        alt="Product Photography" 
+                        fill 
+                        sizes="(max-width: 768px) 100vw, (max-width: 1100px) 50vw, 33vw"
+                        className="object-cover"
+                    />
+                </div>
 
                 <div className="gallery-item h-[600px] mb-0"></div>
             </Masonry>

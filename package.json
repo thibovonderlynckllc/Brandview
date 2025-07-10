@@ -9,10 +9,16 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@payloadcms/db-postgres": "^3.46.0",
+    "@payloadcms/next": "^3.46.0",
+    "@payloadcms/payload-cloud": "^3.46.0",
+    "@payloadcms/richtext-lexical": "^3.46.0",
     "@portabletext/react": "^3.2.1",
     "@tailwindcss/typography": "^0.5.16",
+    "graphql": "^16.11.0",
     "lucide-react": "^0.525.0",
     "next": "15.3.4",
+    "payload": "^3.46.0",
     "postcss": "^8.5.6",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

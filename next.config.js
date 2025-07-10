@@ -1,12 +1,14 @@
+const { withPayload } = require('@payloadcms/next/withPayload');
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Only use static export for production builds, not during development
-  ...(process.env.NODE_ENV === 'production' && {
-    output: 'export',
-    trailingSlash: true,
-  }),
+  // Removed static export to enable Payload CMS functionality
   images: {
-    unoptimized: true, // Required for static export
+    unoptimized: false, // Enable Next.js image optimization
+    formats: ['image/avif', 'image/webp'],
+    // Allow SVG files to be handled properly
+    dangerouslyAllowSVG: true,
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
   async headers() {
     return [
@@ -21,6 +23,10 @@ const nextConfig = {
       },
     ];
   },
+  experimental: {
+    reactCompiler: false,
+  },
 };
 
-module.exports = nextConfig;
+// Make sure you wrap your `nextConfig` with the `withPayload` plugin
+module.exports = withPayload(nextConfig);

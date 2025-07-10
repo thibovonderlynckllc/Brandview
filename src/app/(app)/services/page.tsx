@@ -1,89 +1,145 @@
-'use client';
-
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
 import SwirlArrow from '../components/SwirlArrow';
+import { getPageBySlug } from '../../../lib/payload';
+import Link from 'next/link';
 
-const ServicesPage = () => {
-    const router = useRouter();
+interface ServiceItem {
+    title: string;
+    subtitle?: string;
+    description: string;
+    portfolioSlug: string;
+    icon?: string;
+    iconPosition: 'none' | 'top-left' | 'top-right';
+}
+
+interface ServicesPageData {
+    content?: {
+        servicesHeroTitle?: string;
+        servicesHeroSubtitle?: string;
+        serviceItems?: ServiceItem[];
+        ratesTitle?: string;
+        ratesDescription?: string;
+    };
+}
+
+const ServicesPage = async () => {
+    // Fetch services page data from CMS
+    const pageData = await getPageBySlug('services') as ServicesPageData;
+
+    // Fallback data
+    const defaultData = {
+        servicesHeroTitle: "Visual content that connects and converts.",
+        servicesHeroSubtitle: "services",
+        serviceItems: [
+            {
+                title: "short content",
+                subtitle: "Reels / social content / interviews / trailers",
+                description: "Scroll-stopping short content tailored to your brand. We create bite-sized video stories that engage, inform and entertain, ideal for social media.",
+                portfolioSlug: "short-content",
+                iconPosition: "none" as const,
+            },
+            {
+                title: "(corporate) events",
+                subtitle: "",
+                description: "From conferences to company parties, we document the energy and key moments of your event with authenticity and flair. Relive the vibe, long after it's over.",
+                portfolioSlug: "corporate-events",
+                iconPosition: "none" as const,
+            },
+            {
+                title: "food photography",
+                subtitle: "",
+                description: "Delicious visuals that make your dishes irresistible. We style, light and shoot food in a way that triggers taste buds and boosts your brand's appetite appeal.",
+                portfolioSlug: "food",
+                icon: "/images/icons/mouth.svg",
+                iconPosition: "top-left" as const,
+            },
+            {
+                title: "portraits",
+                subtitle: "",
+                description: "Authentic portraits with personality. Whether it's for your website, team page or social media, we ensure everyone looks approachable and confident.",
+                portfolioSlug: "portraits",
+                iconPosition: "none" as const,
+            },
+            {
+                title: "product photography",
+                subtitle: "",
+                description: "Sharp, stylish and scroll-stopping. We present your products in the best light, whether for e-commerce, campaigns or catalogues.",
+                portfolioSlug: "products",
+                iconPosition: "none" as const,
+            },
+            {
+                title: "business photography",
+                subtitle: "",
+                description: "We capture the essence of your brand with clean, professional visuals that make a lasting impression. From team portraits to workspaces, we showcase the people and story behind your business.",
+                portfolioSlug: "business",
+                icon: "/images/icons/eyes.svg",
+                iconPosition: "top-right" as const,
+            },
+        ],
+        ratesTitle: "our rates",
+        ratesDescription: "At Brandview, you choose how we team up: from one-time Flash Deals to monthly Content Plans that build long-term brand value. Need more? Add powerful Add-Ons to boost your content even further. Explore what fits your brand best.",
+    };
+
+    const heroTitle = pageData?.content?.servicesHeroTitle || defaultData.servicesHeroTitle;
+    const heroSubtitle = pageData?.content?.servicesHeroSubtitle || defaultData.servicesHeroSubtitle;
+    const serviceItems = pageData?.content?.serviceItems || defaultData.serviceItems;
+    const ratesTitle = pageData?.content?.ratesTitle || defaultData.ratesTitle;
+    const ratesDescription = pageData?.content?.ratesDescription || defaultData.ratesDescription;
+
+    // Split service items into two sections (first 3, last 3)
+    const firstSectionServices = serviceItems.slice(0, 3);
+    const secondSectionServices = serviceItems.slice(3);
+
+    const renderIcon = (item: ServiceItem) => {
+        if (!item.icon || item.iconPosition === 'none') return null;
+
+        const iconClasses = {
+            'top-left': "absolute -top-10 left-4 sm:-top-15 lg:-top-10 xl:left-15 xl:-top-30 w-22 sm:w-40 lg:w-32 xl:w-64",
+            'top-right': "absolute -top-5 -right-4 md:-right-15 sm:-top-15 lg:right-[49%] lg:-top-5 xl:-top-23 xl:right-[44%] w-22 sm:w-40 lg:w-32 xl:w-60 rotate-10",
+        };
+
+        return (
+            <div className={iconClasses[item.iconPosition]}>
+                <Image src={item.icon} alt={`${item.title} icon`} width={240} height={240} />
+            </div>
+        );
+    };
 
     return (
         <div className="relative">
             {/* Hero section */}
             <div className="px-6 md:px-16 lg:px-36 py-20 md:py-36 lg:py-55 text-center">
                 <div className="flex items-center justify-center gap-4">
-                    <h1 className="text-4xl md:text-5xl lg:text-6xl font-medium">Visual content that connects and converts.</h1>
+                    <h1 className="text-4xl md:text-5xl lg:text-6xl font-medium">{heroTitle}</h1>
                 </div>
-                <p className="text-xl md:text-2xl font-thin mt-2">services</p>
+                <p className="text-xl md:text-2xl font-thin mt-2">{heroSubtitle}</p>
             </div>
 
             {/* 1st Services section */}
             <div className="bg-blue py-8 md:py-10 px-6 md:px-16">
                 <div className="flex flex-col gap-10">
-                    {/* Short content card */}
-                    <div className="flex flex-col lg:flex-row items-center gap-6">
-                        <Image src="/images/services/image.png" alt="short content" width={600} height={400} className="w-full lg:w-1/2 border-[.5px] border-red" />
-                        <div className="w-full lg:w-1/2 text-center lg:text-left">
-                            <h1 className="text-4xl md:text-5xl xl:text-6xl font-medium mb-4">short content</h1>
-                            <p className="text-lg md:text-xl lg:text-[23px] font-light mb-4">Reels / social content / interviews / trailers</p>
-                            <p className="text-lg md:text-xl lg:text-[23px] font-light mb-3">Scroll-stopping short content tailored to your brand. 
-                                We create bite-sized video stories that engage, inform and 
-                                entertain, ideal for social media.</p>
-                            <div className="flex items-end gap-2 justify-center lg:justify-start">
-                                <SwirlArrow className="w-10 h-10 md:w-12 md:h-12 ml-0 lg:ml-12" />
-                                <span 
-                                    onClick={() => router.push('/portfolio/short-content')}
-                                    className="text-lg md:text-xl lg:text-[23px] font-medium leading-none relative group cursor-pointer"
-                                >
-                                    photos
-                                    <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-red transition-all duration-300 group-hover:w-full"></span>
-                                </span>
+                    {firstSectionServices.map((service, index) => (
+                        <div key={service.title} className="flex flex-col lg:flex-row items-center gap-6 relative">
+                            <Image src="/images/services/image.png" alt={service.title} width={600} height={400} className="w-full lg:w-1/2 border-[.5px] border-red" />
+                            {renderIcon(service)}
+                            <div className="w-full lg:w-1/2 text-center lg:text-left">
+                                <h1 className="text-4xl md:text-5xl xl:text-6xl font-medium mb-4">{service.title}</h1>
+                                {service.subtitle && (
+                                    <p className="text-lg md:text-xl lg:text-[23px] font-light mb-4">{service.subtitle}</p>
+                                )}
+                                <p className="text-lg md:text-xl lg:text-[23px] font-light mb-3">{service.description}</p>
+                                <div className="flex items-end gap-2 justify-center lg:justify-start">
+                                    <SwirlArrow className="w-10 h-10 md:w-12 md:h-12 ml-0 lg:ml-12" />
+                                    <Link href={`/portfolio/${service.portfolioSlug}`}>
+                                        <span className="text-lg md:text-xl lg:text-[23px] font-medium leading-none relative group cursor-pointer">
+                                            photos
+                                            <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-red transition-all duration-300 group-hover:w-full"></span>
+                                        </span>
+                                    </Link>
+                                </div>
                             </div>
                         </div>
-                    </div>
-
-                    {/* Long form card */}
-                    <div className="flex flex-col lg:flex-row items-center gap-6">
-                        <Image src="/images/services/image.png" alt="short content" width={600} height={400} className="w-full lg:w-1/2 border-[.5px] border-red" />
-                        <div className="w-full lg:w-1/2 text-center lg:text-left">
-                            <h1 className="text-4xl md:text-5xl xl:text-6xl font-medium mb-4">(corporate) events</h1>
-                            <p className="text-lg md:text-xl lg:text-[23px] font-light mb-3">From conferences to company parties, we document the energy 
-                                and key moments of your event with authenticity and flair. 
-                                Relive the vibe, long after it&apos;s over.</p>
-                            <div className="flex items-end gap-2 justify-center lg:justify-start">
-                                <SwirlArrow className="w-10 h-10 md:w-12 md:h-12 ml-0 lg:ml-16" />
-                                <span 
-                                    onClick={() => router.push('/portfolio/corporate-events')}
-                                    className="text-lg md:text-xl lg:text-[23px] font-medium leading-none relative group cursor-pointer"
-                                >
-                                    photos
-                                    <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-red transition-all duration-300 group-hover:w-full"></span>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Food photography card */}
-                    <div className="flex flex-col lg:flex-row items-center gap-6 relative">
-                        <Image src="/images/services/image.png" alt="food photography" width={600} height={400} className="w-full lg:w-1/2 border-[.5px] border-red" />
-                        <div className="absolute -top-10 left-4 sm:-top-15 lg:-top-10 xl:left-15 xl:-top-30 w-22 sm:w-40 lg:w-32 xl:w-64">
-                            <Image src="/images/icons/mouth.svg" alt="Mouth" width={224} height={224} />
-                        </div>
-                        <div className="w-full lg:w-1/2 text-center lg:text-left">
-                            <h1 className="text-4xl md:text-5xl xl:text-6xl font-medium mb-4">food photography</h1>
-                            <p className="text-lg md:text-xl lg:text-[23px] font-light mb-3">Delicious visuals that make your dishes irresistible. We style, light and shoot food in a way that triggers taste buds and boosts your brand&apos;s appetite appeal.</p>
-                            <div className="flex items-end gap-2 justify-center lg:justify-start">
-                                <SwirlArrow className="w-10 h-10 md:w-12 md:h-12 ml-0 lg:ml-12" />
-                                <span 
-                                    onClick={() => router.push('/portfolio/food')}
-                                    className="text-lg md:text-xl lg:text-[23px] font-medium leading-none relative group cursor-pointer"
-                                >
-                                    photos
-                                    <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-red transition-all duration-300 group-hover:w-full"></span>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
+                    ))}
                 </div>
             </div>
 
@@ -147,8 +203,8 @@ const ServicesPage = () => {
 
                     {/* Our rates */}
                     <div className="flex-1 text-white text-center lg:text-left mt-6 lg:mt-0 flex flex-col justify-center">
-                        <h1 className="text-4xl md:text-5xl xl:text-6xl mb-4 font-medium">our rates</h1>
-                        <p className="text-lg md:text-xl lg:text-[23px] font-light mb-3 leading-tight">At Brandview, you choose how we team up: from one-time Flash Deals to monthly Content Plans that build long-term brand value. Need more? Add powerful Add-Ons to boost your content even further. Explore what fits your brand best.</p>
+                        <h1 className="text-4xl md:text-5xl xl:text-6xl mb-4 font-medium">{ratesTitle}</h1>
+                        <p className="text-lg md:text-xl lg:text-[23px] font-light mb-3 leading-tight">{ratesDescription}</p>
                         <div className="flex items-end gap-2 justify-center lg:justify-start">
                             <SwirlArrow className="w-10 h-10 md:w-12 md:h-12" color="white" />
                             <span className="text-lg md:text-xl lg:text-[23px] font-medium leading-none relative group cursor-pointer">
@@ -164,66 +220,28 @@ const ServicesPage = () => {
             <div className="bg-blue">
                 <div className="py-8 md:py-10 px-6 md:px-16">
                     <div className="flex flex-col gap-10">
-                        {/* Portraits card */}
-                        <div className="flex flex-col lg:flex-row items-center gap-6">
-                            <Image src="/images/services/image.png" alt="short content" width={600} height={400} className="w-full lg:w-1/2 border-[.5px] border-red" />
-                            <div className="w-full lg:w-1/2 text-center lg:text-left">
-                                <h1 className="text-4xl md:text-5xl xl:text-6xl font-medium mb-4">portraits</h1>
-                                <p className="text-lg md:text-xl lg:text-[23px] font-light mb-3">Authentic portraits with personality. Whether it&apos;s for your website, team page or social media, we ensure everyone looks approachable and confident.</p>
-                                <div className="flex items-end gap-2 justify-center lg:justify-start">
-                                    <SwirlArrow className="w-10 h-10 md:w-12 md:h-12 ml-0 lg:ml-12" />
-                                    <span 
-                                        onClick={() => router.push('/portfolio/portraits')}
-                                        className="text-lg md:text-xl lg:text-[23px] font-medium leading-none relative group cursor-pointer"
-                                    >
-                                        photos
-                                        <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-red transition-all duration-300 group-hover:w-full"></span>
-                                    </span>
+                        {secondSectionServices.map((service, index) => (
+                            <div key={service.title} className="flex flex-col lg:flex-row items-center gap-6 relative">
+                                <Image src="/images/services/image.png" alt={service.title} width={600} height={400} className="w-full lg:w-1/2 border-[.5px] border-red" />
+                                {renderIcon(service)}
+                                <div className="w-full lg:w-1/2 text-center lg:text-left">
+                                    <h1 className="text-4xl md:text-5xl xl:text-6xl font-medium mb-4">{service.title}</h1>
+                                    {service.subtitle && (
+                                        <p className="text-lg md:text-xl lg:text-[23px] font-light mb-4">{service.subtitle}</p>
+                                    )}
+                                    <p className="text-lg md:text-xl lg:text-[23px] font-light mb-3">{service.description}</p>
+                                    <div className="flex items-end gap-2 justify-center lg:justify-start">
+                                        <SwirlArrow className="w-10 h-10 md:w-12 md:h-12" />
+                                        <Link href={`/portfolio/${service.portfolioSlug}`}>
+                                            <span className="text-lg md:text-xl lg:text-[23px] font-medium leading-none relative group cursor-pointer">
+                                                photos
+                                                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-red transition-all duration-300 group-hover:w-full"></span>
+                                            </span>
+                                        </Link>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-
-                        {/* Product photography card */}
-                        <div className="flex flex-col lg:flex-row items-center gap-6">
-                            <Image src="/images/services/image.png" alt="short content" width={600} height={400} className="w-full lg:w-1/2 border-[.5px] border-red" />
-                            <div className="w-full lg:w-1/2 text-center lg:text-left">
-                                <h1 className="text-4xl md:text-5xl xl:text-6xl font-medium mb-4">product photography </h1>
-                                <p className="text-lg md:text-xl lg:text-[23px] font-light mb-3">Sharp, stylish and scroll-stopping. We present your products in 
-                                the best light, whether for e-commerce, campaigns or catalogues.</p>
-                                <div className="flex items-end gap-2 justify-center lg:justify-start">
-                                    <SwirlArrow className="w-10 h-10 md:w-12 md:h-12 ml-0 lg:ml-16" />
-                                    <span 
-                                        onClick={() => router.push('/portfolio/products')}
-                                        className="text-lg md:text-xl lg:text-[23px] font-medium leading-none relative group cursor-pointer"
-                                    >
-                                        photos
-                                        <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-red transition-all duration-300 group-hover:w-full"></span>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Business photography card */}
-                        <div className="flex flex-col lg:flex-row items-center gap-6 relative">
-                            <Image src="/images/services/image.png" alt="food photography" width={600} height={400} className="w-full lg:w-1/2 border-[.5px] border-red" />
-                            <div className="absolute -top-5 -right-4 md:-right-15 sm:-top-15 lg:right-[49%] lg:-top-5 xl:-top-23 xl:right-[44%] w-22 sm:w-40 lg:w-32 xl:w-60 rotate-10">
-                                <Image src="/images/icons/eyes.svg" alt="Eyes" width={240} height={240} />
-                            </div>
-                            <div className="w-full lg:w-1/2 text-center lg:text-left">
-                                <h1 className="text-4xl md:text-5xl xl:text-6xl font-medium mb-4">business photography</h1>
-                                <p className="text-lg md:text-xl lg:text-[23px] font-light mb-3">We capture the essence of your brand with clean, professional visuals that make a lasting impression. From team portraits to workspaces, we showcase the people and story behind your business.</p>
-                                <div className="flex items-end gap-2 justify-center lg:justify-start">
-                                    <SwirlArrow className="w-10 h-10 md:w-12 md:h-12 ml-0 lg:ml-12" />
-                                    <span 
-                                        onClick={() => router.push('/portfolio/business')}
-                                        className="text-lg md:text-xl lg:text-[23px] font-medium leading-none relative group cursor-pointer"
-                                    >
-                                        photos
-                                        <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-red transition-all duration-300 group-hover:w-full"></span>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
+                        ))}
                     </div>
                 </div>
 

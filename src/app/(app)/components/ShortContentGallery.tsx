@@ -2,13 +2,14 @@
 
 import Masonry from 'react-masonry-css';
 import Image from 'next/image';
+import { useMemo } from 'react';
 
-export default function BusinessMasonryGallery() {
-    const breakpointColumnsObj = {
+export default function ShortContentMasonryGallery() {
+    const breakpointColumnsObj = useMemo(() => ({
         default: 3,
         1100: 2,
         768: 1  // Changed to match Tailwind's md breakpoint
-    };
+    }), []);
 
     return (
         <div className="space-y-0">

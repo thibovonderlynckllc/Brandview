@@ -3,7 +3,7 @@
 import Masonry from 'react-masonry-css';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useLayoutEffect, useState } from 'react';
+import { useLayoutEffect, useState, useMemo } from 'react';
 
 export default function MasonryGallery() {
     const [mounted, setMounted] = useState(false);
@@ -12,13 +12,13 @@ export default function MasonryGallery() {
         setMounted(true);
     }, []);
 
-    const breakpointColumnsObj = {
+    const breakpointColumnsObj = useMemo(() => ({
         default: 3,
         1100: 2,
         700: 1
-    };
+    }), []);
 
-    const galleryItems = [
+    const galleryItems = useMemo(() => [
         {
             height: "h-[600px]",
             content: (
@@ -127,7 +127,7 @@ export default function MasonryGallery() {
         { height: "h-[400px]" },
         { height: "h-[600px] min-[1101px]:h-[400px]" },
         { height: "h-[600px]" }
-    ];
+    ], []);
 
     return (
         <div className="overflow-x-hidden" suppressHydrationWarning>
