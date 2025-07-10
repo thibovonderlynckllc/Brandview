@@ -6,7 +6,7 @@ A modern photography portfolio website built with Next.js 15 and Payload CMS, fe
 
 - Dynamic content management with Payload CMS
 - Responsive masonry image galleries
-- PostgreSQL database with Supabase (SSL preferred, Transaction pooler)
+- PostgreSQL database with Supabase (Transaction pooler, SSL disabled for compatibility)
 - Optimized image loading with Next.js Image component
 
 ## Tech Stack
