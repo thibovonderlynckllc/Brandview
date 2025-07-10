@@ -297,7 +297,7 @@ function PortfolioContent({ slug }: { slug: string }) {
           </Masonry>
 
           {/* First Banner */}
-          <img src={bannerImage?.url || "/images/banner.svg"} alt="banner" className="w-full h-52 md:h-auto object-cover" />
+          <Image src={bannerImage?.url || "/images/banner.svg"} alt="banner" width={1920} height={200} className="w-full h-52 md:h-auto object-cover" />
 
           {/* Custom Layout Section */}
           <div className="w-full space-y-0">
@@ -479,7 +479,7 @@ function PortfolioContent({ slug }: { slug: string }) {
           </div>
 
           {/* Second Banner */}
-          <img src={bannerImage?.url || "/images/banner.svg"} alt="banner" className="w-full h-52 md:h-auto object-cover" />
+          <Image src={bannerImage?.url || "/images/banner.svg"} alt="banner" width={1920} height={200} className="w-full h-52 md:h-auto object-cover" />
 
           {/* Final Masonry Section */}
           <Masonry breakpointCols={breakpointColumnsObj} className="my-masonry-grid" columnClassName="my-masonry-grid_column !space-y-0">

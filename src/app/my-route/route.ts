@@ -1,12 +1,11 @@
-import configPromise from '@payload-config'
-import { getPayload } from 'payload'
+import { getPayload } from 'payload';
+import config from '../../payload.config';
 
-export const GET = async (request: Request) => {
-  const payload = await getPayload({
-    config: configPromise,
-  })
+export async function GET() {
+  const payload = await getPayload({ config });
 
-  return Response.json({
-    message: 'This is an example of a custom route.',
-  })
+  // You can use payload here to interact with your collections
+  // For example: const users = await payload.find({ collection: 'users' })
+
+  return Response.json({ message: 'Hello, World!' });
 }

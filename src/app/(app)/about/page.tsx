@@ -90,6 +90,11 @@ interface AboutCard {
     description: string;
 }
 
+interface MediaItem {
+    url: string;
+    alt?: string;
+}
+
 interface AboutData {
     aboutHeroTitle: string;
     aboutHeroSubtitle: string;
@@ -99,9 +104,9 @@ interface AboutData {
         subtitle: string;
         name: string;
         description: string;
-        founderImage?: any;
-        brandviewIcon?: any;
-        personIcon?: any;
+        founderImage?: MediaItem;
+        brandviewIcon?: MediaItem;
+        personIcon?: MediaItem;
     };
     whatWeDoSection: {
         title: string;
@@ -110,15 +115,15 @@ interface AboutData {
             title: string;
             description: string;
         }>;
-        bulbIcon?: any;
+        bulbIcon?: MediaItem;
     };
 }
 
 const AboutPage = async () => {
     const data: AboutData = await getAboutData();
 
-    const getIconSrc = (icon: any, fallback: string) => {
-        if (icon?.url) return icon.url;
+    const getIconSrc = (icon: MediaItem | string | undefined, fallback: string) => {
+        if (icon && typeof icon === 'object' && icon.url) return icon.url;
         if (typeof icon === 'string') return icon;
         return fallback;
     };
