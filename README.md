@@ -1,1 +1,1 @@
-# Brandview - Dynamic Photography Website
+# Brandview - Dynamic Photography
