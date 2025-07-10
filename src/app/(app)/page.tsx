@@ -1,7 +1,8 @@
 import MasonryGallery from './components/MasonryGallery';
 import Image from 'next/image';
 import Link from 'next/link';
-import { getPageBySlug } from '../../lib/payload';
+import { getPageBySlug } from '@/lib/payload';
+// Updated database connection - trigger deployment
 
 interface PortfolioItem {
     title: string;
