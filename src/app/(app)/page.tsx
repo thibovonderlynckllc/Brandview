@@ -1,39 +1,77 @@
 import MasonryGallery from './components/MasonryGallery';
 import Image from 'next/image';
 import Link from 'next/link';
-import { getPageBySlug } from '@/lib/payload';
-// Updated database connection - trigger deployment
+import { getPayload } from 'payload';
+import config from '@/payload.config';
 
-interface PortfolioItem {
+interface ServiceCard {
     title: string;
-    slug: string;
-    icon: string | null;
+    description?: string;
+    icon?: string | { url: string; alt?: string } | null;
+    link?: string;
+}
+
+interface PageData {
+    heroText: string;
+    serviceCards: ServiceCard[];
 }
 
 export default async function Home() {
-    // Fetch homepage data from CMS
-    const pageData = await getPageBySlug('homepage');
-    
-    // Fallback data in case CMS data is not available
-    const defaultHeroText = "Hire brandview for short content, (corporate) events, portraits, product, business and food photography. And so much more...";
-    const defaultPortfolioItems: PortfolioItem[] = [
-        { title: "Short content", slug: "short-content", icon: null },
-        { title: "food", slug: "food", icon: null },
-        { title: "portraits", slug: "portraits", icon: "/images/icons/camera.svg" },
-        { title: "business", slug: "business", icon: null }
-    ];
+    // Fallback data
+    const fallbackData: PageData = {
+        heroText: "Hire brandview for short content, (corporate) events, portraits, product, business and food photography. And so much more...",
+        serviceCards: [
+            { title: "short content", description: "", icon: null, link: "/portfolio/short-content" },
+            { title: "food", description: "", icon: null, link: "/portfolio/food" },
+            { title: "portraits", description: "", icon: "/images/icons/camera.svg", link: "/portfolio/portraits" },
+            { title: "business", description: "", icon: null, link: "/portfolio/business" }
+        ]
+    };
 
-    const heroText = pageData?.content?.heroText || defaultHeroText;
-    const portfolioItems: PortfolioItem[] = pageData?.content?.portfolioItems || defaultPortfolioItems;
+    // Try to fetch dynamic data
+    let pageData = fallbackData;
+    try {
+        const payload = await getPayload({ config });
+        const pages = await payload.find({
+            collection: 'pages' as any,
+            where: {
+                and: [
+                    {
+                        slug: {
+                            equals: 'home'
+                        }
+                    },
+                    {
+                        pageType: {
+                            equals: 'home'
+                        }
+                    }
+                ]
+            }
+        });
+
+        if (pages.docs.length > 0) {
+            const homePage = pages.docs[0] as any;
+            pageData = {
+                heroText: homePage.heroText || fallbackData.heroText,
+                serviceCards: homePage.serviceCards && homePage.serviceCards.length > 0 
+                    ? homePage.serviceCards 
+                    : fallbackData.serviceCards
+            };
+        }
+    } catch (error) {
+        console.log('Using fallback data:', error);
+        // Use fallback data if Payload fails
+    }
 
     return (
         <div>
             <div className="px-8 sm:px-16 bg-blue pt-1">
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                    {portfolioItems.map((item: PortfolioItem) => (
+                    {pageData.serviceCards.map((item, index) => (
                         <Link 
-                            key={item.slug} 
-                            href={`/portfolio/${item.slug}`} 
+                            key={item.link || index} 
+                            href={item.link || '#'} 
                             className={`cursor-pointer transform transition-transform duration-300 hover:scale-102 group ${item.icon ? 'z-10' : ''}`}
                         >
                             <div className="relative pt-6">
@@ -48,12 +86,21 @@ export default async function Home() {
                                     </div>
                                     {item.icon && (
                                         <div className="absolute bottom-0 -right-6 lg:-right-26 sm:-right-15 sm:-bottom-5 lg:-bottom-23 w-32 sm:w-40 lg:w-48 rotate-10 z-10 transition-transform duration-300 group-hover:rotate-12">
-                                            <Image 
-                                                src={item.icon} 
-                                                alt={`${item.title} icon`} 
-                                                width={192}
-                                                height={192}
-                                            />
+                                            {typeof item.icon === 'string' ? (
+                                                <Image 
+                                                    src={item.icon} 
+                                                    alt={`${item.title} icon`} 
+                                                    width={192}
+                                                    height={192}
+                                                />
+                                            ) : item.icon?.url ? (
+                                                <Image 
+                                                    src={item.icon.url} 
+                                                    alt={item.icon.alt || `${item.title} icon`} 
+                                                    width={192}
+                                                    height={192}
+                                                />
+                                            ) : null}
                                         </div>
                                     )}
                                 </div>
@@ -62,7 +109,7 @@ export default async function Home() {
                     ))}
                 </div>
                 <h2 className="text-[2.5rem] font-thin py-10 max-w-[100%] lg:max-w-[60%] leading-none">
-                    {heroText}
+                    {pageData.heroText}
                 </h2>
             </div>
             
