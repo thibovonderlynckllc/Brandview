@@ -167,7 +167,9 @@ const ServicesPage = async () => {
     const secondSectionServices = data.serviceItems.slice(3);
 
     const renderIcon = (item: ServiceItem) => {
-        const iconSrc = item.icon?.url || (typeof item.icon === 'string' ? item.icon : null);
+        const iconSrc = (typeof item.icon === 'object' && item.icon !== null && 'url' in item.icon)
+            ? item.icon.url
+            : (typeof item.icon === 'string' ? item.icon : null);
         if (!iconSrc || item.iconPosition === 'none') return null;
 
         const iconClasses: any = {
@@ -183,7 +185,7 @@ const ServicesPage = async () => {
     };
 
     const getImageSrc = (item: ServiceItem) => {
-        if (item.image?.url) return item.image.url;
+        if (typeof item.image === 'object' && item.image !== null && 'url' in item.image) return item.image.url;
         return "/images/services/image.png"; // fallback image
     };
 
@@ -273,7 +275,7 @@ const ServicesPage = async () => {
                                 <div className="h-[2px] bg-red mb-4"></div>
                             </div>
                             <div className="flex-1 flex flex-col">
-                                {data.pricingSection.addOns.items.map((item: { name: string }, index: number) => (
+                                {(data.pricingSection.addOns.items as { name: string }[]).map((item, index) => (
                                     <p key={index} className="text-xl md:text-[27px] font-light">{item.name}</p>
                                 ))}
                             </div>

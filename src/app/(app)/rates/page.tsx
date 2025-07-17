@@ -276,7 +276,7 @@ const RatesPage = async () => {
                                         ))}
                                     </div>
                                     <div className="flex flex-col items-start gap-4 pl-4 md:pl-8 border-l-2 border-red">
-                                        {data.ratesPricingSection.addOns.items.map((item: { name: string; price: string }, index: number) => (
+                                        {(data.ratesPricingSection.addOns.items as { name: string; price: string }[]).map((item, index) => (
                                             <p key={index}>{item.price}</p>
                                         ))}
                                     </div>
