@@ -35,9 +35,9 @@ const Nav = () => {
 
     return (
         <div className="bg-blue sticky top-0 z-50">
-            <nav className="px-14 py-6">
+            <nav className="px-8 sm:px-14 py-6">
                 <div className="flex justify-between items-center max-w-[1600px] mx-auto">
-                    <div className="w-[200px] lg:w-[220px] xl:w-[330px]">
+                    <div className="w-[220px] sm:w-[200px] lg:w-[220px] xl:w-[330px]">
                         <Link href="/">
                             <Image src="/images/logo.svg" width={380} height={380} alt="Brandview Logo" className="w-full h-auto" />
                         </Link>
@@ -83,10 +83,10 @@ const Nav = () => {
                     />
 
                     {/* Mobile Menu Panel */}
-                    <div className={`fixed top-0 left-0 h-full w-[300px] bg-blue z-50 transform transition-transform duration-300 ease-in-out lg:hidden ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}>
-                        <div className="flex justify-between items-center px-6 py-8 border-b">
+                    <div className={`fixed top-0 left-0 h-full w-[90vw] max-w-xs bg-blue z-50 transform transition-transform duration-300 ease-in-out lg:hidden ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+                        <div className="flex justify-between items-center px-4 py-8 border-b">
                             <Link href="/">
-                                <Image src="/images/logo.svg" width={200} height={200} alt="Brandview Logo" className="w-auto h-11" />
+                                <Image src="/images/logo.svg" width={220} height={220} alt="Brandview Logo" className="w-auto h-14" />
                             </Link>
                             <button 
                                 onClick={() => setIsOpen(false)} 
@@ -96,7 +96,7 @@ const Nav = () => {
                                 <X className="w-6 h-6" />
                             </button>
                         </div>
-                        <div className="p-6">
+                        <div className="p-4">
                             <ul className="flex flex-col gap-4 font-medium text-[1.4rem] cursor-pointer">
                                 <li className={getMobileNavItemClasses("/")}>
                                     <Link href="/" className="w-full" onClick={() => setIsOpen(false)}>home</Link>

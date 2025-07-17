@@ -58,7 +58,7 @@ export const Portfolio: CollectionConfig = {
     {
       name: 'galleryGrid',
       type: 'group',
-      label: 'Gallery Grid Layout (32 positions)',
+      label: 'Gallery Grid Layout (23 positions)',
       admin: {
         description: 'Visual grid matching your website layout. Numbers correspond to positions in the masonry grid.',
       },
@@ -226,7 +226,7 @@ export const Portfolio: CollectionConfig = {
               type: 'upload',
               relationTo: 'media',
               admin: {
-                description: 'Position 15 - Medium image (400px height)',
+                description: 'Position 15 - Large image (600px height)',
               },
             },
             {
@@ -234,7 +234,7 @@ export const Portfolio: CollectionConfig = {
               type: 'upload',
               relationTo: 'media',
               admin: {
-                description: 'Position 16 - Medium image (400px height)',
+                description: 'Position 16 - Large image (600px height)',
               },
             },
           ],
@@ -307,102 +307,6 @@ export const Portfolio: CollectionConfig = {
               relationTo: 'media',
               admin: {
                 description: 'Position 23 - Large image (600px height)',
-              },
-            },
-          ],
-        },
-        // Row 9 (positions 24-26)
-        {
-          name: 'row9',
-          type: 'group',
-          label: 'Row 9 (Positions 24-26)',
-          fields: [
-            {
-              name: 'position24',
-              type: 'upload',
-              relationTo: 'media',
-              admin: {
-                description: 'Position 24 - Large image (600px height)',
-              },
-            },
-            {
-              name: 'position25',
-              type: 'upload',
-              relationTo: 'media',
-              admin: {
-                description: 'Position 25 - Medium image (400px height)',
-              },
-            },
-            {
-              name: 'position26',
-              type: 'upload',
-              relationTo: 'media',
-              admin: {
-                description: 'Position 26 - Medium image (400px height)',
-              },
-            },
-          ],
-        },
-        // Row 10 (positions 27-29)
-        {
-          name: 'row10',
-          type: 'group',
-          label: 'Row 10 (Positions 27-29)',
-          fields: [
-            {
-              name: 'position27',
-              type: 'upload',
-              relationTo: 'media',
-              admin: {
-                description: 'Position 27 - Large image (600px height)',
-              },
-            },
-            {
-              name: 'position28',
-              type: 'upload',
-              relationTo: 'media',
-              admin: {
-                description: 'Position 28 - Large image (600px height)',
-              },
-            },
-            {
-              name: 'position29',
-              type: 'upload',
-              relationTo: 'media',
-              admin: {
-                description: 'Position 29 - Large image (600px height)',
-              },
-            },
-          ],
-        },
-        // Row 11 (positions 30-32)
-        {
-          name: 'row11',
-          type: 'group',
-          label: 'Row 11 (Positions 30-32)',
-          fields: [
-            {
-              name: 'position30',
-              type: 'upload',
-              relationTo: 'media',
-              admin: {
-                description: 'Position 30 - Large image (600px height)',
-              },
-            },
-            {
-              name: 'position31',
-              type: 'upload',
-              relationTo: 'media',
-              admin: {
-                description: 'Position 31 - Large image (600px height)',
-              },
-            },
-            {
-              name: 'position32',
-              type: 'upload',
-              relationTo: 'media',
-              admin: {
-                description: 'Position 32 - Large image (600px height)',
               },
             },
           ],

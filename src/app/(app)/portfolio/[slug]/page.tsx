@@ -35,15 +35,6 @@ interface GalleryPosition {
   position21?: MediaItem;
   position22?: MediaItem;
   position23?: MediaItem;
-  position24?: MediaItem;
-  position25?: MediaItem;
-  position26?: MediaItem;
-  position27?: MediaItem;
-  position28?: MediaItem;
-  position29?: MediaItem;
-  position30?: MediaItem;
-  position31?: MediaItem;
-  position32?: MediaItem;
 }
 
 interface GalleryGrid {
@@ -55,9 +46,6 @@ interface GalleryGrid {
   row6: GalleryPosition;
   row7: GalleryPosition;
   row8: GalleryPosition;
-  row9: GalleryPosition;
-  row10: GalleryPosition;
-  row11: GalleryPosition;
 }
 
 interface DecorativeElements {
@@ -627,130 +615,7 @@ function PortfolioContent({ slug }: { slug: string }) {
             </div>
           </div>
 
-          {/* Second Banner */}
-          <Image src={bannerImage?.url || "/images/banner.svg"} alt="banner" width={1920} height={200} className="w-full h-52 md:h-auto object-cover" />
-
-          {/* Final Masonry Section */}
-          <Masonry breakpointCols={breakpointColumnsObj} className="my-masonry-grid" columnClassName="my-masonry-grid_column !space-y-0">
-            {/* First row (3-3-2) */}
-            <div className="gallery-item h-[600px] relative">
-              {getImageSrc(galleryGrid.row9?.position24) && (
-                <Image 
-                  src={getImageSrc(galleryGrid.row9?.position24)!} 
-                  alt="Portfolio Photography" 
-                  fill 
-                  sizes="(max-width: 768px) 100vw, (max-width: 1100px) 50vw, 33vw" 
-                  className="object-cover" 
-                />
-              )}
-            </div>
-
-            <div className="gallery-item h-[600px] relative">
-              {getImageSrc(galleryGrid.row9?.position25) && (
-                <Image 
-                  src={getImageSrc(galleryGrid.row9?.position25)!} 
-                  alt="Portfolio Photography" 
-                  fill 
-                  sizes="(max-width: 768px) 100vw, (max-width: 1100px) 50vw, 33vw" 
-                  className="object-cover" 
-                />
-              )}
-              {/* Icon3 for portraits goes on position25 */}
-              {portfolioType === 'portraits' && portfolioIcons.icon3}
-            </div>
-
-            <div className="gallery-item h-[400px] relative">
-              {getImageSrc(galleryGrid.row9?.position26) && (
-                <Image 
-                  src={getImageSrc(galleryGrid.row9?.position26)!} 
-                  alt="Portfolio Photography" 
-                  fill 
-                  sizes="(max-width: 768px) 100vw, (max-width: 1100px) 50vw, 33vw" 
-                  className="object-cover" 
-                />
-              )}
-            </div>
-
-            {/* Second row (3-2-3) */}
-            <div className="gallery-item h-[600px] relative">
-              {getImageSrc(galleryGrid.row10?.position27) && (
-                <Image 
-                  src={getImageSrc(galleryGrid.row10?.position27)!} 
-                  alt="Portfolio Photography" 
-                  fill 
-                  sizes="(max-width: 768px) 100vw, (max-width: 1100px) 50vw, 33vw" 
-                  className="object-cover" 
-                />
-              )}
-            </div>
-
-            <div className="gallery-item h-[400px] relative">
-              {getImageSrc(galleryGrid.row10?.position28) && (
-                <Image 
-                  src={getImageSrc(galleryGrid.row10?.position28)!} 
-                  alt="Portfolio Photography" 
-                  fill 
-                  sizes="(max-width: 768px) 100vw, (max-width: 1100px) 50vw, 33vw" 
-                  className="object-cover" 
-                />
-              )}
-            </div>
-
-            <div className="gallery-item h-[600px] relative">
-              {getImageSrc(galleryGrid.row10?.position29) && (
-                <Image 
-                  src={getImageSrc(galleryGrid.row10?.position29)!} 
-                  alt="Portfolio Photography" 
-                  fill 
-                  sizes="(max-width: 768px) 100vw, (max-width: 1100px) 50vw, 33vw" 
-                  className="object-cover" 
-                />
-              )}
-            </div>
-
-            {/* Third row (2-3-3) */}
-            <div className="gallery-item h-[400px] relative">
-              {getImageSrc(galleryGrid.row11?.position30) && (
-                <Image 
-                  src={getImageSrc(galleryGrid.row11?.position30)!} 
-                  alt="Portfolio Photography" 
-                  fill 
-                  sizes="(max-width: 768px) 100vw, (max-width: 1100px) 50vw, 33vw" 
-                  className="object-cover" 
-                />
-              )}
-            </div>
-
-            <div className="gallery-item h-[600px] relative">
-              {getImageSrc(galleryGrid.row11?.position31) && (
-                <Image 
-                  src={getImageSrc(galleryGrid.row11?.position31)!} 
-                  alt="Portfolio Photography" 
-                  fill 
-                  sizes="(max-width: 768px) 100vw, (max-width: 1100px) 50vw, 33vw" 
-                  className="object-cover" 
-                />
-              )}
-              {/* Icon3 for business goes on position31 */}
-              {portfolioType === 'business' && portfolioIcons.icon3}
-              {/* Icon3 for short-content goes on position31 */}
-              {portfolioType === 'short-content' && portfolioIcons.icon3}
-            </div>
-
-            <div className="gallery-item h-[600px] relative">
-              {getImageSrc(galleryGrid.row11?.position32) && (
-                <Image 
-                  src={getImageSrc(galleryGrid.row11?.position32)!} 
-                  alt="Portfolio Photography" 
-                  fill 
-                  sizes="(max-width: 768px) 100vw, (max-width: 1100px) 50vw, 33vw" 
-                  className="object-cover" 
-                />
-              )}
-              {/* Icon3 for food, products, corporate-events goes on position32 */}
-              {(['food', 'products', 'corporate-events'].includes(portfolioType)) && portfolioIcons.icon3}
-            </div>
-          </Masonry>
+          {/* NOTE: Update your database to only provide 23 items per portfolio! */}
         </div>
       </div>
     </div>
