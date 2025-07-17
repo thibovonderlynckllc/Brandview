@@ -77,7 +77,12 @@ const PortfolioPage = async () => {
     const data: PortfolioData = await getPortfolioData();
 
     const renderIcon = (card: PortfolioCard) => {
-        const iconSrc = card.icon?.url || (typeof card.icon === 'string' ? card.icon : null);
+        const iconSrc =
+          typeof card.icon === 'object' && card.icon !== null && 'url' in card.icon
+            ? card.icon.url
+            : typeof card.icon === 'string'
+              ? card.icon
+              : null;
         if (!iconSrc || card.iconPosition === 'none') return null;
 
         return (
@@ -88,7 +93,7 @@ const PortfolioPage = async () => {
     };
 
     const getBannerSrc = () => {
-        if (data.bannerImage?.url) return data.bannerImage.url;
+        if (typeof data.bannerImage === 'object' && data.bannerImage !== null && 'url' in data.bannerImage) return data.bannerImage.url;
         return "/images/banner.svg"; // fallback banner
     };
 
@@ -98,7 +103,10 @@ const PortfolioPage = async () => {
                 {/* Portfolio grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {data.portfolioCards.map((card) => {
-                        const hasIcon = card.iconPosition !== 'none' && (card.icon?.url || (typeof card.icon === 'string' && card.icon));
+                        const hasIcon = card.iconPosition !== 'none' && (
+                          (typeof card.icon === 'object' && card.icon !== null && 'url' in card.icon && card.icon.url) ||
+                          (typeof card.icon === 'string' && card.icon)
+                        );
                         return (
                             <Link key={card.slug} href={`/portfolio/${card.slug}`} className={`cursor-pointer transform transition-transform duration-300 hover:scale-102 group ${hasIcon ? 'z-10' : ''}`}>
                                 <div className="relative pt-6">
