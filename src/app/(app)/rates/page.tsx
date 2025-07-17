@@ -145,7 +145,7 @@ interface RatesData {
             subtitle: string;
             boostersTitle: string;
             items: Array<{ name: string; price: string }>;
-            megaphoneIcon?: any;
+            megaphoneIcon?: { url: string; alt?: string } | string | null;
         };
     };
 }

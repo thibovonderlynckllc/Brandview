@@ -64,13 +64,13 @@ async function getPortfolioData() {
 interface PortfolioCard {
     title: string;
     slug: string;
-    icon?: any;
+    icon?: { url: string; alt?: string } | string | null;
     iconPosition: 'none' | 'top-right';
 }
 
 interface PortfolioData {
     portfolioCards: PortfolioCard[];
-    bannerImage?: any;
+    bannerImage?: { url: string; alt?: string } | string | null;
 }
 
 const PortfolioPage = async () => {

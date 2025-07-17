@@ -116,20 +116,46 @@ interface ServiceItem {
     subtitle?: string;
     description: string;
     portfolioSlug: string;
-    image?: any;
-    icon?: any;
+    image?: { url: string; alt?: string } | string | null;
+    icon?: { url: string; alt?: string } | string | null;
     iconPosition: 'none' | 'top-left' | 'top-right';
 }
 
+interface PricingContentPlan {
+    title: string;
+    subtitle: string;
+    starterPackTitle: string;
+    starterPackDescription: string;
+    brandBuilderTitle: string;
+    brandBuilderDescription: string;
+}
+interface PricingFlashDeal {
+    title: string;
+    subtitle: string;
+    focusTitle: string;
+    focusDescription: string;
+    fullFrameTitle: string;
+    fullFrameDescription: string;
+}
+interface PricingAddOn {
+    title: string;
+    items: Array<{ name: string }>;
+}
+interface PricingOurRates {
+    title: string;
+    description: string;
+    linkUrl?: string;
+    linkText: string;
+}
 interface ServicesData {
     heroTitle: string;
     heroSubtitle: string;
     serviceItems: ServiceItem[];
     pricingSection: {
-        contentPlans: any;
-        flashDeals: any;
-        addOns: any;
-        ourRates: any;
+        contentPlans: PricingContentPlan;
+        flashDeals: PricingFlashDeal;
+        addOns: PricingAddOn;
+        ourRates: PricingOurRates;
     };
 }
 

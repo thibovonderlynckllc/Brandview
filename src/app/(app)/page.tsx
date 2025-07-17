@@ -33,7 +33,8 @@ export default async function Home() {
     try {
         const payload = await getPayload({ config });
         const pages = await payload.find({
-            collection: 'pages' as any,
+            // @ts-ignore Payload types do not include 'pages' but it is valid
+            collection: 'pages',
             where: {
                 and: [
                     {
@@ -51,7 +52,7 @@ export default async function Home() {
         });
 
         if (pages.docs.length > 0) {
-            const homePage = pages.docs[0] as any;
+            const homePage = pages.docs[0] as unknown as PageData;
             pageData = {
                 heroText: homePage.heroText || fallbackData.heroText,
                 serviceCards: homePage.serviceCards && homePage.serviceCards.length > 0 
