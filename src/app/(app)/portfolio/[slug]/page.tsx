@@ -62,16 +62,14 @@ interface GalleryGrid {
 
 interface DecorativeElements {
   icon1?: MediaItem;
-  icon1Position?: string;
   icon2?: MediaItem;
-  icon2Position?: string;
   icon3?: MediaItem;
-  icon3Position?: string;
 }
 
 interface PortfolioData {
   title: string;
   slug: string;
+  portfolioType: string;
   description?: string;
   galleryGrid: GalleryGrid;
   decorativeElements?: DecorativeElements;
@@ -143,24 +141,169 @@ function PortfolioContent({ slug }: { slug: string }) {
     notFound();
   }
 
-  const { galleryGrid, decorativeElements, bannerImage } = portfolioData;
+  const { galleryGrid, decorativeElements, bannerImage, portfolioType } = portfolioData;
 
   // Helper function to get image src with fallback
   const getImageSrc = (position?: MediaItem, fallback?: string) => {
     return position?.url || fallback || null;
   };
 
-  // Helper function to render decorative icon
-  const renderDecorativeIcon = (icon?: MediaItem, position?: string, defaultPosition?: string) => {
+  // Portfolio-type-specific icon rendering functions
+  const renderIcon1 = (icon?: MediaItem) => {
     const iconSrc = icon?.url;
     if (!iconSrc) return null;
 
-    return (
-      <div className={position || defaultPosition || "absolute w-64 -top-33 right-5 lg:bottom-11 lg:-right-38 z-10 flex items-center justify-center"}>
-        <Image src={iconSrc} alt={icon?.alt || "Decorative Icon"} width={248} height={200} />
-      </div>
-    );
+    // Different positioning based on portfolio type
+    switch (portfolioType) {
+      case 'business':
+        return (
+            <div className="absolute w-64 left-1/2 transform -translate-x-1/2 -translate-y-1/2 md:left-auto md:translate-x-0 md:translate-y-0 md:-top-33 md:right-5 lg:bottom-11 lg:-right-38 z-10 flex items-center justify-center">
+            <Image src={iconSrc} alt={icon?.alt || "Decorative Icon"} width={248} height={200} />
+            </div>
+        );
+      case 'food':
+        return (
+          <Image src={iconSrc} alt={icon?.alt || "Decorative Icon"} width={248} height={200} className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 md:left-auto md:translate-x-0 md:translate-y-0 md:-bottom-35 md:-bottom-35 md:-right-34 rotate-10 z-10" />
+        );
+      case 'portraits':
+        return (
+          <>
+            <Image src={iconSrc} alt={icon?.alt || "Decorative Icon"} width={248} height={200} className="absolute hidden lg:block -bottom-29 -right-25 z-10" />
+            <Image src={iconSrc} alt={icon?.alt || "Decorative Icon"} width={248} height={200} className="absolute left-1/2 transform -translate-x-1/2 -translate-y-1/2 md:left-auto md:translate-x-0 md:translate-y-0 lg:hidden md:-bottom-29 md:right-20 z-10" />
+          </>
+        );
+      case 'products':
+        return (
+          <>
+            <Image src={iconSrc} alt={icon?.alt || "Decorative Icon"} width={248} height={200} className="absolute hidden lg:block bottom-30 -right-48 z-10" />
+            <Image src={iconSrc} alt={icon?.alt || "Decorative Icon"} width={248} height={200} className="absolute lg:hidden left-1/2 transform -translate-x-1/2 translate-y-1/2 -bottom-0 z-10" />
+          </>
+        );
+      case 'corporate-events':
+        return (
+          <Image src={iconSrc} alt={icon?.alt || "Decorative Icon"} width={200} height={200} className="absolute left-1/2 transform -translate-x-1/2 -translate-y-1/2 md:left-auto md:translate-x-0 md:translate-y-0 md:-bottom-17 -rotate-10 z-10" />
+        );
+      case 'short-content':
+        return (
+          <Image src={iconSrc} alt={icon?.alt || "Decorative Icon"} width={200} height={200} className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 md:left-auto md:translate-x-0 md:translate-y-0 md:-top-26 md:right-20 rotate-10 z-10" />
+        );
+      default:
+        return (
+          <Image src={iconSrc} alt={icon?.alt || "Decorative Icon"} width={248} height={200} />
+        );
+    }
   };
+
+  const renderIcon2 = (icon?: MediaItem) => {
+    const iconSrc = icon?.url;
+    if (!iconSrc) return null;
+
+    switch (portfolioType) {
+      case 'business':
+        return (
+          <Image 
+            src={iconSrc} 
+            alt={icon?.alt || "Decorative Icon"} 
+            width={248} 
+            height={200} 
+            className="absolute -top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 md:left-auto md:translate-x-0 md:translate-y-0 md:-top-25 md:left-10 md:-bottom-40 md:-right-30 z-20" 
+          />
+        );
+      case 'food':
+        return (
+          <Image src={iconSrc} alt={icon?.alt || "Decorative Icon"} width={248} height={200} className="absolute -top-30 md:-left-20 md:-top-28 z-10" />
+        );
+      case 'portraits':
+        return (
+          <>
+            <Image src={iconSrc} alt={icon?.alt || "Decorative Icon"} width={248} height={200} className="absolute hidden md:block -bottom-37 -right-42 z-10" />
+            <Image src={iconSrc} alt={icon?.alt || "Decorative Icon"} width={248} height={200} className="absolute left-1/2 transform -translate-x-1/2 -translate-y-1/2 -top-0 md:hidden z-10" />
+          </>
+        );
+      case 'products':
+        return (
+          <Image src={iconSrc} alt={icon?.alt || "Decorative Icon"} width={248} height={200} className="absolute -top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 md:top-auto md:translate-x-0 md:translate-y-0 md:-bottom-20 md:left-25 rotate-10 z-10" />
+        );
+      case 'corporate-events':
+        return (
+          <Image src={iconSrc} alt={icon?.alt || "Decorative Icon"} width={248} height={248} className="absolute -top-16 md:bottom-13 md:-right-40 z-10 rotate-10" />
+        );
+      case 'short-content':
+        return (
+          <>
+            <Image src={iconSrc} alt={icon?.alt || "Decorative Icon"} width={248} height={200} className="absolute hidden md:block -bottom-33 -right-33 rotate-8 z-10" />
+            <Image src={iconSrc} alt={icon?.alt || "Decorative Icon"} width={248} height={200} className="absolute md:hidden left-1/2 transform -translate-x-1/2 -translate-y-1/2 top-0 rotate-8 z-10" />
+          </>
+        );
+      default:
+        return (
+          <Image src={iconSrc} alt={icon?.alt || "Decorative Icon"} width={248} height={200} />
+        );
+    }
+  };
+
+  const renderIcon3 = (icon?: MediaItem) => {
+    const iconSrc = icon?.url;
+    if (!iconSrc) return null;
+
+    switch (portfolioType) {
+      case 'business':
+        return (
+          <Image 
+            src={iconSrc} 
+            alt={icon?.alt || "Decorative Icon"} 
+            width={224} 
+            height={224} 
+            className="absolute -top-3 left-1/2 transform -translate-x-1/2 -translate-y-1/2 md:left-auto md:translate-x-0 md:translate-y-0 md:-top-20 md:right-10 lg:-top-20 lg:-right-35 z-10" 
+          />
+        );
+      case 'food':
+        return (
+          <Image src={iconSrc} alt={icon?.alt || "Decorative Icon"} width={200} height={200} className="absolute -top-2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 md:left-auto md:translate-x-0 md:translate-y-0 md:right-30 md:-top-25 rotate-10 z-10" />
+        );
+      case 'portraits':
+        return (
+          <>
+            <Image src={iconSrc} alt={icon?.alt || "Decorative Icon"} width={248} height={200} className="absolute hidden lg:block -bottom-15 -right-27 rotate-5 z-10" />
+            <Image src={iconSrc} alt={icon?.alt || "Decorative Icon"} width={248} height={200} className="absolute left-1/2 transform -translate-x-1/2 translate-y-1/2 -bottom-0 lg:hidden z-10 lg:hidden" />
+          </>
+        );
+      case 'products':
+        return (
+          <Image src={iconSrc} alt={icon?.alt || "Decorative Icon"} width={200} height={200} className="absolute left-1/2 transform -translate-x-1/2 -translate-y-1/2 md:translate-x-0 md:translate-y-0 md:-top-28 md:left-7 z-10" />
+        );
+      case 'corporate-events':
+        return (
+          <Image src={iconSrc} alt={icon?.alt || "Decorative Icon"} width={224} height={224} className="absolute left-1/2 transform -translate-x-1/2 -translate-y-1/2 md:left-auto md:translate-x-0 md:translate-y-0 md:-top-35 md:right-12 z-10" />
+        );
+      case 'short-content':
+        return (
+          <>
+            <Image src={iconSrc} alt={icon?.alt || "Decorative Icon"} width={200} height={200} className="absolute hidden md:block -top-20 -left-18 -rotate-5 z-10" />
+            <Image src={iconSrc} alt={icon?.alt || "Decorative Icon"} width={200} height={200} className="absolute left-1/2 top-0 transform -translate-x-1/2 -translate-y-1/2 z-10 md:hidden" />
+          </>
+        );
+      default:
+        return (
+          <Image src={iconSrc} alt={icon?.alt || "Decorative Icon"} width={224} height={224} />
+        );
+    }
+  };
+
+  // Get icons for any portfolio type
+  const getPortfolioIcons = () => {
+    if (!decorativeElements) {
+      return { icon1: null, icon2: null, icon3: null };
+    }
+    
+    return {
+      icon1: renderIcon1(decorativeElements.icon1),
+      icon2: renderIcon2(decorativeElements.icon2), 
+      icon3: renderIcon3(decorativeElements.icon3)
+    };
+  };
+
+  const portfolioIcons = getPortfolioIcons();
 
   return (
     <div>
@@ -184,36 +327,35 @@ function PortfolioContent({ slug }: { slug: string }) {
               {getImageSrc(galleryGrid.row1?.position1) && (
                 <Image 
                   src={getImageSrc(galleryGrid.row1?.position1)!} 
-                  alt="Business Photography" 
+                  alt="Portfolio Photography" 
                   fill 
                   sizes="(max-width: 768px) 100vw, (max-width: 1100px) 50vw, 33vw" 
                   className="object-cover" 
                 />
               )}
+              {/* Icon1 for food portfolio goes on position1 */}
+              {portfolioType === 'food' && portfolioIcons.icon1}
             </div>
 
             <div className="gallery-item h-[600px] relative mb-0">
               {getImageSrc(galleryGrid.row1?.position2) && (
                 <Image 
                   src={getImageSrc(galleryGrid.row1?.position2)!} 
-                  alt="Business Photography" 
+                  alt="Portfolio Photography" 
                   fill 
                   sizes="(max-width: 768px) 100vw, (max-width: 1100px) 50vw, 33vw" 
                   className="object-cover" 
                 />
               )}
-              {renderDecorativeIcon(
-                decorativeElements?.icon1, 
-                decorativeElements?.icon1Position,
-                "absolute w-64 -top-33 right-5 lg:bottom-11 lg:-right-38 z-10 flex items-center justify-center"
-              )}
+              {/* Icon1 for business, corporate-events, portraits, products goes on position2 */}
+              {(['business', 'corporate-events', 'portraits', 'products'].includes(portfolioType)) && portfolioIcons.icon1}
             </div>
 
             <div className="gallery-item h-[400px] mb-0 relative">
               {getImageSrc(galleryGrid.row1?.position3) && (
                 <Image 
                   src={getImageSrc(galleryGrid.row1?.position3)!} 
-                  alt="Business Photography" 
+                  alt="Portfolio Photography" 
                   fill 
                   sizes="(max-width: 768px) 100vw, (max-width: 1100px) 50vw, 33vw" 
                   className="object-cover" 
@@ -226,7 +368,7 @@ function PortfolioContent({ slug }: { slug: string }) {
               {getImageSrc(galleryGrid.row2?.position4) && (
                 <Image 
                   src={getImageSrc(galleryGrid.row2?.position4)!} 
-                  alt="Business Photography" 
+                  alt="Portfolio Photography" 
                   fill 
                   sizes="(max-width: 768px) 100vw, (max-width: 1100px) 50vw, 33vw" 
                   className="object-cover" 
@@ -238,7 +380,7 @@ function PortfolioContent({ slug }: { slug: string }) {
               {getImageSrc(galleryGrid.row2?.position5) && (
                 <Image 
                   src={getImageSrc(galleryGrid.row2?.position5)!} 
-                  alt="Business Photography" 
+                  alt="Portfolio Photography" 
                   fill 
                   sizes="(max-width: 768px) 100vw, (max-width: 1100px) 50vw, 33vw" 
                   className="object-cover" 
@@ -250,7 +392,7 @@ function PortfolioContent({ slug }: { slug: string }) {
               {getImageSrc(galleryGrid.row2?.position6) && (
                 <Image 
                   src={getImageSrc(galleryGrid.row2?.position6)!} 
-                  alt="Business Photography" 
+                  alt="Portfolio Photography" 
                   fill 
                   sizes="(max-width: 768px) 100vw, (max-width: 1100px) 50vw, 33vw" 
                   className="object-cover" 
@@ -263,7 +405,7 @@ function PortfolioContent({ slug }: { slug: string }) {
               {getImageSrc(galleryGrid.row3?.position7) && (
                 <Image 
                   src={getImageSrc(galleryGrid.row3?.position7)!} 
-                  alt="Business Photography" 
+                  alt="Portfolio Photography" 
                   fill 
                   sizes="(max-width: 768px) 100vw, (max-width: 1100px) 50vw, 33vw" 
                   className="object-cover" 
@@ -275,19 +417,21 @@ function PortfolioContent({ slug }: { slug: string }) {
               {getImageSrc(galleryGrid.row3?.position8) && (
                 <Image 
                   src={getImageSrc(galleryGrid.row3?.position8)!} 
-                  alt="Business Photography" 
+                  alt="Portfolio Photography" 
                   fill 
                   sizes="(max-width: 768px) 100vw, (max-width: 1100px) 50vw, 33vw" 
                   className="object-cover" 
                 />
               )}
+              {/* Icon1 for short-content goes on position8 */}
+              {portfolioType === 'short-content' && portfolioIcons.icon1}
             </div>
 
             <div className="gallery-item h-[600px] mb-0 relative">
               {getImageSrc(galleryGrid.row3?.position9) && (
                 <Image 
                   src={getImageSrc(galleryGrid.row3?.position9)!} 
-                  alt="Business Photography" 
+                  alt="Portfolio Photography" 
                   fill 
                   sizes="(max-width: 768px) 100vw, (max-width: 1100px) 50vw, 33vw" 
                   className="object-cover" 
@@ -307,7 +451,7 @@ function PortfolioContent({ slug }: { slug: string }) {
                   {getImageSrc(galleryGrid.row4?.position10) && (
                     <Image 
                       src={getImageSrc(galleryGrid.row4?.position10)!} 
-                      alt="Business Photography" 
+                      alt="Portfolio Photography" 
                       fill 
                       sizes="(max-width: 768px) 100vw, 33vw" 
                       className="object-cover" 
@@ -318,23 +462,20 @@ function PortfolioContent({ slug }: { slug: string }) {
                   {getImageSrc(galleryGrid.row4?.position11) && (
                     <Image 
                       src={getImageSrc(galleryGrid.row4?.position11)!} 
-                      alt="Business Photography" 
+                      alt="Portfolio Photography" 
                       fill 
                       sizes="(max-width: 768px) 100vw, 33vw" 
                       className="object-cover" 
                     />
                   )}
-                  {renderDecorativeIcon(
-                    decorativeElements?.icon2, 
-                    decorativeElements?.icon2Position,
-                    "absolute -top-25 left-10 md:-bottom-40 md:-right-30"
-                  )}
+                  {/* Icon2 for business and portraits goes on position11 */}
+                  {(['business', 'portraits'].includes(portfolioType)) && portfolioIcons.icon2}
                 </div>
                 <div className="bg-white h-[400px] flex items-center justify-center gallery-item relative">
                   {getImageSrc(galleryGrid.row5?.position12) && (
                     <Image 
                       src={getImageSrc(galleryGrid.row5?.position12)!} 
-                      alt="Business Photography" 
+                      alt="Portfolio Photography" 
                       fill 
                       sizes="(max-width: 768px) 100vw, 33vw" 
                       className="object-cover" 
@@ -345,18 +486,20 @@ function PortfolioContent({ slug }: { slug: string }) {
                   {getImageSrc(galleryGrid.row5?.position13) && (
                     <Image 
                       src={getImageSrc(galleryGrid.row5?.position13)!} 
-                      alt="Business Photography" 
+                      alt="Portfolio Photography" 
                       fill 
                       sizes="(max-width: 768px) 100vw, 33vw" 
                       className="object-cover" 
                     />
                   )}
+                  {/* Icon2 for corporate-events goes on position13 */}
+                  {portfolioType === 'corporate-events' && portfolioIcons.icon2}
                 </div>
                 <div className="bg-white h-[600px] flex items-center justify-center gallery-item relative">
                   {getImageSrc(galleryGrid.row6?.position14) && (
                     <Image 
                       src={getImageSrc(galleryGrid.row6?.position14)!} 
-                      alt="Business Photography" 
+                      alt="Portfolio Photography" 
                       fill 
                       sizes="(max-width: 768px) 100vw, 33vw" 
                       className="object-cover" 
@@ -367,7 +510,7 @@ function PortfolioContent({ slug }: { slug: string }) {
                   {getImageSrc(galleryGrid.row6?.position15) && (
                     <Image 
                       src={getImageSrc(galleryGrid.row6?.position15)!} 
-                      alt="Business Photography" 
+                      alt="Portfolio Photography" 
                       fill 
                       sizes="(max-width: 768px) 100vw, 33vw" 
                       className="object-cover" 
@@ -381,18 +524,20 @@ function PortfolioContent({ slug }: { slug: string }) {
                   {getImageSrc(galleryGrid.row6?.position16) && (
                     <Image 
                       src={getImageSrc(galleryGrid.row6?.position16)!} 
-                      alt="Business Photography" 
+                      alt="Portfolio Photography" 
                       fill 
                       sizes="(max-width: 768px) 100vw, 67vw" 
                       className="object-cover" 
                     />
                   )}
+                  {/* Icon2 for products goes on position16 */}
+                  {portfolioType === 'products' && portfolioIcons.icon2}
                 </div>
                 <div className="bg-white h-[535px] flex items-center justify-center gallery-item relative">
                   {getImageSrc(galleryGrid.row7?.position17) && (
                     <Image 
                       src={getImageSrc(galleryGrid.row7?.position17)!} 
-                      alt="Business Photography" 
+                      alt="Portfolio Photography" 
                       fill 
                       sizes="(max-width: 768px) 100vw, 67vw" 
                       className="object-cover" 
@@ -405,18 +550,20 @@ function PortfolioContent({ slug }: { slug: string }) {
                     {getImageSrc(galleryGrid.row7?.position18) && (
                       <Image 
                         src={getImageSrc(galleryGrid.row7?.position18)!} 
-                        alt="Business Photography" 
+                        alt="Portfolio Photography" 
                         fill 
                         sizes="(max-width: 768px) 100vw, 33vw" 
                         className="object-cover" 
                       />
                     )}
+                    {/* Icon2 for short-content goes on position18 */}
+                    {portfolioType === 'short-content' && portfolioIcons.icon2}
                   </div>
                   <div className="bg-white h-[600px] w-full md:w-1/2 flex items-center justify-center gallery-item relative">
                     {getImageSrc(galleryGrid.row7?.position19) && (
                       <Image 
                         src={getImageSrc(galleryGrid.row7?.position19)!} 
-                        alt="Business Photography" 
+                        alt="Portfolio Photography" 
                         fill 
                         sizes="(max-width: 768px) 100vw, 33vw" 
                         className="object-cover" 
@@ -430,7 +577,7 @@ function PortfolioContent({ slug }: { slug: string }) {
                     {getImageSrc(galleryGrid.row7?.position20) && (
                       <Image 
                         src={getImageSrc(galleryGrid.row7?.position20)!} 
-                        alt="Business Photography" 
+                        alt="Portfolio Photography" 
                         fill 
                         sizes="(max-width: 768px) 100vw, 33vw" 
                         className="object-cover" 
@@ -442,18 +589,20 @@ function PortfolioContent({ slug }: { slug: string }) {
                       {getImageSrc(galleryGrid.row7?.position21) && (
                         <Image 
                           src={getImageSrc(galleryGrid.row7?.position21)!} 
-                          alt="Business Photography" 
+                          alt="Portfolio Photography" 
                           fill 
                           sizes="(max-width: 768px) 100vw, 33vw" 
                           className="object-cover" 
                         />
                       )}
+                      {/* Icon2 for food goes on position21 */}
+                      {portfolioType === 'food' && portfolioIcons.icon2}
                     </div>
                     <div className="bg-white h-[300px] flex items-center justify-center gallery-item relative">
                       {getImageSrc(galleryGrid.row8?.position22) && (
                         <Image 
                           src={getImageSrc(galleryGrid.row8?.position22)!} 
-                          alt="Business Photography" 
+                          alt="Portfolio Photography" 
                           fill 
                           sizes="(max-width: 768px) 100vw, 33vw" 
                           className="object-cover" 
@@ -467,7 +616,7 @@ function PortfolioContent({ slug }: { slug: string }) {
                   {getImageSrc(galleryGrid.row8?.position23) && (
                     <Image 
                       src={getImageSrc(galleryGrid.row8?.position23)!} 
-                      alt="Business Photography" 
+                      alt="Portfolio Photography" 
                       fill 
                       sizes="(max-width: 768px) 100vw, 67vw" 
                       className="object-cover" 
@@ -488,7 +637,7 @@ function PortfolioContent({ slug }: { slug: string }) {
               {getImageSrc(galleryGrid.row9?.position24) && (
                 <Image 
                   src={getImageSrc(galleryGrid.row9?.position24)!} 
-                  alt="Business Photography" 
+                  alt="Portfolio Photography" 
                   fill 
                   sizes="(max-width: 768px) 100vw, (max-width: 1100px) 50vw, 33vw" 
                   className="object-cover" 
@@ -500,19 +649,21 @@ function PortfolioContent({ slug }: { slug: string }) {
               {getImageSrc(galleryGrid.row9?.position25) && (
                 <Image 
                   src={getImageSrc(galleryGrid.row9?.position25)!} 
-                  alt="Business Photography" 
+                  alt="Portfolio Photography" 
                   fill 
                   sizes="(max-width: 768px) 100vw, (max-width: 1100px) 50vw, 33vw" 
                   className="object-cover" 
                 />
               )}
+              {/* Icon3 for portraits goes on position25 */}
+              {portfolioType === 'portraits' && portfolioIcons.icon3}
             </div>
 
             <div className="gallery-item h-[400px] relative">
               {getImageSrc(galleryGrid.row9?.position26) && (
                 <Image 
                   src={getImageSrc(galleryGrid.row9?.position26)!} 
-                  alt="Business Photography" 
+                  alt="Portfolio Photography" 
                   fill 
                   sizes="(max-width: 768px) 100vw, (max-width: 1100px) 50vw, 33vw" 
                   className="object-cover" 
@@ -525,7 +676,7 @@ function PortfolioContent({ slug }: { slug: string }) {
               {getImageSrc(galleryGrid.row10?.position27) && (
                 <Image 
                   src={getImageSrc(galleryGrid.row10?.position27)!} 
-                  alt="Business Photography" 
+                  alt="Portfolio Photography" 
                   fill 
                   sizes="(max-width: 768px) 100vw, (max-width: 1100px) 50vw, 33vw" 
                   className="object-cover" 
@@ -537,7 +688,7 @@ function PortfolioContent({ slug }: { slug: string }) {
               {getImageSrc(galleryGrid.row10?.position28) && (
                 <Image 
                   src={getImageSrc(galleryGrid.row10?.position28)!} 
-                  alt="Business Photography" 
+                  alt="Portfolio Photography" 
                   fill 
                   sizes="(max-width: 768px) 100vw, (max-width: 1100px) 50vw, 33vw" 
                   className="object-cover" 
@@ -549,7 +700,7 @@ function PortfolioContent({ slug }: { slug: string }) {
               {getImageSrc(galleryGrid.row10?.position29) && (
                 <Image 
                   src={getImageSrc(galleryGrid.row10?.position29)!} 
-                  alt="Business Photography" 
+                  alt="Portfolio Photography" 
                   fill 
                   sizes="(max-width: 768px) 100vw, (max-width: 1100px) 50vw, 33vw" 
                   className="object-cover" 
@@ -562,7 +713,7 @@ function PortfolioContent({ slug }: { slug: string }) {
               {getImageSrc(galleryGrid.row11?.position30) && (
                 <Image 
                   src={getImageSrc(galleryGrid.row11?.position30)!} 
-                  alt="Business Photography" 
+                  alt="Portfolio Photography" 
                   fill 
                   sizes="(max-width: 768px) 100vw, (max-width: 1100px) 50vw, 33vw" 
                   className="object-cover" 
@@ -574,29 +725,30 @@ function PortfolioContent({ slug }: { slug: string }) {
               {getImageSrc(galleryGrid.row11?.position31) && (
                 <Image 
                   src={getImageSrc(galleryGrid.row11?.position31)!} 
-                  alt="Business Photography" 
+                  alt="Portfolio Photography" 
                   fill 
                   sizes="(max-width: 768px) 100vw, (max-width: 1100px) 50vw, 33vw" 
                   className="object-cover" 
                 />
               )}
-              {renderDecorativeIcon(
-                decorativeElements?.icon3, 
-                decorativeElements?.icon3Position,
-                "absolute -top-20 right-10 lg:-top-20 lg:-right-35 z-10"
-              )}
+              {/* Icon3 for business goes on position31 */}
+              {portfolioType === 'business' && portfolioIcons.icon3}
+              {/* Icon3 for short-content goes on position31 */}
+              {portfolioType === 'short-content' && portfolioIcons.icon3}
             </div>
 
             <div className="gallery-item h-[600px] relative">
               {getImageSrc(galleryGrid.row11?.position32) && (
                 <Image 
                   src={getImageSrc(galleryGrid.row11?.position32)!} 
-                  alt="Business Photography" 
+                  alt="Portfolio Photography" 
                   fill 
                   sizes="(max-width: 768px) 100vw, (max-width: 1100px) 50vw, 33vw" 
                   className="object-cover" 
                 />
               )}
+              {/* Icon3 for food, products, corporate-events goes on position32 */}
+              {(['food', 'products', 'corporate-events'].includes(portfolioType)) && portfolioIcons.icon3}
             </div>
           </Masonry>
         </div>
