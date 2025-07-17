@@ -172,7 +172,7 @@ const ServicesPage = async () => {
             : (typeof item.icon === 'string' ? item.icon : null);
         if (!iconSrc || item.iconPosition === 'none') return null;
 
-        const iconClasses: any = {
+        const iconClasses: Record<string, string> = {
             'top-left': "absolute -top-10 left-4 sm:-top-15 lg:-top-10 xl:left-15 xl:-top-30 w-22 sm:w-40 lg:w-32 xl:w-64",
             'top-right': "absolute -top-5 -right-4 md:-right-15 sm:-top-15 lg:right-[49%] lg:-top-5 xl:-top-23 xl:right-[44%] w-22 sm:w-40 lg:w-32 xl:w-60 rotate-10",
         };

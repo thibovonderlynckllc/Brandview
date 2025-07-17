@@ -153,8 +153,8 @@ interface RatesData {
 const RatesPage = async () => {
     const data: RatesData = await getRatesData();
 
-    const getIconSrc = (icon: any, fallback: string) => {
-        if (icon?.url) return icon.url;
+    const getIconSrc = (icon: { url: string; alt?: string } | string | null | undefined, fallback: string) => {
+        if (typeof icon === 'object' && icon !== null && 'url' in icon) return icon.url;
         if (typeof icon === 'string') return icon;
         return fallback;
     };

@@ -155,7 +155,7 @@ const AboutPage = async () => {
                                 <div className="absolute inset-x-0 top-0 h-12 bg-red rounded-t-3xl"></div>
                                 <div className="bg-white w-full h-full rounded-3xl border-[1.5px] border-red relative p-8 pt-18 flex flex-col">
                                     <h2 className="text-4xl font-medium text-red text-center mb-6">{card.title}</h2>
-                                    <p className="text-[23px] font-light text-red">{card.description}</p>
+                                    <p className="text-lg xl:text-[23px] font-light leading-tight text-red">{card.description}</p>
                                 </div>
                             </div>
                         ))}
@@ -164,20 +164,30 @@ const AboutPage = async () => {
 
                 <div className="flex flex-col xl:flex-row gap-4 mb-20 xl:mb-40 px-8 sm:px-16 xl:pl-0 xl:pr-16">
                     <div className="w-full xl:w-1/2 flex justify-center">
-                        <div className="w-full aspect-square gallery-item relative">
+                        <div 
+                            className="w-full aspect-square gallery-item relative"
+                            style={{
+                                backgroundImage: data.founderSection.founderImage?.url 
+                                    ? `url(${data.founderSection.founderImage.url})` 
+                                    : 'none',
+                                backgroundSize: 'cover',
+                                backgroundPosition: 'center',
+                                backgroundRepeat: 'no-repeat'
+                            }}
+                        >
                             <Image 
                                 src={getIconSrc(data.founderSection.brandviewIcon, "/images/icons/brandview.svg")} 
                                 alt="Brandview logo" 
                                 width={80} 
                                 height={80} 
-                                className="absolute -bottom-10 rotate-8 -right-5 md:-bottom-20 xl:-bottom-40 xl:-right-20 w-22 sm:w-32 md:w-52 lg:w-62"
+                                className="absolute -bottom-10 rotate-8 -right-5 md:-bottom-20 xl:-bottom-40 xl:-right-20 w-32 sm:w-40 lg:w-48"
                             />
                             <Image 
                                 src={getIconSrc(data.founderSection.personIcon, "/images/icons/person.svg")} 
                                 alt="Person icon" 
                                 width={80} 
                                 height={80} 
-                                className="absolute left-65 -bottom-30 md:left-90 xl:left-35 xl:-bottom-30 w-22 lg:w-62 2xl:w-62 2xl:left-60 2xl:-bottom-50 hidden sm:block"
+                                className="absolute left-52 -bottom-30 md:left-80 md:-bottom-25 xl:left-35 xl:-bottom-30 w-32 sm:w-40 lg:w-48 2xl:left-60 2xl:-bottom-50 hidden sm:block"
                             />
                         </div>
                     </div>
@@ -213,7 +223,7 @@ const AboutPage = async () => {
                                 alt="Bulb icon" 
                                 width={80} 
                                 height={80} 
-                                className="absolute -top-15 xl:-top-40 xl:left-15 -rotate-3 left-15 w-22 xl:w-62"
+                                className="absolute -top-15 xl:-top-40 xl:left-15 -rotate-3 left-15 w-32 sm:w-40 lg:w-48"
                             />
                         </div>
                     </div>

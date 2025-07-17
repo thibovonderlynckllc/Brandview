@@ -4,6 +4,10 @@ export const Pages: CollectionConfig = {
   slug: 'pages',
   admin: {
     useAsTitle: 'title',
+    pagination: {
+      defaultLimit: 10,
+      limits: [5, 10, 20, 50],
+    },
   },
   access: {
     read: () => true, // Allow public read access

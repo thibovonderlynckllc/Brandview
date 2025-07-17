@@ -26,7 +26,7 @@ export default function MasonryGallery() {
                     <Link href="/portfolio/portraits" className="block">
                         <h1 className="text-6xl font-medium absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] whitespace-nowrap text-center hover:scale-103 transition-all duration-300 cursor-pointer">portraits</h1>
                     </Link>
-                    <div className="absolute bottom-[-80px] left-[10%] w-52 rotate-[-5deg] z-10">
+                    <div className="absolute bottom-[-50px] left-1/2 -translate-x-1/2 md:left-[30%] md:translate-x-0 w-32 sm:w-40 lg:w-48 rotate-[-5deg] z-10">
                         <Image 
                             src="/images/icons/klapbord.svg" 
                             alt="Klapbord" 
@@ -80,7 +80,7 @@ export default function MasonryGallery() {
         {
             height: "h-[600px]",
             content: (
-                <div className="absolute -bottom-15 md:-bottom-20 left-10 xl:-bottom-20 xl:-left-18 w-42 md:w-56 z-10">
+                <div className="absolute -bottom-15 left-1/2 -translate-x-1/2 md:-bottom-20 md:left-10 md:translate-x-0 xl:-bottom-20 xl:-left-18 w-32 sm:w-40 lg:w-48 z-10">
                     <Image 
                         src="/images/icons/mouth.svg" 
                         alt="Mouth" 
@@ -94,7 +94,7 @@ export default function MasonryGallery() {
         {
             height: "h-[600px]",
             content: (
-                <div className="absolute -bottom-20 md:-bottom-30 right-10 xl:-bottom-25 xl:-right-22 w-42 md:w-56 z-10">
+                <div className="absolute -bottom-20 left-1/2 -translate-x-1/2 md:-bottom-30 md:right-10 md:left-auto md:translate-x-0 xl:-bottom-25 xl:-right-22 w-32 sm:w-40 lg:w-48 z-10">
                     <Image 
                         src="/images/icons/person.svg" 
                         alt="Person" 

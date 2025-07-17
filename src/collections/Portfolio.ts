@@ -5,6 +5,10 @@ export const Portfolio: CollectionConfig = {
   admin: {
     useAsTitle: 'title',
     defaultColumns: ['title', 'slug', 'updatedAt'],
+    pagination: {
+      defaultLimit: 10,
+      limits: [5, 10, 20, 50],
+    },
   },
   access: {
     read: () => true, // Allow public read access
@@ -25,6 +29,22 @@ export const Portfolio: CollectionConfig = {
       unique: true,
       admin: {
         description: 'URL slug for this portfolio (e.g., "food", "business")',
+      },
+    },
+    {
+      name: 'portfolioType',
+      type: 'select',
+      required: true,
+      options: [
+        { label: 'Business Photography', value: 'business' },
+        { label: 'Food Photography', value: 'food' },
+        { label: 'Portraits', value: 'portraits' },
+        { label: 'Products', value: 'products' },
+        { label: 'Short Content', value: 'short-content' },
+        { label: 'Corporate Events', value: 'corporate-events' },
+      ],
+      admin: {
+        description: 'Type of portfolio - determines available decorative elements',
       },
     },
     {
@@ -394,20 +414,16 @@ export const Portfolio: CollectionConfig = {
       name: 'decorativeElements',
       type: 'group',
       label: 'Decorative Icons & Elements',
+      admin: {
+        description: 'Decorative icons that appear at specific positions in the portfolio layout. Works for all portfolio types.',
+      },
       fields: [
         {
           name: 'icon1',
           type: 'upload',
           relationTo: 'media',
           admin: {
-            description: 'First decorative icon (SVG recommended)',
-          },
-        },
-        {
-          name: 'icon1Position',
-          type: 'text',
-          admin: {
-            description: 'CSS classes for icon 1 position (e.g., "absolute -bottom-35 -right-34 rotate-10 z-10")',
+            description: 'First decorative icon - positioned in first masonry section (position 2)',
           },
         },
         {
@@ -415,14 +431,7 @@ export const Portfolio: CollectionConfig = {
           type: 'upload',
           relationTo: 'media',
           admin: {
-            description: 'Second decorative icon (optional)',
-          },
-        },
-        {
-          name: 'icon2Position',
-          type: 'text',
-          admin: {
-            description: 'CSS classes for icon 2 position',
+            description: 'Second decorative icon - positioned in custom layout section (position 11)',
           },
         },
         {
@@ -430,14 +439,7 @@ export const Portfolio: CollectionConfig = {
           type: 'upload',
           relationTo: 'media',
           admin: {
-            description: 'Third decorative icon (optional)',
-          },
-        },
-        {
-          name: 'icon3Position',
-          type: 'text',
-          admin: {
-            description: 'CSS classes for icon 3 position',
+            description: 'Third decorative icon - positioned in final masonry section (position 31)',
           },
         },
       ],

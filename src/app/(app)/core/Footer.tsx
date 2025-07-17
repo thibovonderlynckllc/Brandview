@@ -3,10 +3,10 @@ import Link from 'next/link'
 const Footer = () => {
     return (
         <div className="bg-blue">
-            <footer className="px-28 py-10 flex flex-col lg:flex-row justify-between lg:items-start gap-10 lg:gap-5 xl:gap-0 max-w-screen-2xl mx-auto w-full">
+            <footer className="px-8 sm:px-28 py-10 flex flex-col lg:flex-row justify-between lg:items-start gap-10 lg:gap-5 xl:gap-0 max-w-screen-2xl mx-auto w-full">
                 {/* Tagline section */}
                 <div className="text-center">
-                    <h1 className="font-light text-5xl xl:text-6xl text-red">Quick, clever and<br />sharp short content.</h1>
+                    <h1 className="font-light text-4xl xl:text-6xl text-red">Quick, clever and<br />sharp short content.</h1>
                 </div>
 
                 {/* Explore more section */}

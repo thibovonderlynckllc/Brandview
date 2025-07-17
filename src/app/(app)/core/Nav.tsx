@@ -45,7 +45,7 @@ const Nav = () => {
 
                     {/* Desktop Navigation */}
                     <div className="hidden lg:block flex-1 pl-8">
-                        <ul className="flex gap-3 xl:gap-6 font-medium text-[1.2rem] xl:text-[1.2rem] cursor-pointer justify-end">
+                        <ul className="flex gap-3 xl:gap-6 font-medium text-[1.1rem] xl:text-[1.2rem] cursor-pointer justify-end">
                             <li className={getNavItemClasses("/")}>
                                 <Link href="/" className="w-full">home</Link>
                             </li>
@@ -59,7 +59,7 @@ const Nav = () => {
                                 <Link href="/about" className="w-full">about us</Link>
                             </li>
                             <li className={getNavItemClasses("/rates")}>
-                                <Link href="/rates" className="w-full">our rates</Link>
+                                <Link href="/rates" className="w-full">our packages</Link>
                             </li>
                             <li className={getNavItemClasses("/contact")}>
                                 <Link href="/contact" className="w-full">contact</Link>
@@ -111,7 +111,7 @@ const Nav = () => {
                                     <Link href="/about" className="w-full" onClick={() => setIsOpen(false)}>about us</Link>
                                 </li>
                                 <li className={getMobileNavItemClasses("/rates")}>
-                                    <Link href="/rates" className="w-full" onClick={() => setIsOpen(false)}>our rates</Link>
+                                    <Link href="/rates" className="w-full" onClick={() => setIsOpen(false)}>our packages</Link>
                                 </li>
                                 <li className={getMobileNavItemClasses("/contact")}>
                                     <Link href="/contact" className="w-full" onClick={() => setIsOpen(false)}>contact</Link>
