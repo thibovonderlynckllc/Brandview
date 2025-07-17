@@ -109,7 +109,7 @@ export default async function Home() {
                         </Link>
                     ))}
                 </div>
-                <h2 className="text-[2.5rem] font-thin py-10 max-w-[100%] lg:max-w-[60%] leading-none">
+                <h2 className="text-2xl md:text-[2.5rem] font-thin py-10 max-w-[100%] lg:max-w-[60%] leading-none">
                     {pageData.heroText}
                 </h2>
             </div>
