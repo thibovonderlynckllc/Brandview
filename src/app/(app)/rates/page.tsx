@@ -271,12 +271,12 @@ const RatesPage = async () => {
                                 </div>
                                 <div className="grid grid-cols-2 gap-2 text-base sm:text-lg md:text-[23px] font-light relative">
                                     <div className="flex flex-col items-end gap-4 pr-4 md:pr-8">
-                                        {data.ratesPricingSection.addOns.items.map((item, index) => (
+                                        {data.ratesPricingSection.addOns.items.map((item: { name: string; price: string }, index: number) => (
                                             <p key={index}>{item.name}</p>
                                         ))}
                                     </div>
                                     <div className="flex flex-col items-start gap-4 pl-4 md:pl-8 border-l-2 border-red">
-                                        {data.ratesPricingSection.addOns.items.map((item, index) => (
+                                        {data.ratesPricingSection.addOns.items.map((item: { name: string; price: string }, index: number) => (
                                             <p key={index}>{item.price}</p>
                                         ))}
                                     </div>

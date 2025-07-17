@@ -33,7 +33,7 @@ export default async function Home() {
     try {
         const payload = await getPayload({ config });
         const pages = await payload.find({
-            // @ts-ignore Payload types do not include 'pages' but it is valid
+            // @ts-expect-error Payload types do not include 'pages' but it is valid
             collection: 'pages',
             where: {
                 and: [

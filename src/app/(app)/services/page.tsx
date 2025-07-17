@@ -273,7 +273,7 @@ const ServicesPage = async () => {
                                 <div className="h-[2px] bg-red mb-4"></div>
                             </div>
                             <div className="flex-1 flex flex-col">
-                                {data.pricingSection.addOns.items.map((item: any, index: number) => (
+                                {data.pricingSection.addOns.items.map((item: { name: string }, index: number) => (
                                     <p key={index} className="text-xl md:text-[27px] font-light">{item.name}</p>
                                 ))}
                             </div>
