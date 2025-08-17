@@ -2,7 +2,8 @@
 
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
-import { useMemo, useState, useEffect, use } from 'react';
+import { useMemo, use, useState, useEffect } from 'react';
+import VideoPlayer from '../../components/VideoPlayer';
 import Masonry from 'react-masonry-css';
 
 // Types for the portfolio data
@@ -68,7 +69,7 @@ async function getPortfolioData(slug: string): Promise<PortfolioData | null> {
   try {
     const response = await fetch(
       `${process.env.PAYLOAD_PUBLIC_SERVER_URL || 'http://localhost:3000'}/api/portfolio?where[slug][equals]=${slug}`,
-      { next: { revalidate: 60 } }
+      { next: { revalidate: false } } // Using on-demand revalidation instead
     );
     
     if (!response.ok) {
@@ -134,6 +135,19 @@ function PortfolioContent({ slug }: { slug: string }) {
   // Helper function to get image src with fallback
   const getImageSrc = (position?: MediaItem, fallback?: string) => {
     return position?.url || fallback || null;
+  };
+
+  // Helper function to check if media is a video
+  const isVideo = (media?: MediaItem) => {
+    if (!media?.url) return false;
+    const videoExtensions = ['.mp4', '.mov', '.webm', '.avi', '.mkv'];
+    return videoExtensions.some(ext => media.url.toLowerCase().includes(ext));
+  };
+
+  // Helper function to get video src
+  const getVideoSrc = (position?: MediaItem) => {
+    if (!position || !isVideo(position)) return null;
+    return position.url;
   };
 
   // Portfolio-type-specific icon rendering functions
@@ -311,8 +325,8 @@ function PortfolioContent({ slug }: { slug: string }) {
           {/* First Masonry Section */}
           <Masonry breakpointCols={breakpointColumnsObj} className="my-masonry-grid" columnClassName="my-masonry-grid_column !space-y-0">
             {/* First row (3-3-2) */}
-            <div className="gallery-item h-[600px] relative mb-0">
-              {getImageSrc(galleryGrid.row1?.position1) && (
+            <div className="gallery-item h-[600px] relative mb-0 p-0">
+              {getImageSrc(galleryGrid.row1?.position1) && !isVideo(galleryGrid.row1?.position1) && (
                 <Image 
                   src={getImageSrc(galleryGrid.row1?.position1)!} 
                   alt="Portfolio Photography" 
@@ -321,12 +335,15 @@ function PortfolioContent({ slug }: { slug: string }) {
                   className="object-cover" 
                 />
               )}
+              {getVideoSrc(galleryGrid.row1?.position1) && (
+                <VideoPlayer src={getVideoSrc(galleryGrid.row1?.position1)!} className="object-cover w-full h-full" />
+              )}
               {/* Icon1 for food portfolio goes on position1 */}
               {portfolioType === 'food' && portfolioIcons.icon1}
             </div>
 
-            <div className="gallery-item h-[600px] relative mb-0">
-              {getImageSrc(galleryGrid.row1?.position2) && (
+            <div className="gallery-item h-[600px] relative mb-0 p-0">
+              {getImageSrc(galleryGrid.row1?.position2) && !isVideo(galleryGrid.row1?.position2) && (
                 <Image 
                   src={getImageSrc(galleryGrid.row1?.position2)!} 
                   alt="Portfolio Photography" 
@@ -335,12 +352,15 @@ function PortfolioContent({ slug }: { slug: string }) {
                   className="object-cover" 
                 />
               )}
+              {getVideoSrc(galleryGrid.row1?.position2) && (
+                <VideoPlayer src={getVideoSrc(galleryGrid.row1?.position2)!} className="object-cover w-full h-full" />
+              )}
               {/* Icon1 for business, corporate-events, portraits, products goes on position2 */}
               {(['business', 'corporate-events', 'portraits', 'products'].includes(portfolioType)) && portfolioIcons.icon1}
             </div>
 
-            <div className="gallery-item h-[400px] mb-0 relative">
-              {getImageSrc(galleryGrid.row1?.position3) && (
+            <div className="gallery-item h-[400px] mb-0 relative p-0">
+              {getImageSrc(galleryGrid.row1?.position3) && !isVideo(galleryGrid.row1?.position3) && (
                 <Image 
                   src={getImageSrc(galleryGrid.row1?.position3)!} 
                   alt="Portfolio Photography" 
@@ -349,11 +369,14 @@ function PortfolioContent({ slug }: { slug: string }) {
                   className="object-cover" 
                 />
               )}
+              {getVideoSrc(galleryGrid.row1?.position3) && (
+                <VideoPlayer src={getVideoSrc(galleryGrid.row1?.position3)!} className="object-cover w-full h-full" />
+              )}
             </div>
 
             {/* Second row (3-2-3) */}
-            <div className="gallery-item h-[600px] mb-0 relative">
-              {getImageSrc(galleryGrid.row2?.position4) && (
+            <div className="gallery-item h-[600px] mb-0 relative p-0">
+              {getImageSrc(galleryGrid.row2?.position4) && !isVideo(galleryGrid.row2?.position4) && (
                 <Image 
                   src={getImageSrc(galleryGrid.row2?.position4)!} 
                   alt="Portfolio Photography" 
@@ -362,10 +385,13 @@ function PortfolioContent({ slug }: { slug: string }) {
                   className="object-cover" 
                 />
               )}
+              {getVideoSrc(galleryGrid.row2?.position4) && (
+                <VideoPlayer src={getVideoSrc(galleryGrid.row2?.position4)!} className="object-cover w-full h-full" />
+              )}
             </div>
 
-            <div className="gallery-item h-[400px] mb-0 relative">
-              {getImageSrc(galleryGrid.row2?.position5) && (
+            <div className="gallery-item h-[400px] mb-0 relative p-0">
+              {getImageSrc(galleryGrid.row2?.position5) && !isVideo(galleryGrid.row2?.position5) && (
                 <Image 
                   src={getImageSrc(galleryGrid.row2?.position5)!} 
                   alt="Portfolio Photography" 
@@ -374,10 +400,13 @@ function PortfolioContent({ slug }: { slug: string }) {
                   className="object-cover" 
                 />
               )}
+              {getVideoSrc(galleryGrid.row2?.position5) && (
+                <VideoPlayer src={getVideoSrc(galleryGrid.row2?.position5)!} className="object-cover w-full h-full" />
+              )}
             </div>
 
-            <div className="gallery-item h-[600px] relative mb-0">
-              {getImageSrc(galleryGrid.row2?.position6) && (
+            <div className="gallery-item h-[600px] relative mb-0 p-0">
+              {getImageSrc(galleryGrid.row2?.position6) && !isVideo(galleryGrid.row2?.position6) && (
                 <Image 
                   src={getImageSrc(galleryGrid.row2?.position6)!} 
                   alt="Portfolio Photography" 
@@ -386,11 +415,14 @@ function PortfolioContent({ slug }: { slug: string }) {
                   className="object-cover" 
                 />
               )}
+              {getVideoSrc(galleryGrid.row2?.position6) && (
+                <VideoPlayer src={getVideoSrc(galleryGrid.row2?.position6)!} className="object-cover w-full h-full" />
+              )}
             </div>
 
             {/* Third row (2-3-3) */}
-            <div className="gallery-item h-[400px] mb-0 relative">
-              {getImageSrc(galleryGrid.row3?.position7) && (
+            <div className="gallery-item h-[400px] mb-0 relative p-0">
+              {getImageSrc(galleryGrid.row3?.position7) && !isVideo(galleryGrid.row3?.position7) && (
                 <Image 
                   src={getImageSrc(galleryGrid.row3?.position7)!} 
                   alt="Portfolio Photography" 
@@ -399,10 +431,13 @@ function PortfolioContent({ slug }: { slug: string }) {
                   className="object-cover" 
                 />
               )}
+              {getVideoSrc(galleryGrid.row3?.position7) && (
+                <VideoPlayer src={getVideoSrc(galleryGrid.row3?.position7)!} className="object-cover w-full h-full" />
+              )}
             </div>
 
-            <div className="gallery-item h-[600px] mb-0 relative">
-              {getImageSrc(galleryGrid.row3?.position8) && (
+            <div className="gallery-item h-[600px] mb-0 relative p-0">
+              {getImageSrc(galleryGrid.row3?.position8) && !isVideo(galleryGrid.row3?.position8) && (
                 <Image 
                   src={getImageSrc(galleryGrid.row3?.position8)!} 
                   alt="Portfolio Photography" 
@@ -411,12 +446,15 @@ function PortfolioContent({ slug }: { slug: string }) {
                   className="object-cover" 
                 />
               )}
+              {getVideoSrc(galleryGrid.row3?.position8) && (
+                <VideoPlayer src={getVideoSrc(galleryGrid.row3?.position8)!} className="object-cover w-full h-full" />
+              )}
               {/* Icon1 for short-content goes on position8 */}
               {portfolioType === 'short-content' && portfolioIcons.icon1}
             </div>
 
-            <div className="gallery-item h-[600px] mb-0 relative">
-              {getImageSrc(galleryGrid.row3?.position9) && (
+            <div className="gallery-item h-[600px] mb-0 relative p-0">
+              {getImageSrc(galleryGrid.row3?.position9) && !isVideo(galleryGrid.row3?.position9) && (
                 <Image 
                   src={getImageSrc(galleryGrid.row3?.position9)!} 
                   alt="Portfolio Photography" 
@@ -425,195 +463,242 @@ function PortfolioContent({ slug }: { slug: string }) {
                   className="object-cover" 
                 />
               )}
+              {getVideoSrc(galleryGrid.row3?.position9) && (
+                <VideoPlayer src={getVideoSrc(galleryGrid.row3?.position9)!} className="object-cover w-full h-full" />
+              )}
             </div>
           </Masonry>
 
           {/* First Banner */}
           <Image src={bannerImage?.url || "/images/banner.svg"} alt="banner" width={1920} height={200} className="w-full h-52 md:h-auto object-cover" />
 
-          {/* Custom Layout Section */}
-          <div className="w-full space-y-0">
-            <div className="flex flex-col md:flex-row justify-between items-start gap-0">
-              <div className="w-full md:w-1/3 self-stretch flex flex-col space-y-0">
-                <div className="bg-white h-[600px] flex items-center justify-center gallery-item relative">
-                  {getImageSrc(galleryGrid.row4?.position10) && (
-                    <Image 
-                      src={getImageSrc(galleryGrid.row4?.position10)!} 
-                      alt="Portfolio Photography" 
-                      fill 
-                      sizes="(max-width: 768px) 100vw, 33vw" 
-                      className="object-cover" 
-                    />
-                  )}
-                </div>
-                <div className="bg-white h-[400px] flex items-center justify-center gallery-item relative">
-                  {getImageSrc(galleryGrid.row4?.position11) && (
-                    <Image 
-                      src={getImageSrc(galleryGrid.row4?.position11)!} 
-                      alt="Portfolio Photography" 
-                      fill 
-                      sizes="(max-width: 768px) 100vw, 33vw" 
-                      className="object-cover" 
-                    />
-                  )}
-                  {/* Icon2 for business and portraits goes on position11 */}
-                  {(['business', 'portraits'].includes(portfolioType)) && portfolioIcons.icon2}
-                </div>
-                <div className="bg-white h-[400px] flex items-center justify-center gallery-item relative">
-                  {getImageSrc(galleryGrid.row5?.position12) && (
-                    <Image 
-                      src={getImageSrc(galleryGrid.row5?.position12)!} 
-                      alt="Portfolio Photography" 
-                      fill 
-                      sizes="(max-width: 768px) 100vw, 33vw" 
-                      className="object-cover" 
-                    />
-                  )}
-                </div>
-                <div className="bg-white h-[400px] flex items-center justify-center gallery-item relative">
-                  {getImageSrc(galleryGrid.row5?.position13) && (
-                    <Image 
-                      src={getImageSrc(galleryGrid.row5?.position13)!} 
-                      alt="Portfolio Photography" 
-                      fill 
-                      sizes="(max-width: 768px) 100vw, 33vw" 
-                      className="object-cover" 
-                    />
-                  )}
-                  {/* Icon2 for corporate-events goes on position13 */}
-                  {portfolioType === 'corporate-events' && portfolioIcons.icon2}
-                </div>
-                <div className="bg-white h-[600px] flex items-center justify-center gallery-item relative">
-                  {getImageSrc(galleryGrid.row6?.position14) && (
-                    <Image 
-                      src={getImageSrc(galleryGrid.row6?.position14)!} 
-                      alt="Portfolio Photography" 
-                      fill 
-                      sizes="(max-width: 768px) 100vw, 33vw" 
-                      className="object-cover" 
-                    />
-                  )}
-                </div>
-                <div className="bg-white h-[405px] flex items-center justify-center gallery-item relative">
-                  {getImageSrc(galleryGrid.row6?.position15) && (
-                    <Image 
-                      src={getImageSrc(galleryGrid.row6?.position15)!} 
-                      alt="Portfolio Photography" 
-                      fill 
-                      sizes="(max-width: 768px) 100vw, 33vw" 
-                      className="object-cover" 
-                    />
-                  )}
-                </div>
-              </div>
-
-              <div className="w-full md:w-2/3 mt-0 space-y-0">
-                <div className="bg-white h-[535px] flex items-center justify-center gallery-item relative">
-                  {getImageSrc(galleryGrid.row6?.position16) && (
-                    <Image 
-                      src={getImageSrc(galleryGrid.row6?.position16)!} 
-                      alt="Portfolio Photography" 
-                      fill 
-                      sizes="(max-width: 768px) 100vw, 67vw" 
-                      className="object-cover" 
-                    />
-                  )}
-                  {/* Icon2 for products goes on position16 */}
-                  {portfolioType === 'products' && portfolioIcons.icon2}
-                </div>
-                <div className="bg-white h-[535px] flex items-center justify-center gallery-item relative">
-                  {getImageSrc(galleryGrid.row7?.position17) && (
-                    <Image 
-                      src={getImageSrc(galleryGrid.row7?.position17)!} 
-                      alt="Portfolio Photography" 
-                      fill 
-                      sizes="(max-width: 768px) 100vw, 67vw" 
-                      className="object-cover" 
-                    />
-                  )}
-                </div>
-
-                <div className="flex flex-col md:flex-row gap-0">
-                  <div className="bg-white h-[600px] w-full md:w-1/2 flex items-center justify-center gallery-item relative">
-                    {getImageSrc(galleryGrid.row7?.position18) && (
+          {/* Custom Layout Section - Hide for products and short-content portfolio */}
+          {portfolioType !== 'products' && portfolioType !== 'short-content' && (
+            <div className="w-full space-y-0">
+              <div className="flex flex-col md:flex-row justify-between items-start gap-0">
+                <div className="w-full md:w-1/3 self-stretch flex flex-col space-y-0">
+                  <div className="bg-white h-[600px] flex items-center justify-center gallery-item relative p-0">
+                    {getImageSrc(galleryGrid.row4?.position10) && !isVideo(galleryGrid.row4?.position10) && (
                       <Image 
-                        src={getImageSrc(galleryGrid.row7?.position18)!} 
+                        src={getImageSrc(galleryGrid.row4?.position10)!} 
                         alt="Portfolio Photography" 
                         fill 
                         sizes="(max-width: 768px) 100vw, 33vw" 
                         className="object-cover" 
                       />
                     )}
-                    {/* Icon2 for short-content goes on position18 */}
-                    {portfolioType === 'short-content' && portfolioIcons.icon2}
+                    {getVideoSrc(galleryGrid.row4?.position10) && (
+                      <VideoPlayer src={getVideoSrc(galleryGrid.row4?.position10)!} className="object-cover w-full h-full" />
+                    )}
                   </div>
-                  <div className="bg-white h-[600px] w-full md:w-1/2 flex items-center justify-center gallery-item relative">
-                    {getImageSrc(galleryGrid.row7?.position19) && (
+                  <div className="bg-white h-[400px] flex items-center justify-center gallery-item relative p-0">
+                    {getImageSrc(galleryGrid.row4?.position11) && !isVideo(galleryGrid.row4?.position11) && (
                       <Image 
-                        src={getImageSrc(galleryGrid.row7?.position19)!} 
+                        src={getImageSrc(galleryGrid.row4?.position11)!} 
                         alt="Portfolio Photography" 
                         fill 
                         sizes="(max-width: 768px) 100vw, 33vw" 
                         className="object-cover" 
                       />
+                    )}
+                    {getVideoSrc(galleryGrid.row4?.position11) && (
+                      <VideoPlayer src={getVideoSrc(galleryGrid.row4?.position11)!} className="object-cover w-full h-full" />
+                    )}
+                    {/* Icon2 for business and portraits goes on position11 */}
+                    {(['business', 'portraits'].includes(portfolioType)) && portfolioIcons.icon2}
+                  </div>
+                  <div className="bg-white h-[400px] flex items-center justify-center gallery-item relative p-0">
+                    {getImageSrc(galleryGrid.row5?.position12) && !isVideo(galleryGrid.row5?.position12) && (
+                      <Image 
+                        src={getImageSrc(galleryGrid.row5?.position12)!} 
+                        alt="Portfolio Photography" 
+                        fill 
+                        sizes="(max-width: 768px) 100vw, 33vw" 
+                        className="object-cover" 
+                      />
+                    )}
+                    {getVideoSrc(galleryGrid.row5?.position12) && (
+                      <VideoPlayer src={getVideoSrc(galleryGrid.row5?.position12)!} className="object-cover w-full h-full" />
+                    )}
+                  </div>
+                  <div className="bg-white h-[400px] flex items-center justify-center gallery-item relative p-0">
+                    {getImageSrc(galleryGrid.row5?.position13) && !isVideo(galleryGrid.row5?.position13) && (
+                      <Image 
+                        src={getImageSrc(galleryGrid.row5?.position13)!} 
+                        alt="Portfolio Photography" 
+                        fill 
+                        sizes="(max-width: 768px) 100vw, 33vw" 
+                        className="object-cover" 
+                      />
+                    )}
+                    {getVideoSrc(galleryGrid.row5?.position13) && (
+                      <VideoPlayer src={getVideoSrc(galleryGrid.row5?.position13)!} className="object-cover w-full h-full" />
+                    )}
+                    {/* Icon2 for corporate-events goes on position13 */}
+                    {portfolioType === 'corporate-events' && portfolioIcons.icon2}
+                  </div>
+                  <div className="bg-white h-[600px] flex items-center justify-center gallery-item relative p-0">
+                    {getImageSrc(galleryGrid.row6?.position14) && !isVideo(galleryGrid.row6?.position14) && (
+                      <Image 
+                        src={getImageSrc(galleryGrid.row6?.position14)!} 
+                        alt="Portfolio Photography" 
+                        fill 
+                        sizes="(max-width: 768px) 100vw, 33vw" 
+                        className="object-cover" 
+                      />
+                    )}
+                    {getVideoSrc(galleryGrid.row6?.position14) && (
+                      <VideoPlayer src={getVideoSrc(galleryGrid.row6?.position14)!} className="object-cover w-full h-full" />
+                    )}
+                  </div>
+                  <div className="bg-white h-[405px] flex items-center justify-center gallery-item relative p-0">
+                    {getImageSrc(galleryGrid.row6?.position15) && !isVideo(galleryGrid.row6?.position15) && (
+                      <Image 
+                        src={getImageSrc(galleryGrid.row6?.position15)!} 
+                        alt="Portfolio Photography" 
+                        fill 
+                        sizes="(max-width: 768px) 100vw, 33vw" 
+                        className="object-cover" 
+                      />
+                    )}
+                    {getVideoSrc(galleryGrid.row6?.position15) && (
+                      <VideoPlayer src={getVideoSrc(galleryGrid.row6?.position15)!} className="object-cover w-full h-full" />
                     )}
                   </div>
                 </div>
 
-                <div className="flex flex-col md:flex-row gap-0">
-                  <div className="bg-white h-[600px] w-full md:w-1/2 flex items-center justify-center gallery-item relative">
-                    {getImageSrc(galleryGrid.row7?.position20) && (
+                <div className="w-full md:w-2/3 mt-0 space-y-0">
+                  <div className="bg-white h-[535px] flex items-center justify-center gallery-item relative p-0">
+                    {getImageSrc(galleryGrid.row6?.position16) && !isVideo(galleryGrid.row6?.position16) && (
                       <Image 
-                        src={getImageSrc(galleryGrid.row7?.position20)!} 
+                        src={getImageSrc(galleryGrid.row6?.position16)!} 
                         alt="Portfolio Photography" 
                         fill 
-                        sizes="(max-width: 768px) 100vw, 33vw" 
+                        sizes="(max-width: 768px) 100vw, 67vw" 
                         className="object-cover" 
                       />
                     )}
+                    {getVideoSrc(galleryGrid.row6?.position16) && (
+                      <VideoPlayer src={getVideoSrc(galleryGrid.row6?.position16)!} className="object-cover w-full h-full" />
+                    )}
+                    {/* Icon2 for products goes on position16 */}
+                    {portfolioType === 'products' && portfolioIcons.icon2}
                   </div>
-                  <div className="w-full md:w-1/2 space-y-0">
-                    <div className="bg-white h-[300px] flex items-center justify-center gallery-item relative">
-                      {getImageSrc(galleryGrid.row7?.position21) && (
+                  <div className="bg-white h-[535px] flex items-center justify-center gallery-item relative p-0">
+                    {getImageSrc(galleryGrid.row7?.position17) && !isVideo(galleryGrid.row7?.position17) && (
+                      <Image 
+                        src={getImageSrc(galleryGrid.row7?.position17)!} 
+                        alt="Portfolio Photography" 
+                        fill 
+                        sizes="(max-width: 768px) 100vw, 67vw" 
+                        className="object-cover" 
+                      />
+                    )}
+                    {getVideoSrc(galleryGrid.row7?.position17) && (
+                      <VideoPlayer src={getVideoSrc(galleryGrid.row7?.position17)!} className="object-cover w-full h-full" />
+                    )}
+                  </div>
+
+                  <div className="flex flex-col md:flex-row gap-0">
+                    <div className="bg-white h-[600px] w-full md:w-1/2 flex items-center justify-center gallery-item relative p-0">
+                      {getImageSrc(galleryGrid.row7?.position18) && !isVideo(galleryGrid.row7?.position18) && (
                         <Image 
-                          src={getImageSrc(galleryGrid.row7?.position21)!} 
+                          src={getImageSrc(galleryGrid.row7?.position18)!} 
                           alt="Portfolio Photography" 
                           fill 
                           sizes="(max-width: 768px) 100vw, 33vw" 
                           className="object-cover" 
                         />
                       )}
-                      {/* Icon2 for food goes on position21 */}
-                      {portfolioType === 'food' && portfolioIcons.icon2}
+                      {getVideoSrc(galleryGrid.row7?.position18) && (
+                        <VideoPlayer src={getVideoSrc(galleryGrid.row7?.position18)!} className="object-cover w-full h-full" />
+                      )}
+                      {/* Icon2 for short-content goes on position18 */}
+                      {portfolioType === 'short-content' && portfolioIcons.icon2}
                     </div>
-                    <div className="bg-white h-[300px] flex items-center justify-center gallery-item relative">
-                      {getImageSrc(galleryGrid.row8?.position22) && (
+                    <div className="bg-white h-[600px] w-full md:w-1/2 flex items-center justify-center gallery-item relative p-0">
+                      {getImageSrc(galleryGrid.row7?.position19) && !isVideo(galleryGrid.row7?.position19) && (
                         <Image 
-                          src={getImageSrc(galleryGrid.row8?.position22)!} 
+                          src={getImageSrc(galleryGrid.row7?.position19)!} 
                           alt="Portfolio Photography" 
                           fill 
                           sizes="(max-width: 768px) 100vw, 33vw" 
                           className="object-cover" 
                         />
                       )}
+                      {getVideoSrc(galleryGrid.row7?.position19) && (
+                        <VideoPlayer src={getVideoSrc(galleryGrid.row7?.position19)!} className="object-cover w-full h-full" />
+                      )}
                     </div>
                   </div>
-                </div>
 
-                <div className="bg-white h-[535px] flex items-center justify-center gallery-item relative">
-                  {getImageSrc(galleryGrid.row8?.position23) && (
-                    <Image 
-                      src={getImageSrc(galleryGrid.row8?.position23)!} 
-                      alt="Portfolio Photography" 
-                      fill 
-                      sizes="(max-width: 768px) 100vw, 67vw" 
-                      className="object-cover" 
-                    />
-                  )}
+                  <div className="flex flex-col md:flex-row gap-0">
+                    <div className="bg-white h-[600px] w-full md:w-1/2 flex items-center justify-center gallery-item relative p-0">
+                      {getImageSrc(galleryGrid.row7?.position20) && !isVideo(galleryGrid.row7?.position20) && (
+                        <Image 
+                          src={getImageSrc(galleryGrid.row7?.position20)!} 
+                          alt="Portfolio Photography" 
+                          fill 
+                          sizes="(max-width: 768px) 100vw, 33vw" 
+                          className="object-cover" 
+                        />
+                      )}
+                      {getVideoSrc(galleryGrid.row7?.position20) && (
+                        <VideoPlayer src={getVideoSrc(galleryGrid.row7?.position20)!} className="object-cover w-full h-full" />
+                      )}
+                    </div>
+                    <div className="w-full md:w-1/2 space-y-0">
+                      <div className="bg-white h-[300px] flex items-center justify-center gallery-item relative p-0">
+                        {getImageSrc(galleryGrid.row7?.position21) && !isVideo(galleryGrid.row7?.position21) && (
+                          <Image 
+                            src={getImageSrc(galleryGrid.row7?.position21)!} 
+                            alt="Portfolio Photography" 
+                            fill 
+                            sizes="(max-width: 768px) 100vw, 33vw" 
+                            className="object-cover" 
+                          />
+                        )}
+                        {getVideoSrc(galleryGrid.row7?.position21) && (
+                          <VideoPlayer src={getVideoSrc(galleryGrid.row7?.position21)!} className="object-cover w-full h-full" />
+                        )}
+                        {/* Icon2 for food goes on position21 */}
+                        {portfolioType === 'food' && portfolioIcons.icon2}
+                      </div>
+                      <div className="bg-white h-[300px] flex items-center justify-center gallery-item relative p-0">
+                        {getImageSrc(galleryGrid.row8?.position22) && !isVideo(galleryGrid.row8?.position22) && (
+                          <Image 
+                            src={getImageSrc(galleryGrid.row8?.position22)!} 
+                            alt="Portfolio Photography" 
+                            fill 
+                            sizes="(max-width: 768px) 100vw, 33vw" 
+                            className="object-cover" 
+                          />
+                        )}
+                        {getVideoSrc(galleryGrid.row8?.position22) && (
+                          <VideoPlayer src={getVideoSrc(galleryGrid.row8?.position22)!} className="object-cover w-full h-full" />
+                        )}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="bg-white h-[535px] flex items-center justify-center gallery-item relative p-0">
+                    {getImageSrc(galleryGrid.row8?.position23) && !isVideo(galleryGrid.row8?.position23) && (
+                      <Image 
+                        src={getImageSrc(galleryGrid.row8?.position23)!} 
+                        alt="Portfolio Photography" 
+                        fill 
+                        sizes="(max-width: 768px) 100vw, 67vw" 
+                        className="object-cover" 
+                      />
+                    )}
+                    {getVideoSrc(galleryGrid.row8?.position23) && (
+                      <VideoPlayer src={getVideoSrc(galleryGrid.row8?.position23)!} className="object-cover w-full h-full" />
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          )}
 
           {/* NOTE: Update your database to only provide 23 items per portfolio! */}
         </div>

@@ -69,6 +69,14 @@ export const Pages: CollectionConfig = {
           relationTo: 'media',
         },
         {
+          name: 'image',
+          type: 'upload',
+          relationTo: 'media',
+          admin: {
+            description: 'Background image for the service card',
+          },
+        },
+        {
           name: 'link',
           type: 'text',
           admin: {
@@ -79,6 +87,35 @@ export const Pages: CollectionConfig = {
       admin: {
         condition: (data) => data.pageType === 'home',
       },
+    },
+    {
+      name: 'masonryGalleryGrid',
+      type: 'group',
+      label: 'Masonry Gallery Grid (18 positions)',
+      admin: {
+        description: 'Visual grid for the homepage masonry layout. Numbers correspond to positions in the grid.',
+        condition: (data) => data.pageType === 'home',
+      },
+      fields: [
+        { name: 'position1', type: 'upload', relationTo: 'media', admin: { description: 'Position 1' } },
+        { name: 'position2', type: 'upload', relationTo: 'media', admin: { description: 'Position 2' } },
+        { name: 'position3', type: 'upload', relationTo: 'media', admin: { description: 'Position 3' } },
+        { name: 'position4', type: 'upload', relationTo: 'media', admin: { description: 'Position 4' } },
+        { name: 'position5', type: 'upload', relationTo: 'media', admin: { description: 'Position 5' } },
+        { name: 'position6', type: 'upload', relationTo: 'media', admin: { description: 'Position 6' } },
+        { name: 'position7', type: 'upload', relationTo: 'media', admin: { description: 'Position 7' } },
+        { name: 'position8', type: 'upload', relationTo: 'media', admin: { description: 'Position 8' } },
+        { name: 'position9', type: 'upload', relationTo: 'media', admin: { description: 'Position 9' } },
+        { name: 'position10', type: 'upload', relationTo: 'media', admin: { description: 'Position 10' } },
+        { name: 'position11', type: 'upload', relationTo: 'media', admin: { description: 'Position 11' } },
+        { name: 'position12', type: 'upload', relationTo: 'media', admin: { description: 'Position 12' } },
+        { name: 'position13', type: 'upload', relationTo: 'media', admin: { description: 'Position 13' } },
+        { name: 'position14', type: 'upload', relationTo: 'media', admin: { description: 'Position 14' } },
+        { name: 'position15', type: 'upload', relationTo: 'media', admin: { description: 'Position 15' } },
+        { name: 'position16', type: 'upload', relationTo: 'media', admin: { description: 'Position 16' } },
+        { name: 'position17', type: 'upload', relationTo: 'media', admin: { description: 'Position 17' } },
+        { name: 'position18', type: 'upload', relationTo: 'media', admin: { description: 'Position 18' } },
+      ],
     },
     // Portfolio Page Fields
     {
@@ -356,7 +393,7 @@ export const Pages: CollectionConfig = {
           type: 'upload',
           relationTo: 'media',
           admin: {
-            description: 'Service image',
+            description: 'Service image or video (WebP, JPG, PNG, WebM, MP4, MOV)',
           },
         },
         {

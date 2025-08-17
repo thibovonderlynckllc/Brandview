@@ -74,7 +74,7 @@ export const Portfolio: CollectionConfig = {
               type: 'upload',
               relationTo: 'media',
               admin: {
-                description: 'Position 1 - Large image (600px height)',
+                description: 'Position 1 - Upload image (WebP, JPG, PNG) or video (WebM, MP4, MOV)',
               },
             },
             {
@@ -82,7 +82,7 @@ export const Portfolio: CollectionConfig = {
               type: 'upload',
               relationTo: 'media',
               admin: {
-                description: 'Position 2 - Large image (600px height)',
+                description: 'Position 2 - Upload image (WebP, JPG, PNG) or video (WebM, MP4, MOV)',
               },
             },
             {
@@ -90,7 +90,7 @@ export const Portfolio: CollectionConfig = {
               type: 'upload',
               relationTo: 'media',
               admin: {
-                description: 'Position 3 - Medium image (400px height)',
+                description: 'Position 3 - Upload image (WebP, JPG, PNG) or video (WebM, MP4, MOV)',
               },
             },
           ],
@@ -106,7 +106,7 @@ export const Portfolio: CollectionConfig = {
               type: 'upload',
               relationTo: 'media',
               admin: {
-                description: 'Position 4 - Large image (600px height)',
+                description: 'Position 4 - Upload image (WebP, JPG, PNG) or video (WebM, MP4, MOV)',
               },
             },
             {
@@ -114,7 +114,7 @@ export const Portfolio: CollectionConfig = {
               type: 'upload',
               relationTo: 'media',
               admin: {
-                description: 'Position 5 - Medium image (400px height)',
+                description: 'Position 5 - Upload image (WebP, JPG, PNG) or video (WebM, MP4, MOV)',
               },
             },
             {
@@ -122,7 +122,7 @@ export const Portfolio: CollectionConfig = {
               type: 'upload',
               relationTo: 'media',
               admin: {
-                description: 'Position 6 - Large image (600px height)',
+                description: 'Position 6 - Upload image (WebP, JPG, PNG) or video (WebM, MP4, MOV)',
               },
             },
           ],
@@ -138,7 +138,7 @@ export const Portfolio: CollectionConfig = {
               type: 'upload',
               relationTo: 'media',
               admin: {
-                description: 'Position 7 - Medium image (400px height)',
+                description: 'Position 7 - Upload image (WebP, JPG, PNG) or video (WebM, MP4, MOV)',
               },
             },
             {
@@ -146,7 +146,7 @@ export const Portfolio: CollectionConfig = {
               type: 'upload',
               relationTo: 'media',
               admin: {
-                description: 'Position 8 - Large image (600px height)',
+                description: 'Position 8 - Upload image (WebP, JPG, PNG) or video (WebM, MP4, MOV)',
               },
             },
             {
@@ -154,7 +154,7 @@ export const Portfolio: CollectionConfig = {
               type: 'upload',
               relationTo: 'media',
               admin: {
-                description: 'Position 9 - Large image (600px height)',
+                description: 'Position 9 - Upload image (WebP, JPG, PNG) or video (WebM, MP4, MOV)',
               },
             },
           ],
@@ -170,7 +170,7 @@ export const Portfolio: CollectionConfig = {
               type: 'upload',
               relationTo: 'media',
               admin: {
-                description: 'Position 10 - Large image (600px height)',
+                description: 'Position 10 - Upload image (WebP, JPG, PNG) or video (WebM, MP4, MOV)',
               },
             },
             {
@@ -178,7 +178,7 @@ export const Portfolio: CollectionConfig = {
               type: 'upload',
               relationTo: 'media',
               admin: {
-                description: 'Position 11 - Large image (600px height)',
+                description: 'Position 11 - Upload image (WebP, JPG, PNG) or video (WebM, MP4, MOV)',
               },
             },
           ],
@@ -194,7 +194,7 @@ export const Portfolio: CollectionConfig = {
               type: 'upload',
               relationTo: 'media',
               admin: {
-                description: 'Position 12 - Large image (600px height)',
+                description: 'Position 12 - Upload image (WebP, JPG, PNG) or video (WebM, MP4, MOV)',
               },
             },
             {
@@ -202,7 +202,7 @@ export const Portfolio: CollectionConfig = {
               type: 'upload',
               relationTo: 'media',
               admin: {
-                description: 'Position 13 - Large image (600px height)',
+                description: 'Position 13 - Upload image (WebP, JPG, PNG) or video (WebM, MP4, MOV)',
               },
             },
           ],
@@ -218,7 +218,7 @@ export const Portfolio: CollectionConfig = {
               type: 'upload',
               relationTo: 'media',
               admin: {
-                description: 'Position 14 - Large image (600px height)',
+                description: 'Position 14 - Upload image (WebP, JPG, PNG) or video (WebM, MP4, MOV)',
               },
             },
             {
@@ -226,7 +226,7 @@ export const Portfolio: CollectionConfig = {
               type: 'upload',
               relationTo: 'media',
               admin: {
-                description: 'Position 15 - Large image (600px height)',
+                description: 'Position 15 - Upload image (WebP, JPG, PNG) or video (WebM, MP4, MOV)',
               },
             },
             {
@@ -234,7 +234,7 @@ export const Portfolio: CollectionConfig = {
               type: 'upload',
               relationTo: 'media',
               admin: {
-                description: 'Position 16 - Large image (600px height)',
+                description: 'Position 16 - Upload image (WebP, JPG, PNG) or video (WebM, MP4, MOV)',
               },
             },
           ],
@@ -250,7 +250,7 @@ export const Portfolio: CollectionConfig = {
               type: 'upload',
               relationTo: 'media',
               admin: {
-                description: 'Position 17 - Large image (600px height)',
+                description: 'Position 17 - Upload image (WebP, JPG, PNG) or video (WebM, MP4, MOV)',
               },
             },
             {
@@ -258,7 +258,7 @@ export const Portfolio: CollectionConfig = {
               type: 'upload',
               relationTo: 'media',
               admin: {
-                description: 'Position 18 - Large image (600px height)',
+                description: 'Position 18 - Upload image (WebP, JPG, PNG) or video (WebM, MP4, MOV)',
               },
             },
             {
@@ -266,7 +266,7 @@ export const Portfolio: CollectionConfig = {
               type: 'upload',
               relationTo: 'media',
               admin: {
-                description: 'Position 19 - Large image (600px height)',
+                description: 'Position 19 - Upload image (WebP, JPG, PNG) or video (WebM, MP4, MOV)',
               },
             },
             {
@@ -274,7 +274,7 @@ export const Portfolio: CollectionConfig = {
               type: 'upload',
               relationTo: 'media',
               admin: {
-                description: 'Position 20 - Large image (600px height)',
+                description: 'Position 20 - Upload image (WebP, JPG, PNG) or video (WebM, MP4, MOV)',
               },
             },
             {
@@ -282,7 +282,7 @@ export const Portfolio: CollectionConfig = {
               type: 'upload',
               relationTo: 'media',
               admin: {
-                description: 'Position 21 - Large image (600px height)',
+                description: 'Position 21 - Upload image (WebP, JPG, PNG) or video (WebM, MP4, MOV)',
               },
             },
           ],
@@ -298,7 +298,7 @@ export const Portfolio: CollectionConfig = {
               type: 'upload',
               relationTo: 'media',
               admin: {
-                description: 'Position 22 - Large image (600px height)',
+                description: 'Position 22 - Upload image (WebP, JPG, PNG) or video (WebM, MP4, MOV)',
               },
             },
             {
@@ -306,7 +306,7 @@ export const Portfolio: CollectionConfig = {
               type: 'upload',
               relationTo: 'media',
               admin: {
-                description: 'Position 23 - Large image (600px height)',
+                description: 'Position 23 - Upload image (WebP, JPG, PNG) or video (WebM, MP4, MOV)',
               },
             },
           ],

@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import SwirlArrow from '../components/SwirlArrow';
 import Link from 'next/link';
+import VideoPlayer from '../components/VideoPlayer';
 
 // Fallback data
 const fallbackData = {
@@ -116,9 +117,17 @@ interface ServiceItem {
     subtitle?: string;
     description: string;
     portfolioSlug: string;
-    image?: { url: string; alt?: string } | string | null;
+    image?: MediaItem | string | null;
     icon?: { url: string; alt?: string } | string | null;
     iconPosition: 'none' | 'top-left' | 'top-right';
+}
+
+interface MediaItem {
+    id: string;
+    alt: string;
+    url: string;
+    filename?: string;
+    mimeType?: string;
 }
 
 interface PricingContentPlan {
@@ -189,6 +198,19 @@ const ServicesPage = async () => {
         return "/images/services/image.png"; // fallback image
     };
 
+    const getVideoSrc = (item: ServiceItem) => {
+        if (typeof item.image === 'object' && item.image !== null && 'url' in item.image && isVideo(item.image)) {
+            return item.image.url;
+        }
+        return null;
+    };
+
+    const isVideo = (media: MediaItem) => {
+        if (!media?.filename) return false;
+        const videoExtensions = ['.mp4', '.mov', '.webm', '.avi', '.mkv'];
+        return videoExtensions.some(ext => media.filename?.toLowerCase().endsWith(ext));
+    };
+
     return (
         <div className="relative">
             {/* Hero section */}
@@ -204,7 +226,20 @@ const ServicesPage = async () => {
                 <div className="flex flex-col gap-10">
                     {firstSectionServices.map((service) => (
                         <div key={service.title} className="flex flex-col lg:flex-row items-center gap-6 relative">
-                            <Image src={getImageSrc(service)} alt={service.title} width={600} height={400} className="w-full lg:w-1/2 border-[.5px] border-red" />
+                            <div className="w-full lg:w-1/2 border-[.5px] border-red relative">
+                                {getImageSrc(service) && !(typeof service.image === 'object' && service.image && isVideo(service.image as MediaItem)) && (
+                                    <Image 
+                                        src={getImageSrc(service)} 
+                                        alt={service.title} 
+                                        width={600} 
+                                        height={400} 
+                                        className="w-full h-full object-cover" 
+                                    />
+                                )}
+                                {getVideoSrc(service) && (
+                                    <VideoPlayer src={getVideoSrc(service)!} className="w-full h-[400px]" />
+                                )}
+                            </div>
                             {renderIcon(service)}
                             <div className="w-full lg:w-1/2 text-center lg:text-left">
                                 <h1 className="text-4xl md:text-5xl xl:text-6xl font-medium mb-4">{service.title}</h1>
@@ -304,7 +339,20 @@ const ServicesPage = async () => {
                 <div className="flex flex-col gap-10">
                     {secondSectionServices.map((service) => (
                         <div key={service.title} className="flex flex-col lg:flex-row items-center gap-6 relative">
-                            <Image src={getImageSrc(service)} alt={service.title} width={600} height={400} className="w-full lg:w-1/2 border-[.5px] border-red" />
+                            <div className="w-full lg:w-1/2 border-[.5px] border-red relative">
+                                {getImageSrc(service) && !(typeof service.image === 'object' && service.image && isVideo(service.image as MediaItem)) && (
+                                    <Image 
+                                        src={getImageSrc(service)} 
+                                        alt={service.title} 
+                                        width={600} 
+                                        height={400} 
+                                        className="w-full h-full object-cover" 
+                                    />
+                                )}
+                                {getVideoSrc(service) && (
+                                    <VideoPlayer src={getVideoSrc(service)!} className="w-full h-[400px]" />
+                                )}
+                            </div>
                             {renderIcon(service)}
                             <div className="w-full lg:w-1/2 text-center lg:text-left">
                                 <h1 className="text-4xl md:text-5xl xl:text-6xl font-medium mb-4">{service.title}</h1>
