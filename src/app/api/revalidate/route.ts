@@ -57,6 +57,9 @@ export async function POST(request: NextRequest) {
     });
   } catch (error) {
     console.error('Revalidation error:', error);
-    return NextResponse.json({ message: 'Error revalidating', error: error.message }, { status: 500 });
+    return NextResponse.json({ 
+      message: 'Error revalidating', 
+      error: error instanceof Error ? error.message : 'Unknown error'
+    }, { status: 500 });
   }
 }
