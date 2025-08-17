@@ -1,4 +1,5 @@
 import { CollectionConfig } from 'payload';
+import { revalidateHook } from '../lib/revalidate-hook';
 
 export const Pages: CollectionConfig = {
   slug: 'pages',
@@ -8,6 +9,9 @@ export const Pages: CollectionConfig = {
       defaultLimit: 10,
       limits: [5, 10, 20, 50],
     },
+  },
+  hooks: {
+    afterChange: [revalidateHook],
   },
   access: {
     read: () => true, // Allow public read access

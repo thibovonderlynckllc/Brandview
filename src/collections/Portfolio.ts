@@ -1,4 +1,5 @@
 import { CollectionConfig } from 'payload';
+import { revalidateHook } from '../lib/revalidate-hook';
 
 export const Portfolio: CollectionConfig = {
   slug: 'portfolio',
@@ -9,6 +10,9 @@ export const Portfolio: CollectionConfig = {
       defaultLimit: 10,
       limits: [5, 10, 20, 50],
     },
+  },
+  hooks: {
+    afterChange: [revalidateHook],
   },
   access: {
     read: () => true, // Allow public read access
