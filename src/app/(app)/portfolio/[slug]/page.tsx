@@ -69,7 +69,7 @@ async function getPortfolioData(slug: string): Promise<PortfolioData | null> {
   try {
     const response = await fetch(
       `${process.env.PAYLOAD_PUBLIC_SERVER_URL || 'http://localhost:3000'}/api/portfolio?where[slug][equals]=${slug}`,
-      { next: { revalidate: false } } // Using on-demand revalidation instead
+      { next: { revalidate: 60 } }
     );
     
     if (!response.ok) {

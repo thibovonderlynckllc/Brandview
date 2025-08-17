@@ -1,5 +1,4 @@
-// Removed automatic revalidation - now using on-demand revalidation
-// export const revalidate = 60;
+export const revalidate = 60; // or 300 for 5 minutes
 import MasonryGallery from './components/MasonryGallery';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -158,7 +157,7 @@ export default async function Home() {
                                 </div>
                             </Link>
                             {item.icon && (
-                                <div className="absolute bottom-0 -right-6 lg:-right-26 sm:-right-15 sm:-bottom-5 lg:-bottom-23 w-32 sm:w-40 lg:w-48 rotate-10 z-[200] pointer-events-none transition-transform duration-300 group-hover:rotate-12 group-hover:scale-102">
+                                <div className="absolute bottom-0 -right-6 lg:-right-26 sm:-right-15 sm:-bottom-5 lg:-bottom-23 w-32 sm:w-40 lg:w-48 rotate-10 z-[30] pointer-events-none transition-transform duration-300 group-hover:rotate-12 group-hover:scale-102">
                                     {typeof item.icon === 'string' ? (
                                         <Image 
                                             src={item.icon} 

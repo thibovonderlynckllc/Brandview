@@ -1,13 +1,9 @@
 import type { CollectionConfig } from 'payload';
-import { revalidateHook } from '../lib/revalidate-hook';
 
 export const Media: CollectionConfig = {
   slug: 'media',
   access: {
     read: () => true,
-  },
-  hooks: {
-    afterChange: [revalidateHook],
   },
   admin: {
     useAsTitle: 'alt',
