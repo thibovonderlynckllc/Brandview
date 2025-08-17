@@ -1,6 +1,4 @@
-import { AfterChangeHook } from 'payload';
-
-export const revalidateHook: AfterChangeHook = async ({ req, doc, collection }) => {
+export const revalidateHook = async ({ req, doc, collection }: any) => {
   // Trigger revalidation when content changes
   if (req.headers && process.env.REVALIDATION_SECRET) {
     try {
