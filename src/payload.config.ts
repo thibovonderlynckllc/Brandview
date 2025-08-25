@@ -16,7 +16,7 @@ const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
 
 // Database connection string with SSL requirement
-const connectionString = process.env.DATABASE_URI || process.env.POSTGRES_URL || '';
+const connectionString = process.env.DATABASE_URI || process.env.DATABASE_URL || process.env.POSTGRES_URL || '';
 
 // R2 Storage configuration for brandview
 const storage = s3Storage({
@@ -33,12 +33,12 @@ const storage = s3Storage({
   },
   bucket: process.env.S3_BUCKET || 'brandview-data',
   config: {
-    endpoint: 'https://d769879df266edf1eaf504e7027ee2a0.eu.r2.cloudflarestorage.com',
+    endpoint: process.env.S3_ENDPOINT || 'https://d769879df266edf1eaf504e7027ee2a0.eu.r2.cloudflarestorage.com',
     credentials: {
       accessKeyId: process.env.S3_ACCESS_KEY_ID || '',
       secretAccessKey: process.env.S3_SECRET_ACCESS_KEY || '',
     },
-    region: 'auto',
+    region: process.env.S3_REGION || 'auto',
     forcePathStyle: true,
   },
 });
@@ -59,7 +59,7 @@ export default buildConfig({
   db: postgresAdapter({
     pool: {
       connectionString: connectionString,
-      ssl: { rejectUnauthorized: false },
+      ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
       max: 20,
       connectionTimeoutMillis: 10000,
       idleTimeoutMillis: 30000,
