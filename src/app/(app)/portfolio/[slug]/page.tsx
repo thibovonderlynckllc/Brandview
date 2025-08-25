@@ -128,8 +128,9 @@ function PortfolioContent({ slug }: { slug: string }) {
     fetchData();
   }, [slug]);
 
+  // Remove loading state - render immediately
   if (loading) {
-    return <div className="bg-blue min-h-screen flex items-center justify-center">Loading...</div>;
+    return null;
   }
 
   if (!portfolioData) {
