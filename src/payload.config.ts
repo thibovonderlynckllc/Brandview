@@ -47,30 +47,30 @@ const storage = s3Storage({
 });
 
 // Alternative: Multiple bucket configuration (if you prefer separate buckets)
-const createBucketStorage = (bucketName: string) =>
-  s3Storage({
-    collections: {
-      media: {
-        disableLocalStorage: true,
-        prefix: 'media',
-        generateFileURL: ({ filename, prefix }) => {
-          const publicUrl = process.env.S3_PUBLIC_URL;
-          if (!publicUrl) return '';
-          return `${publicUrl}/${prefix}/${filename}`;
-        },
-      },
-    },
-    bucket: bucketName,
-    config: {
-      endpoint: process.env.S3_ENDPOINT,
-      credentials: {
-        accessKeyId: process.env.S3_ACCESS_KEY_ID || '',
-        secretAccessKey: process.env.S3_SECRET_ACCESS_KEY || '',
-      },
-      region: process.env.S3_REGION || 'auto',
-      forcePathStyle: true,
-    },
-  });
+// const createBucketStorage = (bucketName: string) =>
+//   s3Storage({
+//     collections: {
+//       media: {
+//         disableLocalStorage: true,
+//         prefix: 'media',
+//         generateFileURL: ({ filename, prefix }) => {
+//           const publicUrl = process.env.S3_PUBLIC_URL;
+//           if (!publicUrl) return '';
+//           return `${publicUrl}/${prefix}/${filename}`;
+//         },
+//       },
+//     },
+//     bucket: bucketName,
+//     config: {
+//       endpoint: process.env.S3_ENDPOINT,
+//       credentials: {
+//         accessKeyId: process.env.S3_ACCESS_KEY_ID || '',
+//         secretAccessKey: process.env.S3_SECRET_ACCESS_KEY || '',
+//       },
+//       region: process.env.S3_REGION || 'auto',
+//       forcePathStyle: true,
+//     },
+//   });
 
 // Uncomment these if you want separate buckets:
 // const homeStorage = createBucketStorage('brandview-home');
