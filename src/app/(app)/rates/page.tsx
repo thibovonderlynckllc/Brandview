@@ -84,7 +84,16 @@ const fallbackData = {
 
 async function getRatesData() {
     try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000'}/api/pages?where[slug][equals]=rates`);
+        // During build time, use fallback data
+        if (process.env.NODE_ENV === 'production' && !process.env.NEXT_PUBLIC_SERVER_URL) {
+            return fallbackData;
+        }
+        
+        const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000';
+        const response = await fetch(`${baseUrl}/api/pages?where[slug][equals]=rates`, {
+            next: { revalidate: 3600 }, // Cache for 1 hour
+        });
+        
         if (!response.ok) {
             console.warn('Failed to fetch rates data, using fallback');
             return fallbackData;
@@ -261,12 +270,12 @@ const RatesPage = async () => {
                             </div>
                             <div className="absolute inset-x-0 top-0 h-12 bg-red rounded-t-3xl"></div>
                             <div className="bg-white w-full h-full rounded-3xl border-2 border-red relative py-8 px-4 md:px-15 pt-16 flex flex-col">
-                                <div className="absolute -top-20 right-0 md:-right-10 md:-top-40 lg:-right-25 w-18 sm:w-24 lg:w-52 md:w-42 2xl:w-64 2xl:-top-48 2xl:-right-54">
+                                <div className="absolute -top-20 right-0 md:-right-10 md:-top-40 lg:-right-25 w-32 sm:w-40 lg:w-48">
                                     <Image 
                                         src={getIconSrc(data.ratesPricingSection.addOns.megaphoneIcon, "/images/icons/megaphone.svg")} 
                                         alt="Megaphone" 
-                                        width={256} 
-                                        height={256} 
+                                        width={208} 
+                                        height={208} 
                                     />
                                 </div>
                                 <div className="grid grid-cols-2 gap-2 text-base sm:text-lg md:text-[23px] font-light relative">

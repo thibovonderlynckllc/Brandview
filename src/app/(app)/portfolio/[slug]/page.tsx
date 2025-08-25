@@ -160,38 +160,38 @@ function PortfolioContent({ slug }: { slug: string }) {
       case 'business':
         return (
             <div className="absolute w-64 left-1/2 transform -translate-x-1/2 -translate-y-1/2 md:left-auto md:translate-x-0 md:translate-y-0 md:-top-33 md:right-5 lg:bottom-11 lg:-right-38 z-10 flex items-center justify-center">
-            <Image src={iconSrc} alt={icon?.alt || "Decorative Icon"} width={248} height={200} />
+            <Image src={iconSrc} alt={icon?.alt || "Decorative Icon"} width={208} height={208} />
             </div>
         );
       case 'food':
         return (
-          <Image src={iconSrc} alt={icon?.alt || "Decorative Icon"} width={248} height={200} className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 md:left-auto md:translate-x-0 md:translate-y-0 md:-bottom-35 md:-bottom-35 md:-right-34 rotate-10 z-10" />
+          <Image src={iconSrc} alt={icon?.alt || "Decorative Icon"} width={208} height={208} className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 md:left-auto md:translate-x-0 md:translate-y-0 md:-bottom-35 md:-bottom-35 md:-right-34 rotate-10 z-10" />
         );
       case 'portraits':
         return (
           <>
-            <Image src={iconSrc} alt={icon?.alt || "Decorative Icon"} width={248} height={200} className="absolute hidden lg:block -bottom-29 -right-25 z-10" />
-            <Image src={iconSrc} alt={icon?.alt || "Decorative Icon"} width={248} height={200} className="absolute left-1/2 transform -translate-x-1/2 -translate-y-1/2 md:left-auto md:translate-x-0 md:translate-y-0 lg:hidden md:-bottom-29 md:right-20 z-10" />
+            <Image src={iconSrc} alt={icon?.alt || "Decorative Icon"} width={208} height={208} className="absolute hidden lg:block -bottom-29 -right-25 z-10" />
+            <Image src={iconSrc} alt={icon?.alt || "Decorative Icon"} width={208} height={208} className="absolute left-1/2 transform -translate-x-1/2 -translate-y-1/2 md:left-auto md:translate-x-0 md:translate-y-0 lg:hidden md:-bottom-29 md:right-20 z-10" />
           </>
         );
       case 'products':
         return (
           <>
-            <Image src={iconSrc} alt={icon?.alt || "Decorative Icon"} width={248} height={200} className="absolute hidden lg:block bottom-30 -right-48 z-10" />
-            <Image src={iconSrc} alt={icon?.alt || "Decorative Icon"} width={248} height={200} className="absolute lg:hidden left-1/2 transform -translate-x-1/2 translate-y-1/2 -bottom-0 z-10" />
+            <Image src={iconSrc} alt={icon?.alt || "Decorative Icon"} width={208} height={208} className="absolute hidden lg:block bottom-30 -right-48 z-10" />
+            <Image src={iconSrc} alt={icon?.alt || "Decorative Icon"} width={208} height={208} className="absolute lg:hidden left-1/2 transform -translate-x-1/2 translate-y-1/2 -bottom-0 z-10" />
           </>
         );
       case 'corporate-events':
         return (
-          <Image src={iconSrc} alt={icon?.alt || "Decorative Icon"} width={200} height={200} className="absolute left-1/2 transform -translate-x-1/2 -translate-y-1/2 md:left-auto md:translate-x-0 md:translate-y-0 md:-bottom-17 -rotate-10 z-10" />
+          <Image src={iconSrc} alt={icon?.alt || "Decorative Icon"} width={208} height={208} className="absolute left-1/2 transform -translate-x-1/2 -translate-y-1/2 md:left-auto md:translate-x-0 md:translate-y-0 md:-bottom-17 -rotate-10 z-10" />
         );
       case 'short-content':
         return (
-          <Image src={iconSrc} alt={icon?.alt || "Decorative Icon"} width={200} height={200} className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 md:left-auto md:translate-x-0 md:translate-y-0 md:-top-26 md:right-20 rotate-10 z-10" />
+          <Image src={iconSrc} alt={icon?.alt || "Decorative Icon"} width={208} height={208} className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 md:left-auto md:translate-x-0 md:translate-y-0 md:-top-26 md:right-20 rotate-10 z-10" />
         );
       default:
         return (
-          <Image src={iconSrc} alt={icon?.alt || "Decorative Icon"} width={248} height={200} />
+          <Image src={iconSrc} alt={icon?.alt || "Decorative Icon"} width={208} height={208} />
         );
     }
   };
@@ -206,40 +206,40 @@ function PortfolioContent({ slug }: { slug: string }) {
           <Image 
             src={iconSrc} 
             alt={icon?.alt || "Decorative Icon"} 
-            width={248} 
-            height={200} 
+            width={208} 
+            height={208} 
             className="absolute -top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 md:left-auto md:translate-x-0 md:translate-y-0 md:-top-25 md:left-10 md:-bottom-40 md:-right-30 z-20" 
           />
         );
       case 'food':
         return (
-          <Image src={iconSrc} alt={icon?.alt || "Decorative Icon"} width={248} height={200} className="absolute -top-30 md:-left-20 md:-top-28 z-10" />
+          <Image src={iconSrc} alt={icon?.alt || "Decorative Icon"} width={208} height={208} className="absolute -top-30 md:-left-20 md:-top-28 z-10" />
         );
       case 'portraits':
         return (
           <>
-            <Image src={iconSrc} alt={icon?.alt || "Decorative Icon"} width={248} height={200} className="absolute hidden md:block -bottom-37 -right-42 z-10" />
-            <Image src={iconSrc} alt={icon?.alt || "Decorative Icon"} width={248} height={200} className="absolute left-1/2 transform -translate-x-1/2 -translate-y-1/2 -top-0 md:hidden z-10" />
+            <Image src={iconSrc} alt={icon?.alt || "Decorative Icon"} width={208} height={208} className="absolute hidden md:block -bottom-37 -right-42 z-10" />
+            <Image src={iconSrc} alt={icon?.alt || "Decorative Icon"} width={208} height={208} className="absolute left-1/2 transform -translate-x-1/2 -translate-y-1/2 -top-0 md:hidden z-10" />
           </>
         );
       case 'products':
         return (
-          <Image src={iconSrc} alt={icon?.alt || "Decorative Icon"} width={248} height={200} className="absolute -top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 md:top-auto md:translate-x-0 md:translate-y-0 md:-bottom-20 md:left-25 rotate-10 z-10" />
+          <Image src={iconSrc} alt={icon?.alt || "Decorative Icon"} width={208} height={208} className="absolute -top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 md:top-auto md:translate-x-0 md:translate-y-0 md:-bottom-20 md:left-25 rotate-10 z-10" />
         );
       case 'corporate-events':
         return (
-          <Image src={iconSrc} alt={icon?.alt || "Decorative Icon"} width={248} height={248} className="absolute -top-16 md:bottom-13 md:-right-40 z-10 rotate-10" />
+          <Image src={iconSrc} alt={icon?.alt || "Decorative Icon"} width={208} height={208} className="absolute -top-16 md:bottom-13 md:-right-40 z-10 rotate-10" />
         );
       case 'short-content':
         return (
           <>
-            <Image src={iconSrc} alt={icon?.alt || "Decorative Icon"} width={248} height={200} className="absolute hidden md:block -bottom-33 -right-33 rotate-8 z-10" />
-            <Image src={iconSrc} alt={icon?.alt || "Decorative Icon"} width={248} height={200} className="absolute md:hidden left-1/2 transform -translate-x-1/2 -translate-y-1/2 top-0 rotate-8 z-10" />
+            <Image src={iconSrc} alt={icon?.alt || "Decorative Icon"} width={208} height={208} className="absolute hidden md:block -bottom-33 -right-33 rotate-8 z-10" />
+            <Image src={iconSrc} alt={icon?.alt || "Decorative Icon"} width={208} height={208} className="absolute md:hidden left-1/2 transform -translate-x-1/2 -translate-y-1/2 top-0 rotate-8 z-10" />
           </>
         );
       default:
         return (
-          <Image src={iconSrc} alt={icon?.alt || "Decorative Icon"} width={248} height={200} />
+          <Image src={iconSrc} alt={icon?.alt || "Decorative Icon"} width={208} height={208} />
         );
     }
   };
@@ -254,40 +254,40 @@ function PortfolioContent({ slug }: { slug: string }) {
           <Image 
             src={iconSrc} 
             alt={icon?.alt || "Decorative Icon"} 
-            width={224} 
-            height={224} 
+            width={208} 
+            height={208} 
             className="absolute -top-3 left-1/2 transform -translate-x-1/2 -translate-y-1/2 md:left-auto md:translate-x-0 md:translate-y-0 md:-top-20 md:right-10 lg:-top-20 lg:-right-35 z-10" 
           />
         );
       case 'food':
         return (
-          <Image src={iconSrc} alt={icon?.alt || "Decorative Icon"} width={200} height={200} className="absolute -top-2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 md:left-auto md:translate-x-0 md:translate-y-0 md:right-30 md:-top-25 rotate-10 z-10" />
+          <Image src={iconSrc} alt={icon?.alt || "Decorative Icon"} width={208} height={208} className="absolute -top-2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 md:left-auto md:translate-x-0 md:translate-y-0 md:right-30 md:-top-25 rotate-10 z-10" />
         );
       case 'portraits':
         return (
           <>
-            <Image src={iconSrc} alt={icon?.alt || "Decorative Icon"} width={248} height={200} className="absolute hidden lg:block -bottom-15 -right-27 rotate-5 z-10" />
-            <Image src={iconSrc} alt={icon?.alt || "Decorative Icon"} width={248} height={200} className="absolute left-1/2 transform -translate-x-1/2 translate-y-1/2 -bottom-0 lg:hidden z-10 lg:hidden" />
+            <Image src={iconSrc} alt={icon?.alt || "Decorative Icon"} width={208} height={208} className="absolute hidden lg:block -bottom-15 -right-27 rotate-5 z-10" />
+            <Image src={iconSrc} alt={icon?.alt || "Decorative Icon"} width={208} height={208} className="absolute left-1/2 transform -translate-x-1/2 translate-y-1/2 -bottom-0 lg:hidden z-10 lg:hidden" />
           </>
         );
       case 'products':
         return (
-          <Image src={iconSrc} alt={icon?.alt || "Decorative Icon"} width={200} height={200} className="absolute left-1/2 transform -translate-x-1/2 -translate-y-1/2 md:translate-x-0 md:translate-y-0 md:-top-28 md:left-7 z-10" />
+          <Image src={iconSrc} alt={icon?.alt || "Decorative Icon"} width={208} height={208} className="absolute left-1/2 transform -translate-x-1/2 -translate-y-1/2 md:translate-x-0 md:translate-y-0 md:-top-28 md:left-7 z-10" />
         );
       case 'corporate-events':
         return (
-          <Image src={iconSrc} alt={icon?.alt || "Decorative Icon"} width={224} height={224} className="absolute left-1/2 transform -translate-x-1/2 -translate-y-1/2 md:left-auto md:translate-x-0 md:translate-y-0 md:-top-35 md:right-12 z-10" />
+          <Image src={iconSrc} alt={icon?.alt || "Decorative Icon"} width={208} height={208} className="absolute left-1/2 transform -translate-x-1/2 -translate-y-1/2 md:left-auto md:translate-x-0 md:translate-y-0 md:-top-35 md:right-12 z-10" />
         );
       case 'short-content':
         return (
           <>
-            <Image src={iconSrc} alt={icon?.alt || "Decorative Icon"} width={200} height={200} className="absolute hidden md:block -top-20 -left-18 -rotate-5 z-10" />
-            <Image src={iconSrc} alt={icon?.alt || "Decorative Icon"} width={200} height={200} className="absolute left-1/2 top-0 transform -translate-x-1/2 -translate-y-1/2 z-10 md:hidden" />
+            <Image src={iconSrc} alt={icon?.alt || "Decorative Icon"} width={208} height={208} className="absolute hidden md:block -top-20 -left-18 -rotate-5 z-10" />
+            <Image src={iconSrc} alt={icon?.alt || "Decorative Icon"} width={208} height={208} className="absolute left-1/2 top-0 transform -translate-x-1/2 -translate-y-1/2 z-10 md:hidden" />
           </>
         );
       default:
         return (
-          <Image src={iconSrc} alt={icon?.alt || "Decorative Icon"} width={224} height={224} />
+          <Image src={iconSrc} alt={icon?.alt || "Decorative Icon"} width={208} height={208} />
         );
     }
   };

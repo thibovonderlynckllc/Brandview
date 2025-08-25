@@ -64,7 +64,16 @@ const fallbackData = {
 
 async function getAboutData() {
     try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000'}/api/pages?where[slug][equals]=about`);
+        // During build time, use fallback data
+        if (process.env.NODE_ENV === 'production' && !process.env.NEXT_PUBLIC_SERVER_URL) {
+            return fallbackData;
+        }
+        
+        const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000';
+        const response = await fetch(`${baseUrl}/api/pages?where[slug][equals]=about`, {
+            next: { revalidate: 3600 }, // Cache for 1 hour
+        });
+        
         if (!response.ok) {
             console.warn('Failed to fetch about data, using fallback');
             return fallbackData;
@@ -146,7 +155,7 @@ const AboutPage = async () => {
             <div className="bg-blue pt-10">
                 <div className="px-8 sm:px-16">
                     <h1 className="text-4xl md:text-6xl font-light text-center mb-15">{data.whatSetsUsApartTitle}</h1>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 text-center pb-10">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 lg:gap-6 text-center pb-10">
                         {data.aboutCards.map((card, index) => (
                             <div key={index} className={`relative pt-6 h-full ${index === 2 ? 'md:col-span-2 lg:col-span-1' : ''}`}>
                                 <div className="absolute -top-6 left-1/2 -translate-x-1/2 w-28 h-28 bg-blue rounded-full border-[2px] border-red flex items-center justify-center z-10">
@@ -178,15 +187,15 @@ const AboutPage = async () => {
                             <Image 
                                 src={getIconSrc(data.founderSection.brandviewIcon, "/images/icons/brandview.svg")} 
                                 alt="Brandview logo" 
-                                width={80} 
-                                height={80} 
+                                width={208} 
+                                height={208} 
                                 className="absolute -bottom-10 rotate-8 -right-5 md:-bottom-20 xl:-bottom-40 xl:-right-20 w-32 sm:w-40 lg:w-48"
                             />
                             <Image 
                                 src={getIconSrc(data.founderSection.personIcon, "/images/icons/person.svg")} 
                                 alt="Person icon" 
-                                width={80} 
-                                height={80} 
+                                width={208} 
+                                height={208} 
                                 className="absolute left-52 -bottom-30 md:left-80 md:-bottom-25 xl:left-35 xl:-bottom-30 w-32 sm:w-40 lg:w-48 2xl:left-60 2xl:-bottom-50 hidden sm:block"
                             />
                         </div>
@@ -221,8 +230,8 @@ const AboutPage = async () => {
                             <Image 
                                 src={getIconSrc(data.whatWeDoSection.bulbIcon, "/images/icons/bulb.svg")} 
                                 alt="Bulb icon" 
-                                width={80} 
-                                height={80} 
+                                width={208} 
+                                height={208} 
                                 className="absolute -top-15 xl:-top-40 xl:left-15 -rotate-3 left-15 w-32 sm:w-40 lg:w-48"
                             />
                         </div>

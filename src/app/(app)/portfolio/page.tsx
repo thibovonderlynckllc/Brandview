@@ -41,7 +41,16 @@ const fallbackData = {
 
 async function getPortfolioData() {
     try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000'}/api/pages?where[slug][equals]=portfolio`);
+        // During build time, use fallback data
+        if (process.env.NODE_ENV === 'production' && !process.env.NEXT_PUBLIC_SERVER_URL) {
+            return fallbackData;
+        }
+        
+        const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000';
+        const response = await fetch(`${baseUrl}/api/pages?where[slug][equals]=portfolio`, {
+            next: { revalidate: 3600 }, // Cache for 1 hour
+        });
+        
         if (!response.ok) {
             console.warn('Failed to fetch portfolio data, using fallback');
             return fallbackData;
@@ -86,8 +95,8 @@ const PortfolioPage = async () => {
         if (!iconSrc || card.iconPosition === 'none') return null;
 
         return (
-            <div className="absolute -right-5 md:-right-28 -top-25 sm:-top-30 md:-top-32 w-32 sm:w-42 md:w-48 rotate-10 z-10 transition-transform duration-300 group-hover:rotate-12">
-                <Image src={iconSrc} alt={`${card.title} icon`} width={192} height={192} />
+            <div className="absolute -right-5 md:-right-28 -top-25 sm:-top-30 md:-top-32 w-32 sm:w-40 lg:w-48 rotate-10 z-10 transition-transform duration-300 group-hover:rotate-12">
+                <Image src={iconSrc} alt={`${card.title} icon`} width={208} height={208} />
             </div>
         );
     };

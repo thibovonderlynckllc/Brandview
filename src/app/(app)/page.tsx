@@ -14,25 +14,31 @@ interface ServiceCard {
     backgroundImage?: string; // legacy fallback
 }
 
+interface MasonryPosition {
+    image?: { url: string; alt?: string } | string | null;
+    text?: string;
+    link?: string;
+}
+
 interface MasonryGalleryGrid {
-    position1?: { url: string; alt?: string } | string | null;
-    position2?: { url: string; alt?: string } | string | null;
-    position3?: { url: string; alt?: string } | string | null;
-    position4?: { url: string; alt?: string } | string | null;
-    position5?: { url: string; alt?: string } | string | null;
-    position6?: { url: string; alt?: string } | string | null;
-    position7?: { url: string; alt?: string } | string | null;
-    position8?: { url: string; alt?: string } | string | null;
-    position9?: { url: string; alt?: string } | string | null;
-    position10?: { url: string; alt?: string } | string | null;
-    position11?: { url: string; alt?: string } | string | null;
-    position12?: { url: string; alt?: string } | string | null;
-    position13?: { url: string; alt?: string } | string | null;
-    position14?: { url: string; alt?: string } | string | null;
-    position15?: { url: string; alt?: string } | string | null;
-    position16?: { url: string; alt?: string } | string | null;
-    position17?: { url: string; alt?: string } | string | null;
-    position18?: { url: string; alt?: string } | string | null;
+    position1?: MasonryPosition | { url: string; alt?: string } | string | null;
+    position2?: MasonryPosition | { url: string; alt?: string } | string | null;
+    position3?: MasonryPosition | { url: string; alt?: string } | string | null;
+    position4?: MasonryPosition | { url: string; alt?: string } | string | null;
+    position5?: MasonryPosition | { url: string; alt?: string } | string | null;
+    position6?: MasonryPosition | { url: string; alt?: string } | string | null;
+    position7?: MasonryPosition | { url: string; alt?: string } | string | null;
+    position8?: MasonryPosition | { url: string; alt?: string } | string | null;
+    position9?: MasonryPosition | { url: string; alt?: string } | string | null;
+    position10?: MasonryPosition | { url: string; alt?: string } | string | null;
+    position11?: MasonryPosition | { url: string; alt?: string } | string | null;
+    position12?: MasonryPosition | { url: string; alt?: string } | string | null;
+    position13?: MasonryPosition | { url: string; alt?: string } | string | null;
+    position14?: MasonryPosition | { url: string; alt?: string } | string | null;
+    position15?: MasonryPosition | { url: string; alt?: string } | string | null;
+    position16?: MasonryPosition | { url: string; alt?: string } | string | null;
+    position17?: MasonryPosition | { url: string; alt?: string } | string | null;
+    position18?: MasonryPosition | { url: string; alt?: string } | string | null;
 }
 
 interface PageData {
@@ -162,15 +168,15 @@ export default async function Home() {
                                         <Image 
                                             src={item.icon} 
                                             alt={`${item.title} icon`} 
-                                            width={192}
-                                            height={192}
+                                            width={208}
+                                            height={208}
                                         />
                                     ) : item.icon?.url ? (
                                         <Image 
                                             src={item.icon.url} 
                                             alt={item.icon.alt || `${item.title} icon`} 
-                                            width={192}
-                                            height={192}
+                                            width={208}
+                                            height={208}
                                         />
                                     ) : null}
                                 </div>

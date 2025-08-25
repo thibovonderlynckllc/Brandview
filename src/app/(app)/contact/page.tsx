@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import ContactForm from '../components/ContactForm';
 
 // Types for API response
 interface ContactInfo {
@@ -62,8 +63,14 @@ const fallbackData: ContactPageData = {
 
 async function getContactPageData(): Promise<ContactPageData> {
   try {
-    const response = await fetch(`${process.env.PAYLOAD_PUBLIC_SERVER_URL || 'http://localhost:3000'}/api/pages?where[and][0][slug][equals]=contact&where[and][1][pageType][equals]=contact`, {
-      next: { revalidate: 60 } // Revalidate every 60 seconds
+    // During build time, use fallback data
+    if (process.env.NODE_ENV === 'production' && !process.env.NEXT_PUBLIC_SERVER_URL) {
+      return fallbackData;
+    }
+    
+    const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000';
+    const response = await fetch(`${baseUrl}/api/pages?where[and][0][slug][equals]=contact&where[and][1][pageType][equals]=contact`, {
+      next: { revalidate: 3600 }, // Cache for 1 hour
     });
     
     if (!response.ok) {
@@ -101,35 +108,7 @@ const ContactPage = async () => {
                 <div className="flex flex-col lg:flex-row justify-between gap-16">
                     {/* Form Section */}
                     <div className="w-full">
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
-                            <div>
-                                <label className="block text-lg md:text-[23px] mb-2 font-medium">{pageData.contactFormSettings.firstNameLabel} <span className="font-light">{pageData.contactFormSettings.requiredText}</span></label>
-                                <input type="text" className="w-full px-4 py-4 md:py-6 rounded-3xl border-2 border-red bg-white focus:outline-none focus:border-red focus:shadow-[0_0_15px_rgba(255,0,0,0.3)] transition-all duration-300" />
-                            </div>
-                            <div>
-                                <label className="block text-lg md:text-[23px] mb-2 font-medium">{pageData.contactFormSettings.lastNameLabel} <span className="font-light">{pageData.contactFormSettings.requiredText}</span></label>
-                                <input type="text" className="w-full px-4 py-4 md:py-6 rounded-3xl border-2 border-red bg-white focus:outline-none focus:border-red focus:shadow-[0_0_15px_rgba(255,0,0,0.3)] transition-all duration-300" />
-                            </div>
-                        </div>
-                        
-                        <div className="mb-8">
-                            <label className="block text-lg md:text-[23px] mb-2 font-medium">{pageData.contactFormSettings.phoneLabel} <span className="font-light">{pageData.contactFormSettings.requiredText}</span></label>
-                            <input type="tel" className="w-full px-4 py-4 md:py-6 rounded-3xl border-2 border-red bg-white focus:outline-none focus:border-red focus:shadow-[0_0_15px_rgba(255,0,0,0.3)] transition-all duration-300" />
-                        </div>
-
-                        <div className="mb-8">
-                            <label className="block text-lg md:text-[23px] mb-2 font-medium">{pageData.contactFormSettings.emailLabel} <span className="font-light">{pageData.contactFormSettings.requiredText}</span></label>
-                            <input type="email" className="w-full px-4 py-4 md:py-6 rounded-3xl border-2 border-red bg-white focus:outline-none focus:border-red focus:shadow-[0_0_15px_rgba(255,0,0,0.3)] transition-all duration-300" />
-                        </div>
-
-                        <div className="mb-8">
-                            <label className="block text-lg md:text-[23px] mb-2 font-medium">{pageData.contactFormSettings.messageLabel}</label>
-                            <textarea className="w-full px-4 py-4 md:py-6 rounded-3xl border-2 border-red bg-white h-40 resize-none focus:outline-none focus:border-red focus:shadow-[0_0_15px_rgba(255,0,0,0.3)] transition-all duration-300"></textarea>
-                        </div>
-
-                        <div className="flex justify-center">
-                            <button className="bg-red text-blue text-xl md:text-[2.5rem] px-6 md:px-8 py-3 md:py-4 rounded-full hover:bg-opacity-90 transition-colors font-medium">{pageData.contactFormSettings.submitButtonText}</button>
-                        </div>
+                        <ContactForm formSettings={pageData.contactFormSettings} />
                     </div>
 
                     {/* Contact Information */}

@@ -14,6 +14,7 @@ const fallbackData = {
             description: "Scroll-stopping short content tailored to your brand. We create bite-sized video stories that engage, inform and entertain, ideal for social media.",
             portfolioSlug: "short-content",
             iconPosition: "none",
+            linkText: "photos",
         },
         {
             title: "(corporate) events",
@@ -21,6 +22,7 @@ const fallbackData = {
             description: "From conferences to company parties, we document the energy and key moments of your event with authenticity and flair. Relive the vibe, long after it's over.",
             portfolioSlug: "corporate-events",
             iconPosition: "none",
+            linkText: "photos",
         },
         {
             title: "food photography",
@@ -29,6 +31,7 @@ const fallbackData = {
             portfolioSlug: "food",
             icon: "/images/icons/mouth.svg",
             iconPosition: "top-left",
+            linkText: "photos",
         },
         {
             title: "portraits",
@@ -36,6 +39,7 @@ const fallbackData = {
             description: "Authentic portraits with personality. Whether it's for your website, team page or social media, we ensure everyone looks approachable and confident.",
             portfolioSlug: "portraits",
             iconPosition: "none",
+            linkText: "photos",
         },
         {
             title: "product photography",
@@ -43,6 +47,7 @@ const fallbackData = {
             description: "Sharp, stylish and scroll-stopping. We present your products in the best light, whether for e-commerce, campaigns or catalogues.",
             portfolioSlug: "products",
             iconPosition: "none",
+            linkText: "photos",
         },
         {
             title: "business photography",
@@ -51,6 +56,7 @@ const fallbackData = {
             portfolioSlug: "business",
             icon: "/images/icons/eyes.svg",
             iconPosition: "top-right",
+            linkText: "photos",
         },
     ],
     pricingSection: {
@@ -92,7 +98,16 @@ const fallbackData = {
 
 async function getServicesData() {
     try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000'}/api/pages?where[slug][equals]=services`);
+        // During build time, use fallback data
+        if (process.env.NODE_ENV === 'production' && !process.env.NEXT_PUBLIC_SERVER_URL) {
+            return fallbackData;
+        }
+        
+        const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000';
+        const response = await fetch(`${baseUrl}/api/pages?where[slug][equals]=services`, {
+            next: { revalidate: 3600 }, // Cache for 1 hour
+        });
+        
         if (!response.ok) {
             console.warn('Failed to fetch services data, using fallback');
             return fallbackData;
@@ -120,6 +135,7 @@ interface ServiceItem {
     image?: MediaItem | string | null;
     icon?: { url: string; alt?: string } | string | null;
     iconPosition: 'none' | 'top-left' | 'top-right';
+    linkText?: string;
 }
 
 interface MediaItem {
@@ -182,13 +198,13 @@ const ServicesPage = async () => {
         if (!iconSrc || item.iconPosition === 'none') return null;
 
         const iconClasses: Record<string, string> = {
-            'top-left': "absolute -top-10 left-4 sm:-top-15 lg:-top-10 xl:left-15 xl:-top-30 w-22 sm:w-40 lg:w-32 xl:w-64",
-            'top-right': "absolute -top-5 -right-4 md:-right-15 sm:-top-15 lg:right-[49%] lg:-top-5 xl:-top-23 xl:right-[44%] w-22 sm:w-40 lg:w-32 xl:w-60 rotate-10",
+            'top-left': "absolute -top-10 left-4 sm:-top-15 lg:-top-10 xl:left-15 xl:-top-30 w-32 sm:w-40 lg:w-48",
+            'top-right': "absolute -top-5 -right-4 md:-right-15 sm:-top-15 lg:right-[49%] lg:-top-5 xl:-top-23 xl:right-[44%] w-32 sm:w-40 lg:w-48 rotate-10",
         };
 
         return (
             <div className={iconClasses[item.iconPosition]}>
-                <Image src={iconSrc} alt={`${item.title} icon`} width={240} height={240} />
+                <Image src={iconSrc} alt={`${item.title} icon`} width={208} height={208} />
             </div>
         );
     };
@@ -251,7 +267,7 @@ const ServicesPage = async () => {
                                     <SwirlArrow className="w-10 h-10 md:w-12 md:h-12 ml-0 lg:ml-12" />
                                     <Link href={`/portfolio/${service.portfolioSlug}`}>
                                         <span className="text-lg md:text-xl lg:text-[23px] font-medium leading-none relative group cursor-pointer">
-                                            photos
+                                            {service.linkText || 'photos'}
                                             <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-red transition-all duration-300 group-hover:w-full"></span>
                                         </span>
                                     </Link>
@@ -364,7 +380,7 @@ const ServicesPage = async () => {
                                     <SwirlArrow className="w-10 h-10 md:w-12 md:h-12 ml-0 lg:ml-12" />
                                     <Link href={`/portfolio/${service.portfolioSlug}`}>
                                         <span className="text-lg md:text-xl lg:text-[23px] font-medium leading-none relative group cursor-pointer">
-                                            photos
+                                            {service.linkText || 'photos'}
                                             <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-red transition-all duration-300 group-hover:w-full"></span>
                                         </span>
                                     </Link>

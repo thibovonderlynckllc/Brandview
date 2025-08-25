@@ -67,6 +67,9 @@ export const Pages: CollectionConfig = {
           name: 'icon',
           type: 'upload',
           relationTo: 'media',
+          admin: {
+            description: 'Optional decorative icon (e.g., camera icon)',
+          },
         },
         {
           name: 'image',
@@ -79,13 +82,33 @@ export const Pages: CollectionConfig = {
         {
           name: 'link',
           type: 'text',
+          required: true,
           admin: {
-            description: 'URL or path this card should link to',
+            description: 'URL or path this card should link to (e.g., /portfolio/portraits)',
           },
+        },
+      ],
+      defaultValue: [
+        {
+          title: 'short content',
+          link: '/portfolio/short-content',
+        },
+        {
+          title: 'food',
+          link: '/portfolio/food',
+        },
+        {
+          title: 'portraits',
+          link: '/portfolio/portraits',
+        },
+        {
+          title: 'business',
+          link: '/portfolio/business',
         },
       ],
       admin: {
         condition: (data) => data.pageType === 'home',
+        description: 'Service cards displayed on the homepage - easily editable titles and links',
       },
     },
     {
@@ -97,24 +120,186 @@ export const Pages: CollectionConfig = {
         condition: (data) => data.pageType === 'home',
       },
       fields: [
-        { name: 'position1', type: 'upload', relationTo: 'media', admin: { description: 'Position 1' } },
-        { name: 'position2', type: 'upload', relationTo: 'media', admin: { description: 'Position 2' } },
-        { name: 'position3', type: 'upload', relationTo: 'media', admin: { description: 'Position 3' } },
-        { name: 'position4', type: 'upload', relationTo: 'media', admin: { description: 'Position 4' } },
-        { name: 'position5', type: 'upload', relationTo: 'media', admin: { description: 'Position 5' } },
-        { name: 'position6', type: 'upload', relationTo: 'media', admin: { description: 'Position 6' } },
-        { name: 'position7', type: 'upload', relationTo: 'media', admin: { description: 'Position 7' } },
-        { name: 'position8', type: 'upload', relationTo: 'media', admin: { description: 'Position 8' } },
-        { name: 'position9', type: 'upload', relationTo: 'media', admin: { description: 'Position 9' } },
-        { name: 'position10', type: 'upload', relationTo: 'media', admin: { description: 'Position 10' } },
-        { name: 'position11', type: 'upload', relationTo: 'media', admin: { description: 'Position 11' } },
-        { name: 'position12', type: 'upload', relationTo: 'media', admin: { description: 'Position 12' } },
-        { name: 'position13', type: 'upload', relationTo: 'media', admin: { description: 'Position 13' } },
-        { name: 'position14', type: 'upload', relationTo: 'media', admin: { description: 'Position 14' } },
-        { name: 'position15', type: 'upload', relationTo: 'media', admin: { description: 'Position 15' } },
-        { name: 'position16', type: 'upload', relationTo: 'media', admin: { description: 'Position 16' } },
-        { name: 'position17', type: 'upload', relationTo: 'media', admin: { description: 'Position 17' } },
-        { name: 'position18', type: 'upload', relationTo: 'media', admin: { description: 'Position 18' } },
+        {
+          name: 'position1',
+          type: 'group',
+          admin: { description: 'Position 1' },
+          fields: [
+            { name: 'image', type: 'upload', relationTo: 'media', admin: { description: 'Background image' } },
+            { name: 'text', type: 'text', admin: { description: 'Text overlay (optional)' } },
+            { name: 'link', type: 'text', admin: { description: 'Link destination (optional, e.g., /portfolio/portraits)' } },
+          ],
+        },
+        {
+          name: 'position2',
+          type: 'group',
+          admin: { description: 'Position 2' },
+          fields: [
+            { name: 'image', type: 'upload', relationTo: 'media', admin: { description: 'Background image' } },
+            { name: 'text', type: 'text', admin: { description: 'Text overlay (optional)' } },
+            { name: 'link', type: 'text', admin: { description: 'Link destination (optional, e.g., /portfolio/portraits)' } },
+          ],
+        },
+        {
+          name: 'position3',
+          type: 'group',
+          admin: { description: 'Position 3' },
+          fields: [
+            { name: 'image', type: 'upload', relationTo: 'media', admin: { description: 'Background image' } },
+            { name: 'text', type: 'text', admin: { description: 'Text overlay (optional)' } },
+            { name: 'link', type: 'text', admin: { description: 'Link destination (optional, e.g., /portfolio/portraits)' } },
+          ],
+        },
+        {
+          name: 'position4',
+          type: 'group',
+          admin: { description: 'Position 4' },
+          fields: [
+            { name: 'image', type: 'upload', relationTo: 'media', admin: { description: 'Background image' } },
+            { name: 'text', type: 'text', admin: { description: 'Text overlay (optional)' } },
+            { name: 'link', type: 'text', admin: { description: 'Link destination (optional, e.g., /portfolio/portraits)' } },
+          ],
+        },
+        {
+          name: 'position5',
+          type: 'group',
+          admin: { description: 'Position 5' },
+          fields: [
+            { name: 'image', type: 'upload', relationTo: 'media', admin: { description: 'Background image' } },
+            { name: 'text', type: 'text', admin: { description: 'Text overlay (optional)' } },
+            { name: 'link', type: 'text', admin: { description: 'Link destination (optional, e.g., /portfolio/portraits)' } },
+          ],
+        },
+        {
+          name: 'position6',
+          type: 'group',
+          admin: { description: 'Position 6' },
+          fields: [
+            { name: 'image', type: 'upload', relationTo: 'media', admin: { description: 'Background image' } },
+            { name: 'text', type: 'text', admin: { description: 'Text overlay (optional)' } },
+            { name: 'link', type: 'text', admin: { description: 'Link destination (optional, e.g., /portfolio/portraits)' } },
+          ],
+        },
+        {
+          name: 'position7',
+          type: 'group',
+          admin: { description: 'Position 7' },
+          fields: [
+            { name: 'image', type: 'upload', relationTo: 'media', admin: { description: 'Background image' } },
+            { name: 'text', type: 'text', admin: { description: 'Text overlay (optional)' } },
+            { name: 'link', type: 'text', admin: { description: 'Link destination (optional, e.g., /portfolio/portraits)' } },
+          ],
+        },
+        {
+          name: 'position8',
+          type: 'group',
+          admin: { description: 'Position 8' },
+          fields: [
+            { name: 'image', type: 'upload', relationTo: 'media', admin: { description: 'Background image' } },
+            { name: 'text', type: 'text', admin: { description: 'Text overlay (optional)' } },
+            { name: 'link', type: 'text', admin: { description: 'Link destination (optional, e.g., /portfolio/portraits)' } },
+          ],
+        },
+        {
+          name: 'position9',
+          type: 'group',
+          admin: { description: 'Position 9' },
+          fields: [
+            { name: 'image', type: 'upload', relationTo: 'media', admin: { description: 'Background image' } },
+            { name: 'text', type: 'text', admin: { description: 'Text overlay (optional)' } },
+            { name: 'link', type: 'text', admin: { description: 'Link destination (optional, e.g., /portfolio/portraits)' } },
+          ],
+        },
+        {
+          name: 'position10',
+          type: 'group',
+          admin: { description: 'Position 10' },
+          fields: [
+            { name: 'image', type: 'upload', relationTo: 'media', admin: { description: 'Background image' } },
+            { name: 'text', type: 'text', admin: { description: 'Text overlay (optional)' } },
+            { name: 'link', type: 'text', admin: { description: 'Link destination (optional, e.g., /portfolio/portraits)' } },
+          ],
+        },
+        {
+          name: 'position11',
+          type: 'group',
+          admin: { description: 'Position 11' },
+          fields: [
+            { name: 'image', type: 'upload', relationTo: 'media', admin: { description: 'Background image' } },
+            { name: 'text', type: 'text', admin: { description: 'Text overlay (optional)' } },
+            { name: 'link', type: 'text', admin: { description: 'Link destination (optional, e.g., /portfolio/portraits)' } },
+          ],
+        },
+        {
+          name: 'position12',
+          type: 'group',
+          admin: { description: 'Position 12' },
+          fields: [
+            { name: 'image', type: 'upload', relationTo: 'media', admin: { description: 'Background image' } },
+            { name: 'text', type: 'text', admin: { description: 'Text overlay (optional)' } },
+            { name: 'link', type: 'text', admin: { description: 'Link destination (optional, e.g., /portfolio/portraits)' } },
+          ],
+        },
+        {
+          name: 'position13',
+          type: 'group',
+          admin: { description: 'Position 13' },
+          fields: [
+            { name: 'image', type: 'upload', relationTo: 'media', admin: { description: 'Background image' } },
+            { name: 'text', type: 'text', admin: { description: 'Text overlay (optional)' } },
+            { name: 'link', type: 'text', admin: { description: 'Link destination (optional, e.g., /portfolio/portraits)' } },
+          ],
+        },
+        {
+          name: 'position14',
+          type: 'group',
+          admin: { description: 'Position 14' },
+          fields: [
+            { name: 'image', type: 'upload', relationTo: 'media', admin: { description: 'Background image' } },
+            { name: 'text', type: 'text', admin: { description: 'Text overlay (optional)' } },
+            { name: 'link', type: 'text', admin: { description: 'Link destination (optional, e.g., /portfolio/portraits)' } },
+          ],
+        },
+        {
+          name: 'position15',
+          type: 'group',
+          admin: { description: 'Position 15' },
+          fields: [
+            { name: 'image', type: 'upload', relationTo: 'media', admin: { description: 'Background image' } },
+            { name: 'text', type: 'text', admin: { description: 'Text overlay (optional)' } },
+            { name: 'link', type: 'text', admin: { description: 'Link destination (optional, e.g., /portfolio/portraits)' } },
+          ],
+        },
+        {
+          name: 'position16',
+          type: 'group',
+          admin: { description: 'Position 16' },
+          fields: [
+            { name: 'image', type: 'upload', relationTo: 'media', admin: { description: 'Background image' } },
+            { name: 'text', type: 'text', admin: { description: 'Text overlay (optional)' } },
+            { name: 'link', type: 'text', admin: { description: 'Link destination (optional, e.g., /portfolio/portraits)' } },
+          ],
+        },
+        {
+          name: 'position17',
+          type: 'group',
+          admin: { description: 'Position 17' },
+          fields: [
+            { name: 'image', type: 'upload', relationTo: 'media', admin: { description: 'Background image' } },
+            { name: 'text', type: 'text', admin: { description: 'Text overlay (optional)' } },
+            { name: 'link', type: 'text', admin: { description: 'Link destination (optional, e.g., /portfolio/portraits)' } },
+          ],
+        },
+        {
+          name: 'position18',
+          type: 'group',
+          admin: { description: 'Position 18' },
+          fields: [
+            { name: 'image', type: 'upload', relationTo: 'media', admin: { description: 'Background image' } },
+            { name: 'text', type: 'text', admin: { description: 'Text overlay (optional)' } },
+            { name: 'link', type: 'text', admin: { description: 'Link destination (optional, e.g., /portfolio/portraits)' } },
+          ],
+        },
       ],
     },
     // Portfolio Page Fields
@@ -413,6 +598,14 @@ export const Pages: CollectionConfig = {
             { label: 'Top Right', value: 'top-right' },
           ],
           defaultValue: 'none',
+        },
+        {
+          name: 'linkText',
+          type: 'text',
+          defaultValue: 'photos',
+          admin: {
+            description: 'Text for the portfolio link (e.g., "photos", "videos", "gallery")',
+          },
         },
       ],
       admin: {

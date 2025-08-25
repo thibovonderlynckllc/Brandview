@@ -5,25 +5,31 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useLayoutEffect, useState, useMemo } from 'react';
 
+interface MasonryPosition {
+    image?: { url: string; alt?: string } | string | null;
+    text?: string;
+    link?: string;
+}
+
 interface MasonryGalleryGrid {
-    position1?: { url: string; alt?: string } | string | null;
-    position2?: { url: string; alt?: string } | string | null;
-    position3?: { url: string; alt?: string } | string | null;
-    position4?: { url: string; alt?: string } | string | null;
-    position5?: { url: string; alt?: string } | string | null;
-    position6?: { url: string; alt?: string } | string | null;
-    position7?: { url: string; alt?: string } | string | null;
-    position8?: { url: string; alt?: string } | string | null;
-    position9?: { url: string; alt?: string } | string | null;
-    position10?: { url: string; alt?: string } | string | null;
-    position11?: { url: string; alt?: string } | string | null;
-    position12?: { url: string; alt?: string } | string | null;
-    position13?: { url: string; alt?: string } | string | null;
-    position14?: { url: string; alt?: string } | string | null;
-    position15?: { url: string; alt?: string } | string | null;
-    position16?: { url: string; alt?: string } | string | null;
-    position17?: { url: string; alt?: string } | string | null;
-    position18?: { url: string; alt?: string } | string | null;
+    position1?: MasonryPosition | { url: string; alt?: string } | string | null;
+    position2?: MasonryPosition | { url: string; alt?: string } | string | null;
+    position3?: MasonryPosition | { url: string; alt?: string } | string | null;
+    position4?: MasonryPosition | { url: string; alt?: string } | string | null;
+    position5?: MasonryPosition | { url: string; alt?: string } | string | null;
+    position6?: MasonryPosition | { url: string; alt?: string } | string | null;
+    position7?: MasonryPosition | { url: string; alt?: string } | string | null;
+    position8?: MasonryPosition | { url: string; alt?: string } | string | null;
+    position9?: MasonryPosition | { url: string; alt?: string } | string | null;
+    position10?: MasonryPosition | { url: string; alt?: string } | string | null;
+    position11?: MasonryPosition | { url: string; alt?: string } | string | null;
+    position12?: MasonryPosition | { url: string; alt?: string } | string | null;
+    position13?: MasonryPosition | { url: string; alt?: string } | string | null;
+    position14?: MasonryPosition | { url: string; alt?: string } | string | null;
+    position15?: MasonryPosition | { url: string; alt?: string } | string | null;
+    position16?: MasonryPosition | { url: string; alt?: string } | string | null;
+    position17?: MasonryPosition | { url: string; alt?: string } | string | null;
+    position18?: MasonryPosition | { url: string; alt?: string } | string | null;
 }
 
 interface MasonryGalleryProps {
@@ -43,15 +49,41 @@ export default function MasonryGallery({ masonryGalleryGrid }: MasonryGalleryPro
         700: 1
     }), []);
 
-    // Helper to get image for a position
-    const getImageForPosition = (pos: number) => {
+    // Helper to get position data (backward compatible)
+    const getPositionData = (pos: number) => {
         if (!masonryGalleryGrid) return null;
         const key = `position${pos}` as keyof MasonryGalleryGrid;
-        const img = masonryGalleryGrid[key];
-        if (!img) return null;
-        if (typeof img === 'string') return img;
-        if (typeof img === 'object' && img.url) return img.url;
-        return null;
+        const position = masonryGalleryGrid[key];
+        
+        if (!position) return null;
+        
+        // Handle old format (direct image string)
+        if (typeof position === 'string') {
+            return { image: position, text: null, link: null };
+        }
+        
+        // Handle old format (image object with url)
+        if ('url' in position && position.url) {
+            return { image: position.url, text: null, link: null };
+        }
+        
+        // Handle new format (position object)
+        const newPosition = position as MasonryPosition;
+        let imageUrl = null;
+        
+        if (newPosition.image) {
+            if (typeof newPosition.image === 'string') {
+                imageUrl = newPosition.image;
+            } else {
+                imageUrl = newPosition.image.url;
+            }
+        }
+        
+        return {
+            image: imageUrl,
+            text: newPosition.text || null,
+            link: newPosition.link || null
+        };
     };
 
     const getAltForPosition = (pos: number) => {
@@ -59,7 +91,7 @@ export default function MasonryGallery({ masonryGalleryGrid }: MasonryGalleryPro
         const key = `position${pos}` as keyof MasonryGalleryGrid;
         const img = masonryGalleryGrid[key];
         if (!img) return '';
-        if (typeof img === 'object' && img.alt) return img.alt;
+        if (typeof img === 'object' && 'alt' in img && img.alt) return img.alt;
         return '';
     };
 
@@ -95,8 +127,8 @@ export default function MasonryGallery({ masonryGalleryGrid }: MasonryGalleryPro
                         <Image 
                             src="/images/icons/bulb.svg" 
                             alt="Bulb" 
-                            width={200}
-                            height={200}
+                            width={208}
+                            height={208}
                             priority
                         />
                     </div>
@@ -175,46 +207,206 @@ export default function MasonryGallery({ masonryGalleryGrid }: MasonryGalleryPro
     ], []);
 
     return (
-        <div className="overflow-x-hidden" suppressHydrationWarning>
+        <div className="overflow-visible relative" suppressHydrationWarning>
             {mounted ? (
                 <Masonry
                     breakpointCols={breakpointColumnsObj}
                     className="my-masonry-grid"
                     columnClassName="my-masonry-grid_column"
                 >
-                    {galleryItems.map((item, index) => (
-                        <div key={`gallery-item-${index}`} className={`gallery-item ${item.height} relative`}>
-                            {/* Render CMS image if present for this position */}
-                            {getImageForPosition(index + 1) && (
-                                <Image
-                                    src={getImageForPosition(index + 1)!}
-                                    alt={getAltForPosition(index + 1) || `Gallery image ${index + 1}`}
-                                    fill
-                                    className="object-cover z-0"
-                                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                                />
-                            )}
-                            {/* Existing static content overlays the image */}
-                            {item.content}
-                        </div>
-                    ))}
+                    {galleryItems.map((item, index) => {
+                        const positionData = getPositionData(index + 1);
+                        const hasImage = positionData?.image;
+                        const hasText = positionData?.text && positionData.text.trim() !== '';
+                        const hasLink = positionData?.link;
+                        
+                        return (
+                            <div key={`gallery-item-${index}`} className={`gallery-item ${item.height} relative`}>
+                                {/* Render CMS image if present for this position */}
+                                {hasImage && (
+                                    <Image
+                                        src={positionData.image!}
+                                        alt={getAltForPosition(index + 1) || `Gallery image ${index + 1}`}
+                                        fill
+                                        className="object-cover z-0"
+                                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                    />
+                                )}
+                                
+                                {/* Render CMS text overlay with link if present */}
+                                {hasText && (
+                                    hasLink ? (
+                                        <Link href={positionData.link!} className="block">
+                                            <h1 className={`text-3xl md:text-5xl xl:text-6xl font-medium absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] text-center hover:scale-103 transition-all duration-300 cursor-pointer z-20 ${positionData.text!.includes('\\n') ? '' : 'whitespace-nowrap'}`}>
+                                                {positionData.text!.split('\\n').map((line, index) => (
+                                                    <span key={index}>
+                                                        {line}
+                                                        {index < positionData.text!.split('\\n').length - 1 && <br />}
+                                                    </span>
+                                                ))}
+                                            </h1>
+                                        </Link>
+                                    ) : (
+                                        <h1 className={`text-3xl md:text-5xl xl:text-6xl font-medium absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] text-center z-20 ${positionData.text!.includes('\\n') ? '' : 'whitespace-nowrap'}`}>
+                                            {positionData.text!.split('\\n').map((line, index) => (
+                                                <span key={index}>
+                                                    {line}
+                                                    {index < positionData.text!.split('\\n').length - 1 && <br />}
+                                                </span>
+                                            ))}
+                                        </h1>
+                                    )
+                                )}
+                                
+                                {/* Hardcoded decorative icons for specific positions */}
+                                {index === 0 && (
+                                    <div className="absolute bottom-[-50px] left-1/2 -translate-x-1/2 md:left-[30%] md:translate-x-0 w-32 sm:w-40 lg:w-48 rotate-[-5deg] z-10">
+                                        <Image 
+                                            src="/images/icons/klapbord.svg" 
+                                            alt="Klapbord" 
+                                            width={208}
+                                            height={208}
+                                            priority
+                                        />
+                                    </div>
+                                )}
+                                {index === 2 && (
+                                    <div className="hidden xl:block absolute -top-[30%] right-35 w-50 z-10">
+                                        <Image 
+                                            src="/images/icons/bulb.svg" 
+                                            alt="Bulb" 
+                                            width={200}
+                                            height={200}
+                                            priority
+                                        />
+                                    </div>
+                                )}
+                                {index === 8 && (
+                                    <div className="absolute -bottom-15 left-1/2 -translate-x-1/2 md:-bottom-20 md:left-10 md:translate-x-0 xl:-bottom-20 xl:-left-18 w-32 sm:w-40 lg:w-48 z-10">
+                                        <Image 
+                                            src="/images/icons/mouth.svg" 
+                                            alt="Mouth" 
+                                            width={224}
+                                            height={224}
+                                            priority
+                                        />
+                                    </div>
+                                )}
+                                {index === 9 && (
+                                    <div className="absolute -bottom-20 left-1/2 -translate-x-1/2 md:-bottom-30 md:right-10 md:left-auto md:translate-x-0 xl:-bottom-25 xl:-right-22 w-32 sm:w-40 lg:w-48 z-10">
+                                        <Image 
+                                            src="/images/icons/person.svg" 
+                                            alt="Person" 
+                                            width={224}
+                                            height={224}
+                                            priority
+                                        />
+                                    </div>
+                                )}
+
+                                {/* Fallback to existing static content only if no CMS position data exists at all */}
+                                {!positionData && item.content}
+                            </div>
+                        );
+                    })}
                 </Masonry>
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-0">
-                    {galleryItems.map((item, index) => (
-                        <div key={`gallery-item-${index}`} className={`gallery-item ${item.height} relative`}>
-                            {getImageForPosition(index + 1) && (
-                                <Image
-                                    src={getImageForPosition(index + 1)!}
-                                    alt={getAltForPosition(index + 1) || `Gallery image ${index + 1}`}
-                                    fill
-                                    className="object-cover z-0"
-                                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                                />
-                            )}
-                            {item.content}
-                        </div>
-                    ))}
+                    {galleryItems.map((item, index) => {
+                        const positionData = getPositionData(index + 1);
+                        const hasImage = positionData?.image;
+                        const hasText = positionData?.text && positionData.text.trim() !== '';
+                        const hasLink = positionData?.link;
+                        
+                        return (
+                            <div key={`gallery-item-${index}`} className={`gallery-item ${item.height} relative`}>
+                                {/* Render CMS image if present for this position */}
+                                {hasImage && (
+                                    <Image
+                                        src={positionData.image!}
+                                        alt={getAltForPosition(index + 1) || `Gallery image ${index + 1}`}
+                                        fill
+                                        className="object-cover z-0"
+                                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                    />
+                                )}
+                                
+                                {/* Render CMS text overlay with link if present */}
+                                {hasText && (
+                                    hasLink ? (
+                                        <Link href={positionData.link!} className="block">
+                                            <h1 className={`text-3xl md:text-5xl xl:text-6xl font-medium absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] text-center hover:scale-103 transition-all duration-300 cursor-pointer z-20 ${positionData.text!.includes('\\n') ? '' : 'whitespace-nowrap'}`}>
+                                                {positionData.text!.split('\\n').map((line, index) => (
+                                                    <span key={index}>
+                                                        {line}
+                                                        {index < positionData.text!.split('\\n').length - 1 && <br />}
+                                                    </span>
+                                                ))}
+                                            </h1>
+                                        </Link>
+                                    ) : (
+                                        <h1 className={`text-3xl md:text-5xl xl:text-6xl font-medium absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] text-center z-20 ${positionData.text!.includes('\\n') ? '' : 'whitespace-nowrap'}`}>
+                                            {positionData.text!.split('\\n').map((line, index) => (
+                                                <span key={index}>
+                                                    {line}
+                                                    {index < positionData.text!.split('\\n').length - 1 && <br />}
+                                                </span>
+                                            ))}
+                                        </h1>
+                                    )
+                                )}
+                                
+                                {/* Hardcoded decorative icons for specific positions */}
+                                {index === 0 && (
+                                    <div className="absolute bottom-[-50px] left-1/2 -translate-x-1/2 md:left-[30%] md:translate-x-0 w-32 sm:w-40 lg:w-48 rotate-[-5deg] z-10">
+                                        <Image 
+                                            src="/images/icons/klapbord.svg" 
+                                            alt="Klapbord" 
+                                            width={208}
+                                            height={208}
+                                            priority
+                                        />
+                                    </div>
+                                )}
+                                {index === 2 && (
+                                    <div className="hidden xl:block absolute -top-[30%] right-35 w-50 z-10">
+                                        <Image 
+                                            src="/images/icons/bulb.svg" 
+                                            alt="Bulb" 
+                                            width={208}
+                                            height={208}
+                                            priority
+                                        />
+                                    </div>
+                                )}
+                                {index === 8 && (
+                                    <div className="absolute -bottom-15 left-1/2 -translate-x-1/2 md:-bottom-20 md:left-10 md:translate-x-0 xl:-bottom-20 xl:-left-18 w-32 sm:w-40 lg:w-48 z-10">
+                                        <Image 
+                                            src="/images/icons/mouth.svg" 
+                                            alt="Mouth" 
+                                            width={208}
+                                            height={208}
+                                            priority
+                                        />
+                                    </div>
+                                )}
+                                {index === 9 && (
+                                    <div className="absolute -bottom-20 left-1/2 -translate-x-1/2 md:-bottom-30 md:right-10 md:left-auto md:translate-x-0 xl:-bottom-25 xl:-right-22 w-32 sm:w-40 lg:w-48 z-10">
+                                        <Image 
+                                            src="/images/icons/person.svg" 
+                                            alt="Person" 
+                                            width={208}
+                                            height={208}
+                                            priority
+                                        />
+                                    </div>
+                                )}
+
+                                {/* Fallback to existing static content only if no CMS position data exists at all */}
+                                {!positionData && item.content}
+                            </div>
+                        );
+                    })}
                 </div>
             )}
         </div>

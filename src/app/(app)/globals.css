@@ -34,10 +34,12 @@ body {
 .my-masonry-grid {
   display: flex;
   width: auto;
+  overflow: visible;
 }
 
 .my-masonry-grid_column {
   background-clip: padding-box;
+  overflow: visible;
 }
 
 /* styles/global.css */
@@ -53,4 +55,5 @@ body {
   background-color: #FFFFFF;
   border: .5px solid #5D1522;
   box-sizing: border-box;
+  overflow: visible;
 }
