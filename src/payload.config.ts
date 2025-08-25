@@ -33,12 +33,12 @@ const storage = s3Storage({
   },
   bucket: process.env.S3_BUCKET || 'brandview-data',
   config: {
-    endpoint: process.env.S3_ENDPOINT || 'https://d769879df266edf1eaf504e7027ee2a0.eu.r2.cloudflarestorage.com',
+    endpoint: 'https://d769879df266edf1eaf504e7027ee2a0.eu.r2.cloudflarestorage.com',
     credentials: {
       accessKeyId: process.env.S3_ACCESS_KEY_ID || '',
       secretAccessKey: process.env.S3_SECRET_ACCESS_KEY || '',
     },
-    region: process.env.S3_REGION || 'auto',
+    region: 'auto',
     forcePathStyle: true,
   },
 });
