@@ -42,6 +42,9 @@ const fallbackData = {
 async function getPortfolioData() {
     try {
         const base = process.env.PAYLOAD_PUBLIC_SERVER_URL || process.env.NEXT_PUBLIC_SERVER_URL || '';
+        if (!base) {
+            return fallbackData;
+        }
         const response = await fetch(`${base}/api/pages?where[slug][equals]=portfolio`);
         if (!response.ok) {
             console.warn('Failed to fetch portfolio data, using fallback');

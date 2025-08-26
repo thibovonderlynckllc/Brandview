@@ -65,6 +65,10 @@ const fallbackData = {
 async function getAboutData() {
     try {
         const base = process.env.PAYLOAD_PUBLIC_SERVER_URL || process.env.NEXT_PUBLIC_SERVER_URL || '';
+        if (!base) {
+            // No absolute base URL available at build time
+            return fallbackData;
+        }
         const response = await fetch(`${base}/api/pages?where[slug][equals]=about`);
         if (!response.ok) {
             console.warn('Failed to fetch about data, using fallback');
