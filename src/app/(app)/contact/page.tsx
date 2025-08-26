@@ -63,7 +63,8 @@ const fallbackData: ContactPageData = {
 
 async function getContactPageData(): Promise<ContactPageData> {
   try {
-    const response = await fetch(`${process.env.PAYLOAD_PUBLIC_SERVER_URL || 'http://localhost:3000'}/api/pages?where[and][0][slug][equals]=contact&where[and][1][pageType][equals]=contact`, {
+    const base = process.env.PAYLOAD_PUBLIC_SERVER_URL || process.env.NEXT_PUBLIC_SERVER_URL || '';
+    const response = await fetch(`${base}/api/pages?where[and][0][slug][equals]=contact&where[and][1][pageType][equals]=contact`, {
       next: { revalidate: 60 } // Revalidate every 60 seconds
     });
     

@@ -64,7 +64,8 @@ const fallbackData = {
 
 async function getAboutData() {
     try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000'}/api/pages?where[slug][equals]=about`);
+        const base = process.env.PAYLOAD_PUBLIC_SERVER_URL || process.env.NEXT_PUBLIC_SERVER_URL || '';
+        const response = await fetch(`${base}/api/pages?where[slug][equals]=about`);
         if (!response.ok) {
             console.warn('Failed to fetch about data, using fallback');
             return fallbackData;
