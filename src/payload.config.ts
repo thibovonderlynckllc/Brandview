@@ -29,7 +29,11 @@ const storage = s3Storage({
       prefix: 'media',
       generateFileURL: ({ filename, prefix }) => {
         const publicUrl = process.env.S3_PUBLIC_URL;
-        if (!publicUrl) return '';
+        if (!publicUrl) {
+          console.warn('S3_PUBLIC_URL not set, using fallback URL');
+          // Fallback to a basic URL structure
+          return `https://${process.env.S3_BUCKET || 'brandview-data'}.r2.dev/${prefix}/${filename}`;
+        }
         return `${publicUrl}/${prefix}/${filename}`;
       },
     },
