@@ -1,6 +1,14 @@
 const { withPayload } = require('@payloadcms/next/withPayload');
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+  serverExternalPackages: ['payload'],
+  experimental: {
+    optimizePackageImports: ['lucide-react'],
+  },
   images: {
     remotePatterns: [
       {
@@ -10,12 +18,11 @@ const nextConfig = {
         pathname: '/**',
       },
     ],
-    dangerouslyAllowSVG: true,
-    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
+    formats: ['image/webp', 'image/avif'],
+    minimumCacheTTL: 60 * 60 * 24 * 30,
   },
-  experimental: {
-    reactCompiler: false,
-  },
+  compress: true,
+  swcMinify: true,
 };
 
 module.exports = withPayload(nextConfig);
