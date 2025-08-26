@@ -98,16 +98,7 @@ const fallbackData = {
 
 async function getServicesData() {
     try {
-        // During build time, use fallback data
-        if (process.env.NODE_ENV === 'production' && !process.env.NEXT_PUBLIC_SERVER_URL) {
-            return fallbackData;
-        }
-        
-        const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000';
-        const response = await fetch(`${baseUrl}/api/pages?where[slug][equals]=services`, {
-            next: { revalidate: 3600 }, // Cache for 1 hour
-        });
-        
+        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000'}/api/pages?where[slug][equals]=services`);
         if (!response.ok) {
             console.warn('Failed to fetch services data, using fallback');
             return fallbackData;

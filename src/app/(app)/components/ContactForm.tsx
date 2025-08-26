@@ -73,7 +73,7 @@ export default function ContactForm({ formSettings }: ContactFormProps) {
         setSubmitStatus('error');
         setErrorMessage(result.error || 'Something went wrong. Please try again.');
       }
-    } catch {
+    } catch (error) {
       setSubmitStatus('error');
       setErrorMessage('Network error. Please check your connection and try again.');
     } finally {
@@ -156,7 +156,7 @@ export default function ContactForm({ formSettings }: ContactFormProps) {
       {/* Success/Error Messages */}
       {submitStatus === 'success' && (
         <div className="mb-6 p-4 bg-green-100 border border-green-400 text-green-700 rounded-3xl">
-          <p className="text-lg">Thank you! Your message has been sent successfully. We&apos;ll get back to you soon.</p>
+          <p className="text-lg">Thank you! Your message has been sent successfully. We'll get back to you soon.</p>
         </div>
       )}
 

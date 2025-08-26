@@ -67,15 +67,9 @@ interface PortfolioData {
 
 async function getPortfolioData(slug: string): Promise<PortfolioData | null> {
   try {
-    // During build time, return null to use fallback
-    if (process.env.NODE_ENV === 'production' && !process.env.NEXT_PUBLIC_SERVER_URL) {
-      return null;
-    }
-    
-    const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000';
     const response = await fetch(
-      `${baseUrl}/api/portfolio?where[slug][equals]=${slug}`,
-      { next: { revalidate: 3600 } }
+      `${process.env.PAYLOAD_PUBLIC_SERVER_URL || 'http://localhost:3000'}/api/portfolio?where[slug][equals]=${slug}`,
+      { next: { revalidate: 60 } }
     );
     
     if (!response.ok) {

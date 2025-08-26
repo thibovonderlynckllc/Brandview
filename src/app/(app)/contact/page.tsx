@@ -63,14 +63,8 @@ const fallbackData: ContactPageData = {
 
 async function getContactPageData(): Promise<ContactPageData> {
   try {
-    // During build time, use fallback data
-    if (process.env.NODE_ENV === 'production' && !process.env.NEXT_PUBLIC_SERVER_URL) {
-      return fallbackData;
-    }
-    
-    const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000';
-    const response = await fetch(`${baseUrl}/api/pages?where[and][0][slug][equals]=contact&where[and][1][pageType][equals]=contact`, {
-      next: { revalidate: 3600 }, // Cache for 1 hour
+    const response = await fetch(`${process.env.PAYLOAD_PUBLIC_SERVER_URL || 'http://localhost:3000'}/api/pages?where[and][0][slug][equals]=contact&where[and][1][pageType][equals]=contact`, {
+      next: { revalidate: 60 } // Revalidate every 60 seconds
     });
     
     if (!response.ok) {
