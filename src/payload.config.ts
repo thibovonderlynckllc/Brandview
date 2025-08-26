@@ -29,23 +29,19 @@ const storage = s3Storage({
       prefix: 'media',
       generateFileURL: ({ filename, prefix }) => {
         const publicUrl = process.env.S3_PUBLIC_URL;
-        if (!publicUrl) {
-          console.warn('S3_PUBLIC_URL not set, using fallback URL');
-          // Fallback to a basic URL structure
-          return `https://${process.env.S3_BUCKET || 'brandview-data'}.r2.dev/${prefix}/${filename}`;
-        }
+        if (!publicUrl) return '';
         return `${publicUrl}/${prefix}/${filename}`;
       },
     },
   },
   bucket: process.env.S3_BUCKET || 'brandview-data',
   config: {
-    endpoint: process.env.S3_ENDPOINT, // e.g. https://<account>.r2.cloudflarestorage.com
+    endpoint: 'https://2fd94ced61b273ffbd555d6042084c3a.r2.cloudflarestorage.com',
     credentials: {
       accessKeyId: process.env.S3_ACCESS_KEY_ID || '',
       secretAccessKey: process.env.S3_SECRET_ACCESS_KEY || '',
     },
-    region: process.env.S3_REGION || 'auto',
+    region: 'auto',
     forcePathStyle: true,
   },
 });
