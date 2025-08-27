@@ -1,68 +1,64 @@
 import Image from 'next/image';
+import { getPayload } from 'payload';
+import config from '../../../payload.config';
 
 // Fallback data
 const fallbackData = {
     ratesHeroTitle: "A fixed package or customized?",
-    ratesHeroSubtitle: "our rates",
+    ratesHeroSubtitle: "rates",
     ratesPricingSection: {
         contentPlans: {
             title: "content plans",
-            subtitle: "monthly packages (min. 6 months)",
+            subtitle: "monthly packages",
             starterPack: {
                 title: "starter pack",
                 description: "= basic package",
                 features: [
-                    { feature: "2 shortform videos (max. 30 sec)" },
-                    { feature: "8 edited photos" },
-                    { feature: "professional lightning" },
-                    { feature: "Simple image correction & color editing" },
-                    { feature: "Basic post-processing in your house style" },
-                    { feature: "Delivery within 14 working days" }
+                    { feature: "1 video per month" },
+                    { feature: "5 photos per month" },
+                    { feature: "Basic editing" },
+                    { feature: "Social media optimization" },
                 ],
-                price: "€ 950 exclusive btw"
+                price: "€ 450 exclusive btw"
             },
             brandBuilder: {
                 title: "brand builder",
                 description: "= pro package",
                 features: [
-                    { feature: "12 edited photos" },
-                    { feature: "4 shortform video (max. 30 sec)" },
-                    { feature: "creative on set" },
-                    { feature: "Simple image correction & color editing" },
-                    { feature: "Basic post-processing in your house style" },
-                    { feature: "Delivery within 14 working days" }
+                    { feature: "2 videos per month" },
+                    { feature: "10 photos per month" },
+                    { feature: "Advanced editing" },
+                    { feature: "Social media optimization" },
+                    { feature: "Content strategy consultation" },
                 ],
-                price: "€ 1.470 exclusive btw"
+                price: "€ 850 exclusive btw"
             }
         },
         flashDeals: {
             title: "flash deals",
-            subtitle: "one-time collaboration (1 month)",
+            subtitle: "one-time collaboration",
             focus: {
                 title: "focus",
                 description: "= basic package",
                 features: [
-                    { feature: "2 shortform videos (max. 30 sec)" },
-                    { feature: "8 edited photos" },
-                    { feature: "professional lightning" },
-                    { feature: "Simple image correction & color editing" },
-                    { feature: "Basic post-processing in your house style" },
-                    { feature: "Delivery within 14 working days" }
+                    { feature: "1 video" },
+                    { feature: "5 photos" },
+                    { feature: "Basic editing" },
+                    { feature: "Social media optimization" },
                 ],
-                price: "€ 1.100 exclusive btw"
+                price: "€ 450 exclusive btw"
             },
             fullFrame: {
                 title: "full frame",
                 description: "= pro package",
                 features: [
-                    { feature: "12 edited photos" },
-                    { feature: "4 shortform video (max. 30 sec)" },
-                    { feature: "creative on set" },
-                    { feature: "Simple image correction & color editing" },
-                    { feature: "Basic post-processing in your house style" },
-                    { feature: "Delivery within 14 working days" }
+                    { feature: "2 videos" },
+                    { feature: "10 photos" },
+                    { feature: "Advanced editing" },
+                    { feature: "Social media optimization" },
+                    { feature: "Content strategy consultation" },
                 ],
-                price: "€ 1.570 exclusive btw"
+                price: "€ 850 exclusive btw"
             }
         },
         addOns: {
@@ -83,19 +79,18 @@ const fallbackData = {
 };
 
 async function getRatesData() {
+    const payload = await getPayload({ config });
     try {
-        const base = process.env.PAYLOAD_PUBLIC_SERVER_URL || process.env.NEXT_PUBLIC_SERVER_URL || '';
-        if (!base) {
-            return fallbackData;
-        }
-        const response = await fetch(`${base}/api/pages?where[slug][equals]=rates`);
-        if (!response.ok) {
-            console.warn('Failed to fetch rates data, using fallback');
-            return fallbackData;
-        }
-        const data = await response.json();
-        if (data.docs && data.docs.length > 0) {
-            const pageData = data.docs[0];
+        const pages = await payload.find({
+            collection: 'pages' as any,
+            where: {
+                slug: { equals: 'rates' }
+            },
+            limit: 1
+        });
+        
+        if (pages.docs.length > 0) {
+            const pageData = pages.docs[0];
             // If it's a rates page, return the data, otherwise use fallback
             if (pageData.pageType === 'rates') {
                 return pageData;
@@ -107,6 +102,9 @@ async function getRatesData() {
         return fallbackData;
     }
 }
+
+export const dynamic = 'force-dynamic';
+export const revalidate = 3600; // Cache for 1 hour, revalidate on demand
 
 interface RatesData {
     ratesHeroTitle: string;
@@ -154,7 +152,7 @@ interface RatesData {
     };
 }
 
-const RatesPage = async () => {
+export default async function RatesPage() {
     const data: RatesData = await getRatesData();
 
     const getIconSrc = (icon: { url: string; alt?: string } | string | null | undefined, fallback: string) => {
@@ -177,125 +175,112 @@ const RatesPage = async () => {
                 <div className="px-8 sm:px-16">
                     <h1 className="text-4xl md:text-5xl xl:text-6xl font-light text-center mb-2">{data.ratesPricingSection.contentPlans.title}</h1>
                     <p className="text-lg md:text-[23px] font-light text-center mb-8 md:mb-15">{data.ratesPricingSection.contentPlans.subtitle}</p>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-6 text-center pb-10">
-                        {/* Starter pack */}
-                        <div className="relative pt-6 h-full">
-                            <div className="absolute -top-6 left-1/2 -translate-x-1/2 bg-blue border-[2px] border-red flex items-center justify-center z-10 px-4 sm:px-8 py-4 sm:py-6 rounded-full">
-                                <span className="text-2xl sm:text-3xl md:text-[3rem] font-medium leading-none whitespace-nowrap">{data.ratesPricingSection.contentPlans.starterPack.title}</span>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-20">
+                        {/* Starter Pack */}
+                        <div className="bg-white rounded-3xl border-[1.5px] border-red p-8">
+                            <div className="text-center mb-8">
+                                <h2 className="text-3xl md:text-4xl font-medium mb-2">{data.ratesPricingSection.contentPlans.starterPack.title}</h2>
+                                <p className="text-lg md:text-xl font-light mb-4">{data.ratesPricingSection.contentPlans.starterPack.description}</p>
+                                <div className="text-2xl md:text-3xl font-medium text-red">{data.ratesPricingSection.contentPlans.starterPack.price}</div>
                             </div>
-                            <div className="absolute inset-x-0 top-0 h-12 bg-red rounded-t-3xl"></div>
-                            <div className="bg-white w-full h-full rounded-3xl border-2 border-red relative py-8 px-4 md:px-15 pt-16 flex flex-col">
-                                <p className="text-lg md:text-[23px] font-light text-center mb-4 pb-4 border-b-2 border-red">{data.ratesPricingSection.contentPlans.starterPack.description}</p>
-                                <div className="flex flex-col gap-2 text-base sm:text-lg md:text-[23px] font-light">
-                                    {data.ratesPricingSection.contentPlans.starterPack.features.map((item, index) => (
-                                        <p key={index}>{item.feature}</p>
-                                    ))}
-                                </div>
-                                <div className="mt-auto border-t-2 border-red">
-                                    <p className="text-lg md:text-[23px] font-light pt-4">{data.ratesPricingSection.contentPlans.starterPack.price}</p>
-                                </div>
-                            </div>
+                            <ul className="space-y-4">
+                                {data.ratesPricingSection.contentPlans.starterPack.features.map((feature, index) => (
+                                    <li key={index} className="flex items-center">
+                                        <div className="w-2 h-2 bg-red rounded-full mr-4"></div>
+                                        <span className="text-lg font-light">{feature.feature}</span>
+                                    </li>
+                                ))}
+                            </ul>
                         </div>
-                        {/* Brand builder */}
-                        <div className="relative pt-6 h-full">
-                            <div className="absolute -top-6 left-1/2 -translate-x-1/2 bg-blue border-[2px] border-red flex items-center justify-center z-10 px-4 sm:px-8 py-4 sm:py-6 rounded-full">
-                                <span className="text-2xl sm:text-3xl md:text-[3rem] font-medium leading-none whitespace-nowrap">{data.ratesPricingSection.contentPlans.brandBuilder.title}</span>
+
+                        {/* Brand Builder */}
+                        <div className="bg-white rounded-3xl border-[1.5px] border-red p-8">
+                            <div className="text-center mb-8">
+                                <h2 className="text-3xl md:text-4xl font-medium mb-2">{data.ratesPricingSection.contentPlans.brandBuilder.title}</h2>
+                                <p className="text-lg md:text-xl font-light mb-4">{data.ratesPricingSection.contentPlans.brandBuilder.description}</p>
+                                <div className="text-2xl md:text-3xl font-medium text-red">{data.ratesPricingSection.contentPlans.brandBuilder.price}</div>
                             </div>
-                            <div className="absolute inset-x-0 top-0 h-12 bg-red rounded-t-3xl"></div>
-                            <div className="bg-white w-full h-full rounded-3xl border-2 border-red relative py-8 px-4 md:px-15 pt-16 flex flex-col">
-                                <p className="text-lg md:text-[23px] font-light text-center mb-4 pb-4 border-b-2 border-red">{data.ratesPricingSection.contentPlans.brandBuilder.description}</p>
-                                <div className="flex flex-col gap-2 text-base sm:text-lg md:text-[23px] font-light">
-                                    {data.ratesPricingSection.contentPlans.brandBuilder.features.map((item, index) => (
-                                        <p key={index}>{item.feature}</p>
-                                    ))}
-                                </div>
-                                <div className="mt-auto border-t-2 border-red">
-                                    <p className="text-lg md:text-[23px] font-light pt-4">{data.ratesPricingSection.contentPlans.brandBuilder.price}</p>
-                                </div>
-                            </div>
+                            <ul className="space-y-4">
+                                {data.ratesPricingSection.contentPlans.brandBuilder.features.map((feature, index) => (
+                                    <li key={index} className="flex items-center">
+                                        <div className="w-2 h-2 bg-red rounded-full mr-4"></div>
+                                        <span className="text-lg font-light">{feature.feature}</span>
+                                    </li>
+                                ))}
+                            </ul>
                         </div>
                     </div>
+
+                    {/* Flash Deals */}
                     <h1 className="text-4xl md:text-5xl xl:text-6xl font-light text-center mb-2">{data.ratesPricingSection.flashDeals.title}</h1>
                     <p className="text-lg md:text-[23px] font-light text-center mb-8 md:mb-15">{data.ratesPricingSection.flashDeals.subtitle}</p>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-6 text-center pb-10">
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-20">
                         {/* Focus */}
-                        <div className="relative pt-6 h-full">
-                            <div className="absolute -top-6 left-1/2 -translate-x-1/2 bg-blue border-[2px] border-red flex items-center justify-center z-10 px-4 sm:px-8 py-4 sm:py-6 rounded-full">
-                                <span className="text-2xl sm:text-3xl md:text-[3rem] font-medium leading-none whitespace-nowrap">{data.ratesPricingSection.flashDeals.focus.title}</span>
+                        <div className="bg-white rounded-3xl border-[1.5px] border-red p-8">
+                            <div className="text-center mb-8">
+                                <h2 className="text-3xl md:text-4xl font-medium mb-2">{data.ratesPricingSection.flashDeals.focus.title}</h2>
+                                <p className="text-lg md:text-xl font-light mb-4">{data.ratesPricingSection.flashDeals.focus.description}</p>
+                                <div className="text-2xl md:text-3xl font-medium text-red">{data.ratesPricingSection.flashDeals.focus.price}</div>
                             </div>
-                            <div className="absolute inset-x-0 top-0 h-12 bg-red rounded-t-3xl"></div>
-                            <div className="bg-white w-full h-full rounded-3xl border-2 border-red relative py-8 px-4 md:px-15 pt-16 flex flex-col">
-                                <p className="text-lg md:text-[23px] font-light text-center mb-4 pb-4 border-b-2 border-red">{data.ratesPricingSection.flashDeals.focus.description}</p>
-                                <div className="flex flex-col gap-2 text-base sm:text-lg md:text-[23px] font-light">
-                                    {data.ratesPricingSection.flashDeals.focus.features.map((item, index) => (
-                                        <p key={index}>{item.feature}</p>
-                                    ))}
-                                </div>
-                                <div className="mt-auto border-t-2 border-red">
-                                    <p className="text-lg md:text-[23px] font-light pt-4">{data.ratesPricingSection.flashDeals.focus.price}</p>
-                                </div>
-                            </div>
+                            <ul className="space-y-4">
+                                {data.ratesPricingSection.flashDeals.focus.features.map((feature, index) => (
+                                    <li key={index} className="flex items-center">
+                                        <div className="w-2 h-2 bg-red rounded-full mr-4"></div>
+                                        <span className="text-lg font-light">{feature.feature}</span>
+                                    </li>
+                                ))}
+                            </ul>
                         </div>
-                        {/* Full frame */}
-                        <div className="relative pt-6 h-full">
-                            <div className="absolute -top-6 left-1/2 -translate-x-1/2 bg-blue border-[2px] border-red flex items-center justify-center z-10 px-4 sm:px-8 py-4 sm:py-6 rounded-full">
-                                <span className="text-2xl sm:text-3xl md:text-[3rem] font-medium leading-none whitespace-nowrap">{data.ratesPricingSection.flashDeals.fullFrame.title}</span>
-                            </div>
-                            <div className="absolute inset-x-0 top-0 h-12 bg-red rounded-t-3xl"></div>
-                            <div className="bg-white w-full h-full rounded-3xl border-2 border-red relative py-8 px-4 md:px-15 pt-16 flex flex-col">
-                                <p className="text-lg md:text-[23px] font-light text-center mb-4 pb-4 border-b-2 border-red">{data.ratesPricingSection.flashDeals.fullFrame.description}</p>
-                                <div className="flex flex-col gap-2 text-base sm:text-lg md:text-[23px] font-light">
-                                    {data.ratesPricingSection.flashDeals.fullFrame.features.map((item, index) => (
-                                        <p key={index}>{item.feature}</p>
-                                    ))}
-                                </div>
-                                <div className="mt-auto border-t-2 border-red">
-                                    <p className="text-lg md:text-[23px] font-light pt-4">{data.ratesPricingSection.flashDeals.fullFrame.price}</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <h1 className="text-4xl md:text-5xl xl:text-6xl font-light text-center mb-2">{data.ratesPricingSection.addOns.title}</h1>
-                    <p className="text-lg md:text-[23px] font-light text-center mb-8 md:mb-15">{data.ratesPricingSection.addOns.subtitle}</p>
-                    <div className="flex justify-center pb-10">
-                        {/* Boosters */}
-                        <div className="relative pt-6 w-full md:w-[min(100%,800px)]">
-                            <div className="absolute -top-6 left-1/2 -translate-x-1/2 bg-blue border-[2px] border-red flex items-center justify-center z-10 px-4 sm:px-8 py-4 sm:py-6 rounded-full">
-                                <span className="text-2xl sm:text-3xl md:text-[3rem] font-medium leading-none whitespace-nowrap">{data.ratesPricingSection.addOns.boostersTitle}</span>
-                            </div>
-                            <div className="absolute inset-x-0 top-0 h-12 bg-red rounded-t-3xl"></div>
-                            <div className="bg-white w-full h-full rounded-3xl border-2 border-red relative py-8 px-4 md:px-15 pt-16 flex flex-col">
-                                <div className="absolute -top-20 right-0 md:-right-10 md:-top-40 lg:-right-25 w-32 sm:w-40 lg:w-48">
-                                    <Image 
-                                        src={getIconSrc(data.ratesPricingSection.addOns.megaphoneIcon, "/images/icons/megaphone.svg")} 
-                                        alt="Megaphone" 
-                                        width={208} 
-                                        height={208} 
-                                    />
-                                </div>
-                                <div className="grid grid-cols-2 gap-2 text-base sm:text-lg md:text-[23px] font-light relative">
-                                    <div className="flex flex-col items-end gap-4 pr-4 md:pr-8">
-                                        {data.ratesPricingSection.addOns.items.map((item: { name: string; price: string }, index: number) => (
-                                            <p key={index}>{item.name}</p>
-                                        ))}
-                                    </div>
-                                    <div className="flex flex-col items-start gap-4 pl-4 md:pl-8 border-l-2 border-red">
-                                        {(data.ratesPricingSection.addOns.items as { name: string; price: string }[]).map((item, index) => (
-                                            <p key={index}>{item.price}</p>
-                                        ))}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
-                <div className="px-8 sm:px-16">
-                    <div className="h-[2px] bg-red w-full"></div>
+                        {/* Full Frame */}
+                        <div className="bg-white rounded-3xl border-[1.5px] border-red p-8">
+                            <div className="text-center mb-8">
+                                <h2 className="text-3xl md:text-4xl font-medium mb-2">{data.ratesPricingSection.flashDeals.fullFrame.title}</h2>
+                                <p className="text-lg md:text-xl font-light mb-4">{data.ratesPricingSection.flashDeals.fullFrame.description}</p>
+                                <div className="text-2xl md:text-3xl font-medium text-red">{data.ratesPricingSection.flashDeals.fullFrame.price}</div>
+                            </div>
+                            <ul className="space-y-4">
+                                {data.ratesPricingSection.flashDeals.fullFrame.features.map((feature, index) => (
+                                    <li key={index} className="flex items-center">
+                                        <div className="w-2 h-2 bg-red rounded-full mr-4"></div>
+                                        <span className="text-lg font-light">{feature.feature}</span>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    </div>
+
+                    {/* Add-ons */}
+                    <div className="text-center mb-15">
+                        <h1 className="text-4xl md:text-5xl xl:text-6xl font-light mb-2">{data.ratesPricingSection.addOns.title}</h1>
+                        <p className="text-lg md:text-[23px] font-light mb-4">{data.ratesPricingSection.addOns.subtitle}</p>
+                        <h2 className="text-2xl md:text-3xl font-medium mb-8">{data.ratesPricingSection.addOns.boostersTitle}</h2>
+                        
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+                            {data.ratesPricingSection.addOns.items.map((item, index) => (
+                                <div key={index} className="bg-white rounded-3xl border-[1.5px] border-red p-6">
+                                    <div className="text-center">
+                                        <p className="text-lg font-medium mb-2">{item.name}</p>
+                                        <p className="text-lg font-light text-red">{item.price}</p>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                        
+                        <div className="mt-15">
+                            <Image 
+                                src={getIconSrc(data.ratesPricingSection.addOns.megaphoneIcon, "/images/icons/megaphone.svg")} 
+                                alt="Megaphone Icon" 
+                                width={100} 
+                                height={100} 
+                                className="mx-auto"
+                            />
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    )
+    );
 }
-
-export default RatesPage;

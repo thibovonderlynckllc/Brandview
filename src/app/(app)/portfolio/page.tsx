@@ -1,5 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { getPayload } from 'payload';
+import config from '../../../payload.config';
 
 // Fallback data
 const fallbackData = {
@@ -40,19 +42,18 @@ const fallbackData = {
 };
 
 async function getPortfolioData() {
+    const payload = await getPayload({ config });
     try {
-        const base = process.env.PAYLOAD_PUBLIC_SERVER_URL || process.env.NEXT_PUBLIC_SERVER_URL || '';
-        if (!base) {
-            return fallbackData;
-        }
-        const response = await fetch(`${base}/api/pages?where[slug][equals]=portfolio`);
-        if (!response.ok) {
-            console.warn('Failed to fetch portfolio data, using fallback');
-            return fallbackData;
-        }
-        const data = await response.json();
-        if (data.docs && data.docs.length > 0) {
-            const pageData = data.docs[0];
+        const pages = await payload.find({
+            collection: 'pages' as any,
+            where: {
+                slug: { equals: 'portfolio' }
+            },
+            limit: 1
+        });
+        
+        if (pages.docs.length > 0) {
+            const pageData = pages.docs[0];
             // If it's a portfolio page, return the data, otherwise use fallback
             if (pageData.pageType === 'portfolio') {
                 return pageData;
@@ -64,6 +65,9 @@ async function getPortfolioData() {
         return fallbackData;
     }
 }
+
+export const dynamic = 'force-dynamic';
+export const revalidate = 3600; // Cache for 1 hour, revalidate on demand
 
 interface PortfolioCard {
     title: string;
@@ -77,7 +81,7 @@ interface PortfolioData {
     bannerImage?: { url: string; alt?: string } | string | null;
 }
 
-const PortfolioPage = async () => {
+export default async function PortfolioPage() {
     const data: PortfolioData = await getPortfolioData();
 
     const renderIcon = (card: PortfolioCard) => {
@@ -133,5 +137,3 @@ const PortfolioPage = async () => {
         </div>
     )
 }
-
-export default PortfolioPage;

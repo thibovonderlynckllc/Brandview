@@ -1,38 +1,32 @@
 import Image from 'next/image';
+import { getPayload } from 'payload';
+import config from '../../../payload.config';
 import ContactForm from '../components/ContactForm';
-
-// Types for API response
-interface ContactInfo {
-  brandName: string;
-  phoneNumber: string;
-  phoneNumberLink: string;
-  email: string;
-  emailLink: string;
-  addressLine1: string;
-  addressLine2: string;
-  mapLink: string;
-  laptopIcon?: {
-    url: string;
-  };
-}
-
-interface ContactFormSettings {
-  submitButtonText: string;
-  firstNameLabel: string;
-  lastNameLabel: string;
-  phoneLabel: string;
-  emailLabel: string;
-  messageLabel: string;
-  requiredText: string;
-}
 
 interface ContactPageData {
   contactHeroTitle: string;
   contactHeroSubtitle: string;
-  contactInfo: ContactInfo;
-  contactFormSettings: ContactFormSettings;
-  contactBannerImage?: {
-    url: string;
+  contactInfo: {
+    brandName: string;
+    phoneNumber: string;
+    phoneNumberLink: string;
+    email: string;
+    emailLink: string;
+    addressLine1: string;
+    addressLine2: string;
+    mapLink: string;
+    laptopIcon?: {
+      url: string;
+    };
+  };
+  contactFormSettings: {
+    submitButtonText: string;
+    firstNameLabel: string;
+    lastNameLabel: string;
+    phoneLabel: string;
+    emailLabel: string;
+    messageLabel: string;
+    requiredText: string;
   };
 }
 
@@ -62,24 +56,21 @@ const fallbackData: ContactPageData = {
 };
 
 async function getContactPageData(): Promise<ContactPageData> {
+  const payload = await getPayload({ config });
   try {
-    const base = process.env.PAYLOAD_PUBLIC_SERVER_URL || process.env.NEXT_PUBLIC_SERVER_URL || '';
-    if (!base) {
-      return fallbackData;
-    }
-    const response = await fetch(`${base}/api/pages?where[and][0][slug][equals]=contact&where[and][1][pageType][equals]=contact`, {
-      next: { revalidate: 60 } // Revalidate every 60 seconds
+    const pages = await payload.find({
+      collection: 'pages' as any,
+      where: {
+        and: [
+          { slug: { equals: 'contact' } },
+          { pageType: { equals: 'contact' } }
+        ]
+      },
+      limit: 1
     });
     
-    if (!response.ok) {
-      console.warn('Failed to fetch contact page data, using fallback');
-      return fallbackData;
-    }
-    
-    const data = await response.json();
-    
-    if (data.docs && data.docs.length > 0) {
-      return data.docs[0];
+    if (pages.docs.length > 0) {
+      return pages.docs[0];
     }
     
     return fallbackData;
@@ -89,7 +80,10 @@ async function getContactPageData(): Promise<ContactPageData> {
   }
 }
 
-const ContactPage = async () => {
+export const dynamic = 'force-dynamic';
+export const revalidate = 3600; // Cache for 1 hour, revalidate on demand
+
+export default async function ContactPage() {
     const pageData = await getContactPageData();
     
     return (
@@ -170,25 +164,6 @@ const ContactPage = async () => {
                     </div>
                 </div>
             </div>
-            {pageData.contactBannerImage?.url ? (
-                <Image 
-                    src={pageData.contactBannerImage.url} 
-                    alt="banner" 
-                    width={1920} 
-                    height={200} 
-                    className="w-full h-52 md:h-auto object-cover" 
-                />
-            ) : (
-                <Image 
-                    src="/images/banner.svg" 
-                    alt="banner" 
-                    width={1920} 
-                    height={200} 
-                    className="w-full h-52 md:h-auto object-cover" 
-                />
-            )}
         </div>
-    )
+    );
 }
-
-export default ContactPage;
