@@ -6,6 +6,7 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
   serverExternalPackages: ['payload'],
+  // Performance optimizations
   experimental: {
     optimizePackageImports: ['lucide-react'],
   },
@@ -13,15 +14,18 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'https://pub-5d9eae249ab74c239b5667c69d5b928e.r2.dev',
+        hostname: 'pub-5d9eae249ab74c239b5667c69d5b928e.r2.dev',
         port: '',
         pathname: '/**',
       },
     ],
+    // Optimize image loading
     formats: ['image/webp', 'image/avif'],
-    minimumCacheTTL: 60 * 60 * 24 * 30,
+    minimumCacheTTL: 60 * 60 * 24 * 30, // 30 days
   },
+  // Enable compression
   compress: true,
+  // Optimize bundle size
   swcMinify: true,
 };
 
