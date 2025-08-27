@@ -37,8 +37,8 @@ export const Media: CollectionConfig = {
       hasMany: true,
       options: [
         { label: 'Home', value: 'home' },
+        { label: 'About Us', value: 'about-us' },
         { label: 'Services', value: 'services' },
-        { label: 'Portfolio', value: 'portfolio' },
         { label: 'Portfolio - Business', value: 'portfolio-business' },
         { label: 'Portfolio - Corporate Events', value: 'portfolio-corporate-events' },
         { label: 'Portfolio - Food', value: 'portfolio-food' },
