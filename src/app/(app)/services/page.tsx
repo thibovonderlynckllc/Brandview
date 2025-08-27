@@ -149,6 +149,7 @@ interface ServiceItem {
     icon?: { url: string; alt?: string } | string | null;
     iconPosition: 'none' | 'top-left' | 'top-right';
     linkText?: string;
+    linkUrl?: string;
 }
 
 interface MediaItem {
