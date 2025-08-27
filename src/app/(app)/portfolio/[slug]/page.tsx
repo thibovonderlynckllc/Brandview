@@ -67,8 +67,12 @@ interface PortfolioData {
 
 async function getPortfolioData(slug: string): Promise<PortfolioData | null> {
   try {
+    const base = process.env.PAYLOAD_PUBLIC_SERVER_URL || process.env.NEXT_PUBLIC_SERVER_URL || '';
+    if (!base) {
+      return null;
+    }
     const response = await fetch(
-      `${process.env.PAYLOAD_PUBLIC_SERVER_URL || 'http://localhost:3000'}/api/portfolio?where[slug][equals]=${slug}`,
+      `${base}/api/portfolio?where[slug][equals]=${slug}`,
       { next: { revalidate: 60 } }
     );
     
