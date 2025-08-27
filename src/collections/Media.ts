@@ -6,44 +6,48 @@ export const Media: CollectionConfig = {
     read: () => true,
   },
   admin: {
-    useAsTitle: 'alt',
-    defaultColumns: ['alt', 'tags', 'updatedAt'],
+    useAsTitle: 'name',
+    defaultColumns: ['name', 'alt', 'tags', 'updatedAt'],
     pagination: {
       defaultLimit: 25,
       limits: [10, 25, 50, 100],
     },
-    listSearchableFields: ['alt', 'customTags'],
+    listSearchableFields: ['name', 'alt'],
   },
   fields: [
+    {
+      name: 'name',
+      type: 'text',
+      required: true,
+      admin: {
+        description: 'Give this media a descriptive name for easy searching and identification.',
+      },
+    },
     {
       name: 'alt',
       type: 'text',
       required: true,
+      admin: {
+        description: 'Alt text for accessibility (used by screen readers).',
+      },
     },
     {
       name: 'tags',
       type: 'select',
       hasMany: true,
       options: [
-        { label: 'Business', value: 'business' },
-        { label: 'Corporate Events', value: 'corporate-events' },
-        { label: 'Food', value: 'food' },
-        { label: 'Portraits', value: 'portraits' },
-        { label: 'Products', value: 'products' },
-        { label: 'Short Content', value: 'short-content' },
-        { label: 'Icons', value: 'icons' },
-        { label: 'Banners', value: 'banners' },
-        { label: 'Decorative', value: 'decorative' },
+        { label: 'Home', value: 'home' },
+        { label: 'Services', value: 'services' },
+        { label: 'Portfolio', value: 'portfolio' },
+        { label: 'Portfolio - Business', value: 'portfolio-business' },
+        { label: 'Portfolio - Corporate Events', value: 'portfolio-corporate-events' },
+        { label: 'Portfolio - Food', value: 'portfolio-food' },
+        { label: 'Portfolio - Portraits', value: 'portfolio-portraits' },
+        { label: 'Portfolio - Products', value: 'portfolio-products' },
+        { label: 'Portfolio - Short Content', value: 'portfolio-short-content' },
       ],
       admin: {
-        description: 'Tag this media to organize by gallery type or purpose. You can select multiple tags.',
-      },
-    },
-    {
-      name: 'customTags',
-      type: 'text',
-      admin: {
-        description: 'Add custom tags separated by commas (e.g., "outdoor, summer, campaign")',
+        description: 'Select which page(s) this media belongs to. You can select multiple pages.',
       },
     },
   ],
