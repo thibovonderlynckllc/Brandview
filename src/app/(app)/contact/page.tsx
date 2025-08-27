@@ -56,14 +56,18 @@ const fallbackData: ContactPageData = {
 };
 
 async function getContactPageData(): Promise<ContactPageData> {
-  const payload = await getPayload({ config });
   try {
+    const payload = await getPayload({ config });
     const pages = await payload.find({
       collection: 'pages' as any,
       where: {
         and: [
-          { slug: { equals: 'contact' } },
-          { pageType: { equals: 'contact' } }
+          {
+            slug: { equals: 'contact' }
+          },
+          {
+            pageType: { equals: 'contact' }
+          }
         ]
       },
       limit: 1
@@ -83,7 +87,7 @@ async function getContactPageData(): Promise<ContactPageData> {
 export const dynamic = 'force-dynamic';
 export const revalidate = 3600; // Cache for 1 hour, revalidate on demand
 
-export default async function ContactPage() {
+const ContactPage = async () => {
     const pageData = await getContactPageData();
     
     return (
@@ -152,13 +156,9 @@ export default async function ContactPage() {
                                     className="w-full h-auto" 
                                 />
                             ) : (
-                                <Image 
-                                    src="/images/icons/laptop.svg" 
-                                    alt="Laptop" 
-                                    width={248} 
-                                    height={200} 
-                                    className="w-full h-auto" 
-                                />
+                                <div className="w-full h-48 bg-gray-200 rounded-lg flex items-center justify-center">
+                                    <span className="text-gray-500">Laptop Icon</span>
+                                </div>
                             )}
                         </div>
                     </div>
@@ -166,4 +166,6 @@ export default async function ContactPage() {
             </div>
         </div>
     );
-}
+};
+
+export default ContactPage;

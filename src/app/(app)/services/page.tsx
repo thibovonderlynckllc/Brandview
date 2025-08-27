@@ -1,135 +1,125 @@
 import Image from 'next/image';
+import SwirlArrow from '../components/SwirlArrow';
 import Link from 'next/link';
+import VideoPlayer from '../components/VideoPlayer';
 import { getPayload } from 'payload';
 import config from '../../../payload.config';
 
 // Fallback data
 const fallbackData = {
-    heroTitle: "What we offer",
+    heroTitle: "Visual content that connects and converts.",
     heroSubtitle: "services",
     serviceItems: [
         {
             title: "short content",
-            subtitle: "Fast-paced, engaging videos",
-            description: "Tailor-made for social media. From concept to final edit.",
+            subtitle: "Reels / social content / interviews / trailers",
+            description: "Scroll-stopping short content tailored to your brand. We create bite-sized video stories that engage, inform and entertain, ideal for social media.",
             portfolioSlug: "short-content",
-            image: null,
-            icon: null,
-            iconPosition: "none" as const,
-            linkText: "prices",
-            linkUrl: "#",
-        },
-        {
-            title: "food",
-            subtitle: "Mouthwatering visuals",
-            description: "That make your dishes stand out.",
-            portfolioSlug: "food",
-            image: null,
-            icon: null,
-            iconPosition: "none" as const,
-            linkText: "prices",
-            linkUrl: "#",
-        },
-        {
-            title: "portraits",
-            subtitle: "Authentic and approachable",
-            description: "Images of you or your team.",
-            portfolioSlug: "portraits",
-            image: null,
-            icon: null,
-            iconPosition: "none" as const,
-            linkText: "prices",
-            linkUrl: "#",
-        },
-        {
-            title: "business",
-            subtitle: "Professional imagery",
-            description: "That reflects and enhances your brand identity.",
-            portfolioSlug: "business",
-            image: null,
-            icon: null,
-            iconPosition: "none" as const,
-            linkText: "prices",
-            linkUrl: "#",
+            iconPosition: "none",
+            linkText: "photos",
         },
         {
             title: "(corporate) events",
-            subtitle: "Candid, atmospheric images",
-            description: "That capture key moments and energy.",
+            subtitle: "",
+            description: "From conferences to company parties, we document the energy and key moments of your event with authenticity and flair. Relive the vibe, long after it's over.",
             portfolioSlug: "corporate-events",
-            image: null,
-            icon: null,
-            iconPosition: "none" as const,
-            linkText: "prices",
-            linkUrl: "#",
+            iconPosition: "none",
+            linkText: "photos",
         },
         {
-            title: "products",
-            subtitle: "Clean, scroll-stopping shots",
-            description: "For webshops, ads or catalogues.",
+            title: "food photography",
+            subtitle: "",
+            description: "Delicious visuals that make your dishes irresistible. We style, light and shoot food in a way that triggers taste buds and boosts your brand's appetite appeal.",
+            portfolioSlug: "food",
+            icon: "/images/icons/mouth.svg",
+            iconPosition: "top-left",
+            linkText: "photos",
+        },
+        {
+            title: "portraits",
+            subtitle: "",
+            description: "Authentic portraits with personality. Whether it's for your website, team page or social media, we ensure everyone looks approachable and confident.",
+            portfolioSlug: "portraits",
+            iconPosition: "none",
+            linkText: "photos",
+        },
+        {
+            title: "product photography",
+            subtitle: "",
+            description: "Sharp, stylish and scroll-stopping. We present your products in the best light, whether for e-commerce, campaigns or catalogues.",
             portfolioSlug: "products",
-            image: null,
-            icon: "/images/icons/camera.svg",
-            iconPosition: "top-right" as const,
-            linkText: "prices",
-            linkUrl: "#",
+            iconPosition: "none",
+            linkText: "photos",
+        },
+        {
+            title: "business photography",
+            subtitle: "",
+            description: "We capture the essence of your brand with clean, professional visuals that make a lasting impression. From team portraits to workspaces, we showcase the people and story behind your business.",
+            portfolioSlug: "business",
+            icon: "/images/icons/eyes.svg",
+            iconPosition: "top-right",
+            linkText: "photos",
         },
     ],
     pricingSection: {
         contentPlans: {
             title: "content plans",
-            subtitle: "Choose the plan that fits your needs",
+            subtitle: "monthly packages",
             starterPackTitle: "starter pack",
-            starterPackDescription: "Perfect for small businesses and startups",
+            starterPackDescription: "= basic package",
             brandBuilderTitle: "brand builder",
-            brandBuilderDescription: "Comprehensive visual content for growing brands",
+            brandBuilderDescription: "= pro package",
         },
         flashDeals: {
             title: "flash deals",
-            subtitle: "Limited time offers",
+            subtitle: "one-time collaboration",
             focusTitle: "focus",
-            focusDescription: "Quick, focused content creation",
+            focusDescription: "= basic package",
             fullFrameTitle: "full frame",
-            fullFrameDescription: "Complete visual storytelling package",
+            fullFrameDescription: "= pro package",
         },
         addOns: {
             title: "add-ons",
             items: [
                 { name: "extra video" },
-                { name: "10 extra photo's" },
+                { name: "extra photo" },
                 { name: "fast delivery 48h" },
                 { name: "fast delivery 72h" },
-                { name: "stylist on set" },
+                { name: "social media post text" },
                 { name: "subtitles" },
             ],
         },
         ourRates: {
             title: "our rates",
-            description: "Transparent pricing for all our services",
-            linkUrl: "/rates",
+            description: "At Brandview, you choose how we team up: from one-time Flash Deals to monthly Content Plans that build long-term brand value. Need more? Add powerful Add-Ons to boost your content even further. Explore what fits your brand best.",
             linkText: "prices",
+            linkUrl: "#",
         },
     },
 };
 
 async function getServicesData() {
-    const payload = await getPayload({ config });
     try {
+        const payload = await getPayload({ config });
         const pages = await payload.find({
             collection: 'pages' as any,
             where: {
-                slug: { equals: 'services' }
+                and: [
+                    {
+                        slug: { equals: 'services' }
+                    },
+                    {
+                        pageType: { equals: 'services' }
+                    }
+                ]
             },
             limit: 1
         });
         
         if (pages.docs.length > 0) {
-            const pageData = pages.docs[0];
-            // If it's a services page, return the data, otherwise use fallback
-            if (pageData.pageType === 'services') {
-                return pageData;
-            }
+            return pages.docs[0];
         }
+        
         return fallbackData;
     } catch (error) {
         console.warn('Error fetching services data:', error);
@@ -149,7 +139,6 @@ interface ServiceItem {
     icon?: { url: string; alt?: string } | string | null;
     iconPosition: 'none' | 'top-left' | 'top-right';
     linkText?: string;
-    linkUrl?: string;
 }
 
 interface MediaItem {
@@ -198,7 +187,7 @@ interface ServicesData {
     };
 }
 
-export default async function ServicesPage() {
+const ServicesPage = async () => {
     const data: ServicesData = await getServicesData();
     
     // Split service items into two sections (first 3, last 3)
@@ -211,9 +200,9 @@ export default async function ServicesPage() {
             : (typeof item.icon === 'string' ? item.icon : null);
         if (!iconSrc || item.iconPosition === 'none') return null;
 
-        const iconClasses = {
-            'top-left': 'absolute -left-5 md:-left-28 -top-25 sm:-top-30 md:-top-32 w-32 sm:w-40 lg:w-48 -rotate-10 z-10 transition-transform duration-300 group-hover:-rotate-12',
-            'top-right': 'absolute -right-5 md:-right-28 -top-25 sm:-top-30 md:-top-32 w-32 sm:w-40 lg:w-48 rotate-10 z-10 transition-transform duration-300 group-hover:rotate-12',
+        const iconClasses: Record<string, string> = {
+            'top-left': "absolute -top-10 left-4 sm:-top-15 lg:-top-10 xl:left-15 xl:-top-30 w-32 sm:w-40 lg:w-48",
+            'top-right': "absolute -top-5 -right-4 md:-right-15 sm:-top-15 lg:right-[49%] lg:-top-5 xl:-top-23 xl:right-[44%] w-32 sm:w-40 lg:w-48 rotate-10",
         };
 
         return (
@@ -223,151 +212,189 @@ export default async function ServicesPage() {
         );
     };
 
-    const renderServiceCard = (item: ServiceItem) => {
-        const hasIcon = item.iconPosition !== 'none' && (
-            (typeof item.icon === 'object' && item.icon !== null && 'url' in item.icon && item.icon.url) ||
-            (typeof item.icon === 'string' && item.icon)
-        );
+    const getImageSrc = (item: ServiceItem) => {
+        if (typeof item.image === 'object' && item.image !== null && 'url' in item.image) return item.image.url;
+        return "/images/services/image.png"; // fallback image
+    };
 
-        return (
-            <div key={item.portfolioSlug} className={`relative group ${hasIcon ? 'z-10' : ''}`}>
-                <div className="pt-6">
-                    <div className="absolute inset-x-0 top-0 h-12 bg-red rounded-t-3xl"></div>
-                    <div className="bg-white h-80 w-full rounded-3xl border-[1.5px] border-red relative overflow-hidden">
-                        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
-                        <div className="absolute inset-0 p-8 flex flex-col justify-between">
-                            <div>
-                                <h3 className="text-2xl md:text-3xl font-medium text-red mb-2">{item.title}</h3>
-                                {item.subtitle && (
-                                    <p className="text-lg md:text-xl font-light text-red mb-4">{item.subtitle}</p>
-                                )}
-                                <p className="text-base md:text-lg font-light text-red">{item.description}</p>
-                            </div>
-                            <div className="flex justify-between items-end">
-                                <Link 
-                                    href={`/portfolio/${item.portfolioSlug}`}
-                                    className="text-lg md:text-xl font-medium text-red hover:underline transition-colors duration-300"
-                                >
-                                    view portfolio
-                                </Link>
-                                {item.linkText && (
-                                    <Link 
-                                        href={item.linkUrl || '#'}
-                                        className="text-lg md:text-xl font-medium text-red hover:underline transition-colors duration-300"
-                                    >
-                                        {item.linkText}
-                                    </Link>
-                                )}
-                            </div>
-                        </div>
-                        {renderIcon(item)}
-                    </div>
-                </div>
-            </div>
-        );
+    const getVideoSrc = (item: ServiceItem) => {
+        if (typeof item.image === 'object' && item.image !== null && 'url' in item.image && isVideo(item.image)) {
+            return item.image.url;
+        }
+        return null;
+    };
+
+    const isVideo = (media: MediaItem) => {
+        if (!media?.filename) return false;
+        const videoExtensions = ['.mp4', '.mov', '.webm', '.avi', '.mkv'];
+        return videoExtensions.some(ext => media.filename?.toLowerCase().endsWith(ext));
     };
 
     return (
-        <div>
-            {/* Hero Section */}
-            <div className="px-8 sm:px-16 py-20 md:py-55 text-center">
+        <div className="relative">
+            {/* Hero section */}
+            <div className="px-6 md:px-16 lg:px-36 py-20 md:py-36 lg:py-55 text-center">
                 <div className="flex items-center justify-center gap-4">
-                    <h1 className="text-3xl md:text-6xl font-medium">{data.heroTitle}</h1>
+                    <h1 className="text-4xl md:text-5xl lg:text-6xl font-medium">{data.heroTitle}</h1>
                 </div>
                 <p className="text-xl md:text-2xl font-thin mt-2">{data.heroSubtitle}</p>
             </div>
 
-            {/* Services Grid */}
-            <div className="bg-blue px-8 sm:px-16 pt-1">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-20">
-                    {firstSectionServices.map(renderServiceCard)}
-                </div>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-20">
-                    {secondSectionServices.map(renderServiceCard)}
+            {/* 1st Services section */}
+            <div className="bg-blue py-8 md:py-10 px-6 md:px-16">
+                <div className="flex flex-col gap-10">
+                    {firstSectionServices.map((service) => (
+                        <div key={service.title} className="flex flex-col lg:flex-row items-center gap-6 relative">
+                            <div className="w-full lg:w-1/2 border-[.5px] border-red relative">
+                                {getImageSrc(service) && !(typeof service.image === 'object' && service.image && isVideo(service.image as MediaItem)) && (
+                                    <Image 
+                                        src={getImageSrc(service)} 
+                                        alt={service.title} 
+                                        width={600} 
+                                        height={400} 
+                                        className="w-full h-full object-cover" 
+                                    />
+                                )}
+                                {getVideoSrc(service) && (
+                                    <VideoPlayer src={getVideoSrc(service)!} className="w-full h-[400px]" />
+                                )}
+                            </div>
+                            {renderIcon(service)}
+                            <div className="w-full lg:w-1/2 text-center lg:text-left">
+                                <h1 className="text-4xl md:text-5xl xl:text-6xl font-medium mb-4">{service.title}</h1>
+                                {service.subtitle && (
+                                    <p className="text-lg md:text-xl lg:text-[23px] font-light mb-4">{service.subtitle}</p>
+                                )}
+                                <p className="text-lg md:text-xl lg:text-[23px] font-light mb-3">{service.description}</p>
+                                <div className="flex items-end gap-2 justify-center lg:justify-start">
+                                    <SwirlArrow className="w-10 h-10 md:w-12 md:h-12 ml-0 lg:ml-12" />
+                                    <Link href={`/portfolio/${service.portfolioSlug}`}>
+                                        <span className="text-lg md:text-xl lg:text-[23px] font-medium leading-none relative group cursor-pointer">
+                                            {service.linkText || 'photos'}
+                                            <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-red transition-all duration-300 group-hover:w-full"></span>
+                                        </span>
+                                    </Link>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
                 </div>
             </div>
 
-            {/* Pricing Section */}
-            <div className="px-8 sm:px-16 py-20 md:py-55">
-                <div className="text-center mb-15">
-                    <h2 className="text-4xl md:text-6xl font-medium mb-4">{data.pricingSection.contentPlans.title}</h2>
-                    <p className="text-lg md:text-xl font-light">{data.pricingSection.contentPlans.subtitle}</p>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-15">
-                    <div className="bg-white rounded-3xl border-[1.5px] border-red p-8">
-                        <h3 className="text-2xl md:text-3xl font-medium mb-4">{data.pricingSection.contentPlans.starterPackTitle}</h3>
-                        <p className="text-lg font-light mb-6">{data.pricingSection.contentPlans.starterPackDescription}</p>
-                        <Link 
-                            href="/rates"
-                            className="inline-block bg-red text-white px-6 py-3 rounded-full font-medium hover:bg-red/90 transition-colors duration-300"
-                        >
-                            view pricing
-                        </Link>
-                    </div>
-                    <div className="bg-white rounded-3xl border-[1.5px] border-red p-8">
-                        <h3 className="text-2xl md:text-3xl font-medium mb-4">{data.pricingSection.contentPlans.brandBuilderTitle}</h3>
-                        <p className="text-lg font-light mb-6">{data.pricingSection.contentPlans.brandBuilderDescription}</p>
-                        <Link 
-                            href="/rates"
-                            className="inline-block bg-red text-white px-6 py-3 rounded-full font-medium hover:bg-red/90 transition-colors duration-300"
-                        >
-                            view pricing
-                        </Link>
-                    </div>
-                </div>
-
-                <div className="text-center mb-15">
-                    <h2 className="text-4xl md:text-6xl font-medium mb-4">{data.pricingSection.flashDeals.title}</h2>
-                    <p className="text-lg md:text-xl font-light">{data.pricingSection.flashDeals.subtitle}</p>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-15">
-                    <div className="bg-white rounded-3xl border-[1.5px] border-red p-8">
-                        <h3 className="text-2xl md:text-3xl font-medium mb-4">{data.pricingSection.flashDeals.focusTitle}</h3>
-                        <p className="text-lg font-light mb-6">{data.pricingSection.flashDeals.focusDescription}</p>
-                        <Link 
-                            href="/rates"
-                            className="inline-block bg-red text-white px-6 py-3 rounded-full font-medium hover:bg-red/90 transition-colors duration-300"
-                        >
-                            view pricing
-                        </Link>
-                    </div>
-                    <div className="bg-white rounded-3xl border-[1.5px] border-red p-8">
-                        <h3 className="text-2xl md:text-3xl font-medium mb-4">{data.pricingSection.flashDeals.fullFrameTitle}</h3>
-                        <p className="text-lg font-light mb-6">{data.pricingSection.flashDeals.fullFrameDescription}</p>
-                        <Link 
-                            href="/rates"
-                            className="inline-block bg-red text-white px-6 py-3 rounded-full font-medium hover:bg-red/90 transition-colors duration-300"
-                        >
-                            view pricing
-                        </Link>
-                    </div>
-                </div>
-
-                <div className="text-center mb-15">
-                    <h2 className="text-4xl md:text-6xl font-medium mb-4">{data.pricingSection.addOns.title}</h2>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-4xl mx-auto">
-                        {data.pricingSection.addOns.items.map((item, index) => (
-                            <div key={index} className="bg-white rounded-3xl border-[1.5px] border-red p-6">
-                                <p className="text-lg font-medium">{item.name}</p>
+            {/* Rates section */}
+            <div className='py-8 md:py-10 px-6 md:px-16 bg-red'>
+                <div className="flex flex-col lg:flex-row gap-6 items-stretch">
+                    {/* Content plans */}
+                    <div className="flex-1 relative pt-6 flex flex-col">
+                        <div className="absolute inset-x-0 top-0 h-12 bg-blue rounded-t-3xl"></div>
+                        <div className="bg-white rounded-3xl p-6 lg:p-4 xl:p-6 flex-1 text-center h-full flex flex-col justify-between relative">
+                            <div>
+                                <h2 className="text-3xl md:text-4xl mb-1 font-medium">{data.pricingSection.contentPlans.title}</h2>
+                                <p className="text-lg md:text-[23px] font-light mb-6">{data.pricingSection.contentPlans.subtitle}</p>
+                                <div className="h-[2px] bg-red mb-6"></div>
                             </div>
-                        ))}
+                            <div className="flex-1 flex flex-col">
+                                <h2 className="text-3xl md:text-4xl mb-1 font-medium">{data.pricingSection.contentPlans.starterPackTitle}</h2>
+                                <p className="text-lg md:text-[23px] font-light mb-8">{data.pricingSection.contentPlans.starterPackDescription}</p>
+                                <h2 className="text-3xl md:text-4xl mb-1 font-medium">{data.pricingSection.contentPlans.brandBuilderTitle}</h2>
+                                <p className="text-lg md:text-[23px] font-light">{data.pricingSection.contentPlans.brandBuilderDescription}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Flash deals */}
+                    <div className="flex-1 relative pt-6 flex flex-col">
+                        <div className="absolute inset-x-0 top-0 h-12 bg-blue rounded-t-3xl"></div>
+                        <div className="bg-white rounded-3xl p-6 lg:p-4 xl:p-6 flex-1 text-center h-full flex flex-col justify-between relative">
+                            <div>
+                                <h2 className="text-3xl md:text-4xl mb-1 font-medium">{data.pricingSection.flashDeals.title}</h2>
+                                <p className="text-lg md:text-[23px] font-light mb-6">{data.pricingSection.flashDeals.subtitle}</p>
+                                <div className="h-[2px] bg-red mb-6"></div>
+                            </div>
+                            <div className="flex-1 flex flex-col">
+                                <h2 className="text-3xl md:text-4xl mb-1 font-medium">{data.pricingSection.flashDeals.focusTitle}</h2>
+                                <p className="text-lg md:text-[23px] font-light mb-8">{data.pricingSection.flashDeals.focusDescription}</p>
+                                <h2 className="text-3xl md:text-4xl mb-1 font-medium">{data.pricingSection.flashDeals.fullFrameTitle}</h2>
+                                <p className="text-lg md:text-[23px] font-light">{data.pricingSection.flashDeals.fullFrameDescription}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Add-ons */}
+                    <div className="flex-1 relative pt-6 flex flex-col">
+                        <div className="absolute inset-x-0 top-0 h-12 bg-blue rounded-t-3xl"></div>
+                        <div className="bg-white rounded-3xl p-6 lg:p-4 xl:p-6 flex-1 text-center h-full flex flex-col justify-between relative">
+                            <div>
+                                <h2 className="text-3xl md:text-4xl mb-4 font-medium">{data.pricingSection.addOns.title}</h2>
+                                <div className="h-[2px] bg-red mb-4"></div>
+                            </div>
+                            <div className="flex-1 flex flex-col">
+                                {(data.pricingSection.addOns.items as { name: string }[]).map((item, index) => (
+                                    <p key={index} className="text-xl md:text-[27px] font-light">{item.name}</p>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Our rates */}
+                    <div className="flex-1 text-white text-center lg:text-left mt-6 lg:mt-0 flex flex-col justify-center">
+                        <h1 className="text-4xl md:text-5xl xl:text-6xl mb-4 font-medium">{data.pricingSection.ourRates.title}</h1>
+                        <p className="text-lg md:text-xl lg:text-[23px] font-light mb-3 leading-tight">{data.pricingSection.ourRates.description}</p>
+                        <div className="flex items-end gap-2 justify-center lg:justify-start">
+                            <SwirlArrow className="w-10 h-10 md:w-12 md:h-12" color="white" />
+                            <Link href={data.pricingSection.ourRates.linkUrl || "#"}>
+                                <span className="text-lg md:text-xl lg:text-[23px] font-medium leading-none relative group cursor-pointer">
+                                    {data.pricingSection.ourRates.linkText}
+                                    <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
+                                </span>
+                            </Link>
+                        </div>
                     </div>
                 </div>
+            </div>
 
-                <div className="text-center">
-                    <h2 className="text-4xl md:text-6xl font-medium mb-4">{data.pricingSection.ourRates.title}</h2>
-                    <p className="text-lg md:text-xl font-light mb-8">{data.pricingSection.ourRates.description}</p>
-                    <Link 
-                        href={data.pricingSection.ourRates.linkUrl || '/rates'}
-                        className="inline-block bg-red text-white px-8 py-4 rounded-full text-xl font-medium hover:bg-red/90 transition-colors duration-300"
-                    >
-                        {data.pricingSection.ourRates.linkText}
-                    </Link>
+            {/* 2nd Services section */}
+            <div className="bg-blue py-8 md:py-10 px-6 md:px-16">
+                <div className="flex flex-col gap-10">
+                    {secondSectionServices.map((service) => (
+                        <div key={service.title} className="flex flex-col lg:flex-row items-center gap-6 relative">
+                            <div className="w-full lg:w-1/2 border-[.5px] border-red relative">
+                                {getImageSrc(service) && !(typeof service.image === 'object' && service.image && isVideo(service.image as MediaItem)) && (
+                                    <Image 
+                                        src={getImageSrc(service)} 
+                                        alt={service.title} 
+                                        width={600} 
+                                        height={400} 
+                                        className="w-full h-full object-cover" 
+                                    />
+                                )}
+                                {getVideoSrc(service) && (
+                                    <VideoPlayer src={getVideoSrc(service)!} className="w-full h-[400px]" />
+                                )}
+                            </div>
+                            {renderIcon(service)}
+                            <div className="w-full lg:w-1/2 text-center lg:text-left">
+                                <h1 className="text-4xl md:text-5xl xl:text-6xl font-medium mb-4">{service.title}</h1>
+                                {service.subtitle && (
+                                    <p className="text-lg md:text-xl lg:text-[23px] font-light mb-4">{service.subtitle}</p>
+                                )}
+                                <p className="text-lg md:text-xl lg:text-[23px] font-light mb-3">{service.description}</p>
+                                <div className="flex items-end gap-2 justify-center lg:justify-start">
+                                    <SwirlArrow className="w-10 h-10 md:w-12 md:h-12 ml-0 lg:ml-12" />
+                                    <Link href={`/portfolio/${service.portfolioSlug}`}>
+                                        <span className="text-lg md:text-xl lg:text-[23px] font-medium leading-none relative group cursor-pointer">
+                                            {service.linkText || 'photos'}
+                                            <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-red transition-all duration-300 group-hover:w-full"></span>
+                                        </span>
+                                    </Link>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
                 </div>
             </div>
         </div>
     );
-}
+};
+
+export default ServicesPage;

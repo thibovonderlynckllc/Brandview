@@ -42,23 +42,27 @@ const fallbackData = {
 };
 
 async function getPortfolioData() {
-    const payload = await getPayload({ config });
     try {
+        const payload = await getPayload({ config });
         const pages = await payload.find({
             collection: 'pages' as any,
             where: {
-                slug: { equals: 'portfolio' }
+                and: [
+                    {
+                        slug: { equals: 'portfolio' }
+                    },
+                    {
+                        pageType: { equals: 'portfolio' }
+                    }
+                ]
             },
             limit: 1
         });
         
         if (pages.docs.length > 0) {
-            const pageData = pages.docs[0];
-            // If it's a portfolio page, return the data, otherwise use fallback
-            if (pageData.pageType === 'portfolio') {
-                return pageData;
-            }
+            return pages.docs[0];
         }
+        
         return fallbackData;
     } catch (error) {
         console.warn('Error fetching portfolio data:', error);
@@ -81,7 +85,7 @@ interface PortfolioData {
     bannerImage?: { url: string; alt?: string } | string | null;
 }
 
-export default async function PortfolioPage() {
+const PortfolioPage = async () => {
     const data: PortfolioData = await getPortfolioData();
 
     const renderIcon = (card: PortfolioCard) => {
@@ -137,3 +141,5 @@ export default async function PortfolioPage() {
         </div>
     )
 }
+
+export default PortfolioPage;
