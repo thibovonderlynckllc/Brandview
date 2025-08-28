@@ -36,6 +36,7 @@ export const Media: CollectionConfig = {
       type: 'select',
       hasMany: true,
       options: [
+        { label: 'Decorative', value: 'decorative' },
         { label: 'Home', value: 'home' },
         { label: 'About Us', value: 'about-us' },
         { label: 'Services', value: 'services' },
@@ -47,7 +48,7 @@ export const Media: CollectionConfig = {
         { label: 'Portfolio - Short Content', value: 'portfolio-short-content' },
       ],
       admin: {
-        description: 'Select which page(s) this media belongs to. You can select multiple pages.',
+        description: 'Select the applicable tags for this media.',
       },
     },
   ],
