@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Nav from "./core/Nav";
 import Footer from "./core/Footer";
+import PerformanceMonitor from "./components/PerformanceMonitor";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -25,6 +26,7 @@ export default function RootLayout({
             {children}
           </main>
           <Footer />
+          <PerformanceMonitor />
         </div>
       </body>
     </html>

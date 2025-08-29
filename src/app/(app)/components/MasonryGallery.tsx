@@ -210,6 +210,7 @@ export default function MasonryGallery({ masonryGalleryGrid }: MasonryGalleryPro
                             width={208}
                             height={208}
                             priority
+                            quality={90}
                         />
                     </div>
                 </>

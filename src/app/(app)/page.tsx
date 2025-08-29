@@ -152,6 +152,7 @@ export default async function Home() {
                                             className="object-cover z-0"
                                             priority={index === 0}
                                             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                                            quality={85}
                                         />
                                         <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
                                             <div className="bg-blue rounded-full px-6 py-[6.5px] transition-colors duration-300 group-hover:bg-red">
@@ -171,6 +172,7 @@ export default async function Home() {
                                             alt={`${item.title} icon`} 
                                             width={208}
                                             height={208}
+                                            quality={90}
                                         />
                                     ) : item.icon?.url ? (
                                         <Image 
@@ -178,6 +180,7 @@ export default async function Home() {
                                             alt={item.icon.alt || `${item.title} icon`} 
                                             width={208}
                                             height={208}
+                                            quality={90}
                                         />
                                     ) : null}
                                 </div>

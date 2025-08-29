@@ -9,6 +9,15 @@ const nextConfig = {
   // Performance optimizations
   experimental: {
     optimizePackageImports: ['lucide-react'],
+    optimizeCss: true,
+    turbo: {
+      rules: {
+        '*.svg': {
+          loaders: ['@svgr/webpack'],
+          as: '*.js',
+        },
+      },
+    },
   },
   images: {
     remotePatterns: [
@@ -22,11 +31,20 @@ const nextConfig = {
     // Optimize image loading
     formats: ['image/webp', 'image/avif'],
     minimumCacheTTL: 60 * 60 * 24 * 30, // 30 days
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+    dangerouslyAllowSVG: true,
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
   // Enable compression
   compress: true,
   // Optimize bundle size
   swcMinify: true,
+  // Additional performance optimizations
+  poweredByHeader: false,
+  generateEtags: false,
+  // Optimize static assets
+  assetPrefix: process.env.NODE_ENV === 'production' ? 'https://brandview.be' : '',
 };
 
 module.exports = withPayload(nextConfig);

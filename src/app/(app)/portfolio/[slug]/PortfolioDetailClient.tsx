@@ -320,6 +320,8 @@ export default function PortfolioDetailClient({ data }: PortfolioDetailClientPro
                   fill 
                   sizes="(max-width: 768px) 100vw, (max-width: 1100px) 50vw, 33vw" 
                   className="object-cover" 
+                  quality={85}
+                  loading="lazy"
                 />
               )}
               {getVideoSrc(galleryGrid.row1?.position1) && (
@@ -469,7 +471,15 @@ export default function PortfolioDetailClient({ data }: PortfolioDetailClientPro
           </Masonry>
 
           {/* First Banner */}
-          <Image src={bannerImage?.url || "/images/banner.svg"} alt="banner" width={1920} height={200} className="w-full h-52 md:h-auto object-cover" />
+          <Image 
+            src={bannerImage?.url || "/images/banner.svg"} 
+            alt="banner" 
+            width={1920} 
+            height={200} 
+            className="w-full h-52 md:h-auto object-cover" 
+            quality={85}
+            priority
+          />
 
           {/* Custom Layout Section - Hide for products and short-content portfolio */}
           {portfolioType !== 'products' && portfolioType !== 'short-content' && (
