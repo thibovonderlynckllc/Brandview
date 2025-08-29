@@ -104,7 +104,8 @@ export default async function Home() {
                         }
                     }
                 ]
-            }
+            },
+            depth: 2, // Increase depth to populate nested relations
         });
 
         if (pages.docs.length > 0) {

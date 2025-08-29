@@ -108,7 +108,16 @@ export default function MasonryGallery({ masonryGalleryGrid }: MasonryGalleryPro
         
         if (!imageData?.url || !isVideoUrl(imageData.url)) return undefined;
         
-        return imageData.poster?.url || undefined;
+        // Handle poster field - it's a relation to another media item
+        if (imageData.poster) {
+            if (typeof imageData.poster === 'object' && 'url' in imageData.poster) {
+                return imageData.poster.url;
+            } else if (typeof imageData.poster === 'string') {
+                return imageData.poster;
+            }
+        }
+        
+        return undefined;
     };
 
     const RenderMedia = ({
