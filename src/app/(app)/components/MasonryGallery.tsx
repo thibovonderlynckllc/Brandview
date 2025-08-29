@@ -4,6 +4,7 @@ import Masonry from 'react-masonry-css';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useLayoutEffect, useState, useMemo } from 'react';
+import VideoPlayer from './VideoPlayer';
 
 interface MasonryPosition {
     image?: { url: string; alt?: string } | string | null;
@@ -48,6 +49,32 @@ export default function MasonryGallery({ masonryGalleryGrid }: MasonryGalleryPro
         1100: 2,
         700: 1
     }), []);
+
+    const isVideoUrl = (url: string | null | undefined): boolean => {
+        if (!url) return false;
+        const lower = url.toLowerCase();
+        return lower.endsWith('.webm') || lower.endsWith('.mp4') || lower.includes('format=webm');
+    };
+
+    const RenderMedia = ({
+        src,
+        alt,
+    }: { src: string; alt: string }) => {
+        if (isVideoUrl(src)) {
+            return (
+                <VideoPlayer src={src} className="absolute inset-0 w-full h-full" />
+            );
+        }
+        return (
+            <Image
+                src={src}
+                alt={alt}
+                fill
+                className="object-cover z-0"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            />
+        );
+    };
 
     // Helper to get position data (backward compatible)
     const getPositionData = (pos: number) => {
@@ -224,12 +251,9 @@ export default function MasonryGallery({ masonryGalleryGrid }: MasonryGalleryPro
                             <div key={`gallery-item-${index}`} className={`gallery-item ${item.height} relative`}>
                                 {/* Render CMS image if present for this position */}
                                 {hasImage && (
-                                    <Image
+                                    <RenderMedia
                                         src={positionData.image!}
                                         alt={getAltForPosition(index + 1) || `Gallery image ${index + 1}`}
-                                        fill
-                                        className="object-cover z-0"
-                                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                                     />
                                 )}
                                 
@@ -322,12 +346,9 @@ export default function MasonryGallery({ masonryGalleryGrid }: MasonryGalleryPro
                             <div key={`gallery-item-${index}`} className={`gallery-item ${item.height} relative`}>
                                 {/* Render CMS image if present for this position */}
                                 {hasImage && (
-                                    <Image
+                                    <RenderMedia
                                         src={positionData.image!}
                                         alt={getAltForPosition(index + 1) || `Gallery image ${index + 1}`}
-                                        fill
-                                        className="object-cover z-0"
-                                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                                     />
                                 )}
                                 
