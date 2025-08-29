@@ -28,9 +28,14 @@ const VideoPlayer = ({ src, className, poster }: { src: string; className?: stri
 
   const togglePlay = () => {
     if (isMobile) {
-      // On mobile, show the ReactPlayer when play is clicked
-      setShowPlayer(true);
-      setIsPlaying(true);
+      if (showPlayer) {
+        // If video is already playing, toggle play/pause
+        setIsPlaying(!isPlaying);
+      } else {
+        // If video hasn't started yet, start playing
+        setShowPlayer(true);
+        setIsPlaying(true);
+      }
     } else {
       // On desktop, use native video controls
       if (videoRef.current) {
@@ -85,7 +90,56 @@ const VideoPlayer = ({ src, className, poster }: { src: string; className?: stri
           }
         `}</style>
         
-        {/* Poster Image - always present, fades out when video plays */}
+        {/* Video Player - always present, fades in when playing */}
+        <div className={`absolute inset-0 video-overlay ${showPlayer ? 'show' : ''}`}>
+          <ReactPlayer
+            width="100%"
+            height="100%"
+            playing={isPlaying}
+            muted={isMuted}
+            loop
+            controls={false}
+            src={src}
+            style={{
+              objectFit: 'cover',
+              position: 'absolute',
+              top: 0,
+              left: 0,
+            }}
+            onError={(error) => {
+              // Fallback to poster if video fails to load
+              setShowPlayer(false);
+            }}
+            onEnded={handleVideoEnded}
+            onPlay={handleVideoPlay}
+            onPause={handleVideoPause}
+          />
+          
+          {/* Play/Pause button overlay - only visible when video is playing */}
+          {showPlayer && (
+            <div className="absolute bottom-4 left-4 z-10">
+              <button
+                onClick={togglePlay}
+                className="bg-black bg-opacity-50 text-white rounded-full p-3 hover:bg-opacity-70 transition-all duration-200"
+                aria-label={isPlaying ? "Pause video" : "Play video"}
+              >
+                {isPlaying ? (
+                  // Pause icon
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+                  </svg>
+                ) : (
+                  // Play icon
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M8 5v14l11-7z"/>
+                  </svg>
+                )}
+              </button>
+            </div>
+          )}
+        </div>
+        
+        {/* Poster Image - fades out when video plays */}
         <div className={`absolute inset-0 poster-overlay ${showPlayer ? 'hide' : ''}`}>
           {poster ? (
             <img 
@@ -118,34 +172,6 @@ const VideoPlayer = ({ src, className, poster }: { src: string; className?: stri
             </div>
           )}
         </div>
-        
-        {/* Video Player - fades in when showPlayer is true */}
-        {showPlayer && (
-          <div className={`absolute inset-0 video-overlay show`}>
-            <ReactPlayer
-              width="100%"
-              height="100%"
-              playing={true}
-              muted={isMuted}
-              loop
-              controls={false}
-              src={src}
-              style={{
-                objectFit: 'cover',
-                position: 'absolute',
-                top: 0,
-                left: 0,
-              }}
-              onError={(error) => {
-                // Fallback to poster if video fails to load
-                setShowPlayer(false);
-              }}
-              onEnded={handleVideoEnded}
-              onPlay={handleVideoPlay}
-              onPause={handleVideoPause}
-            />
-          </div>
-        )}
       </div>
     );
   }
@@ -158,8 +184,7 @@ const VideoPlayer = ({ src, className, poster }: { src: string; className?: stri
         src={src} 
         autoPlay={true}
         muted={isMuted} 
-        loop 
-        className="object-cover w-full h-full"
+        loop         className="object-cover w-full h-full"
         onEnded={handleVideoEnded}
         onPlay={handleVideoPlay}
         onPause={handleVideoPause}
