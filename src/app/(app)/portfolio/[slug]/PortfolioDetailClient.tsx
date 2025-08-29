@@ -9,12 +9,8 @@ import Masonry from 'react-masonry-css';
 interface MediaItem {
   url: string;
   alt?: string;
-<<<<<<< HEAD
-  poster?: string | { url: string };
-=======
   cloudinaryMobileVideo?: string;
   poster?: MediaItem; // Added for video poster
->>>>>>> d0b9f73 (feat: Add mobile video player with poster functionality and smooth transitions)
 }
 
 interface GalleryPosition {
@@ -125,12 +121,6 @@ export default function PortfolioDetailClient({ data }: PortfolioDetailClientPro
     return position.url;
   };
 
-<<<<<<< HEAD
-  // Helper function to get poster src
-  const getPosterSrc = (position?: MediaItem) => {
-    if (!position?.poster) return undefined;
-    return typeof position.poster === 'string' ? position.poster : position.poster.url;
-=======
   // Helper function to get poster URL
   const getPosterSrc = (position?: MediaItem) => {
     if (!position || !isVideo(position)) return undefined;
@@ -146,7 +136,6 @@ export default function PortfolioDetailClient({ data }: PortfolioDetailClientPro
     }
     
     return posterUrl;
->>>>>>> d0b9f73 (feat: Add mobile video player with poster functionality and smooth transitions)
   };
 
   // Portfolio-type-specific icon rendering functions
@@ -333,7 +322,6 @@ export default function PortfolioDetailClient({ data }: PortfolioDetailClientPro
                   className="object-cover" 
                 />
               )}
-<<<<<<< HEAD
               {getVideoSrc(galleryGrid.row1?.position1) && (
                 <VideoPlayer 
                   src={getVideoSrc(galleryGrid.row1?.position1)!} 
@@ -341,15 +329,6 @@ export default function PortfolioDetailClient({ data }: PortfolioDetailClientPro
                   className="object-cover w-full h-full" 
                 />
               )}
-=======
-                              {getVideoSrc(galleryGrid.row1?.position1) && (
-                  <VideoPlayer 
-                    src={getVideoSrc(galleryGrid.row1?.position1)!} 
-                    poster={getPosterSrc(galleryGrid.row1?.position1)} 
-                    className="object-cover w-full h-full" 
-                  />
-                )}
->>>>>>> d0b9f73 (feat: Add mobile video player with poster functionality and smooth transitions)
               {/* Icon1 for food portfolio goes on position1 */}
               {portfolioType === 'food' && portfolioIcons.icon1}
             </div>
@@ -365,15 +344,11 @@ export default function PortfolioDetailClient({ data }: PortfolioDetailClientPro
                 />
               )}
               {getVideoSrc(galleryGrid.row1?.position2) && (
-<<<<<<< HEAD
                 <VideoPlayer 
                   src={getVideoSrc(galleryGrid.row1?.position2)!} 
                   poster={getPosterSrc(galleryGrid.row1?.position2)} 
                   className="object-cover w-full h-full" 
                 />
-=======
-                <VideoPlayer src={getVideoSrc(galleryGrid.row1?.position2)!} poster={getPosterSrc(galleryGrid.row1?.position2)} className="object-cover w-full h-full" />
->>>>>>> d0b9f73 (feat: Add mobile video player with poster functionality and smooth transitions)
               )}
               {/* Icon1 for business, corporate-events, portraits, products goes on position2 */}
               {(['business', 'corporate-events', 'portraits', 'products'].includes(portfolioType)) && portfolioIcons.icon1}
@@ -390,15 +365,11 @@ export default function PortfolioDetailClient({ data }: PortfolioDetailClientPro
                 />
               )}
               {getVideoSrc(galleryGrid.row1?.position3) && (
-<<<<<<< HEAD
                 <VideoPlayer 
                   src={getVideoSrc(galleryGrid.row1?.position3)!} 
                   poster={getPosterSrc(galleryGrid.row1?.position3)} 
                   className="object-cover w-full h-full" 
                 />
-=======
-                <VideoPlayer src={getVideoSrc(galleryGrid.row1?.position3)!} poster={getPosterSrc(galleryGrid.row1?.position3)} className="object-cover w-full h-full" />
->>>>>>> d0b9f73 (feat: Add mobile video player with poster functionality and smooth transitions)
               )}
             </div>
 

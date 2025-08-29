@@ -31,14 +31,7 @@ export const Media: CollectionConfig = {
         description: 'Alt text for accessibility (used by screen readers).',
       },
     },
-    {
-      name: 'poster',
-      type: 'upload',
-      relationTo: 'media',
-      admin: {
-        description: 'Poster/thumbnail image for videos (optional). If not provided, a default thumbnail will be used.',
-      },
-    },
+
     {
       name: 'tags',
       type: 'select',
