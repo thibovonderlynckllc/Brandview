@@ -3,11 +3,11 @@
 import Masonry from 'react-masonry-css';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useLayoutEffect, useState, useMemo } from 'react';
+import { useLayoutEffect, useState, useMemo, useEffect } from 'react';
 import VideoPlayer from './VideoPlayer';
 
 interface MasonryPosition {
-    image?: { url: string; alt?: string } | string | null;
+    image?: { url: string; alt?: string; cloudinaryMobileVideo?: string } | string | null;
     text?: string;
     link?: string;
 }
@@ -39,9 +39,21 @@ interface MasonryGalleryProps {
 
 export default function MasonryGallery({ masonryGalleryGrid }: MasonryGalleryProps) {
     const [mounted, setMounted] = useState(false);
+    const [isMobile, setIsMobile] = useState(false);
 
     useLayoutEffect(() => {
         setMounted(true);
+    }, []);
+
+    useEffect(() => {
+        const checkMobile = () => {
+            setIsMobile(window.innerWidth <= 768);
+        };
+        
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+        
+        return () => window.removeEventListener('resize', checkMobile);
     }, []);
 
     const breakpointColumnsObj = useMemo(() => ({
@@ -56,13 +68,65 @@ export default function MasonryGallery({ masonryGalleryGrid }: MasonryGalleryPro
         return lower.endsWith('.webm') || lower.endsWith('.mp4') || lower.includes('format=webm');
     };
 
+    const getVideoSource = (position: any): string | null => {
+        if (!position) return null;
+        
+        // Handle different position formats
+        let imageData = null;
+        
+        if (typeof position === 'string') {
+            imageData = { url: position };
+        } else if ('url' in position) {
+            imageData = position;
+        } else if (position.image) {
+            imageData = typeof position.image === 'string' ? { url: position.image } : position.image;
+        }
+        
+        if (!imageData?.url || !isVideoUrl(imageData.url)) return null;
+        
+        // On mobile, use Cloudinary MP4 if available
+        if (isMobile && imageData.cloudinaryMobileVideo) {
+            return imageData.cloudinaryMobileVideo;
+        }
+        
+        return imageData.url;
+    };
+
+    const getPosterSource = (position: any): string | undefined => {
+        if (!position) return undefined;
+        
+        // Handle different position formats
+        let imageData = null;
+        
+        if (typeof position === 'string') {
+            imageData = { url: position };
+        } else if ('url' in position) {
+            imageData = position;
+        } else if (position.image) {
+            imageData = typeof position.image === 'string' ? { url: position.image } : position.image;
+        }
+        
+        if (!imageData?.url || !isVideoUrl(imageData.url)) return undefined;
+        
+        return imageData.poster?.url || undefined;
+    };
+
     const RenderMedia = ({
         src,
         alt,
-    }: { src: string; alt: string }) => {
-        if (isVideoUrl(src)) {
+        position,
+    }: { src: string; alt: string; position?: any }) => {
+        // Get the appropriate video source (handles mobile vs desktop)
+        const videoSrc = position ? getVideoSource(position) : src;
+        const posterSrc = position ? getPosterSource(position) : undefined;
+        
+        if (isVideoUrl(videoSrc || src)) {
             return (
-                <VideoPlayer src={src} className="absolute inset-0 w-full h-full" />
+                <VideoPlayer 
+                    src={videoSrc || src} 
+                    poster={posterSrc}
+                    className="absolute inset-0 w-full h-full" 
+                />
             );
         }
         return (
@@ -254,6 +318,7 @@ export default function MasonryGallery({ masonryGalleryGrid }: MasonryGalleryPro
                                     <RenderMedia
                                         src={positionData.image!}
                                         alt={getAltForPosition(index + 1) || `Gallery image ${index + 1}`}
+                                        position={masonryGalleryGrid?.[`position${index + 1}` as keyof MasonryGalleryGrid]}
                                     />
                                 )}
                                 
@@ -349,6 +414,7 @@ export default function MasonryGallery({ masonryGalleryGrid }: MasonryGalleryPro
                                     <RenderMedia
                                         src={positionData.image!}
                                         alt={getAltForPosition(index + 1) || `Gallery image ${index + 1}`}
+                                        position={masonryGalleryGrid?.[`position${index + 1}` as keyof MasonryGalleryGrid]}
                                     />
                                 )}
                                 

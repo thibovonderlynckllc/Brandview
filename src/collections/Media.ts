@@ -59,6 +59,51 @@ export const Media: CollectionConfig = {
         description: 'Select the applicable tags for this media.',
       },
     },
+    {
+      name: 'poster',
+      type: 'upload',
+      relationTo: 'media',
+      admin: {
+        description: 'Poster/thumbnail image for videos (used on mobile devices)',
+        condition: (data, siblingData) => {
+          // Check if this is a video file
+          const filename = data?.filename || siblingData?.filename || data?.name || siblingData?.name;
+          if (!filename) return false;
+
+          const videoExtensions = ['.mp4', '.mov', '.webm', '.avi', '.mkv'];
+          return videoExtensions.some((ext) => filename.toLowerCase().endsWith(ext));
+        },
+      },
+    },
+    {
+      name: 'cloudinaryMobileVideo',
+      type: 'text',
+      admin: {
+        description: 'Cloudinary MP4 link for mobile devices (required when WebM file is uploaded)',
+      },
+      validate: (value: string | null | undefined, { data }: { data: any }) => {
+        // Check if this is a WebM file
+        const filename = data?.filename || data?.name;
+        if (filename && filename.toLowerCase().endsWith('.webm')) {
+          if (!value || value.trim() === '') {
+            return 'Cloudinary MP4 link is required for WebM files to ensure mobile compatibility';
+          }
+        }
+        return true;
+      },
+    },
   ],
   upload: true,
+  hooks: {
+    beforeChange: [
+      ({ data }) => {
+        // Store the file extension for easier detection
+        if (data?.filename) {
+          const extension = data.filename.split('.').pop()?.toLowerCase();
+          data.fileExtension = extension;
+        }
+        return data;
+      },
+    ],
+  },
 };

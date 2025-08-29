@@ -1,27 +1,168 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import ReactPlayer from 'react-player';
 
-// Simple, reliable Video Player Component that works on all devices
-const VideoPlayer = ({ src, poster, className }: { 
-  src: string; 
-  poster?: string;
-  className?: string; 
-}) => {
+// Custom Video Player Component with YouTube-style controls
+const VideoPlayer = ({ src, className, poster }: { src: string; className?: string; poster?: string }) => {
   const [isMuted, setIsMuted] = useState(true);
-  const toggleMute = () => { setIsMuted(!isMuted); };
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const [showPlayer, setShowPlayer] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  const toggleMute = () => { 
+    setIsMuted(!isMuted); 
+  };
+
+  const togglePlay = () => {
+    if (isMobile) {
+      // On mobile, show the ReactPlayer when play is clicked
+      setShowPlayer(true);
+      setIsPlaying(true);
+    } else {
+      // On desktop, use native video controls
+      if (videoRef.current) {
+        if (isPlaying) {
+          videoRef.current.pause();
+        } else {
+          videoRef.current.play();
+        }
+        setIsPlaying(!isPlaying);
+      }
+    }
+  };
+
+  const handleVideoEnded = () => {
+    setIsPlaying(false);
+    if (isMobile) {
+      setShowPlayer(false);
+    }
+  };
+
+  const handleVideoPlay = () => {
+    setIsPlaying(true);
+  };
+
+  const handleVideoPause = () => {
+    setIsPlaying(false);
+  };
+
+  // For mobile devices, use ReactPlayer with light mode (poster/thumbnail)
+  if (isMobile) {
+    return (
+      <div className={`relative ${className} bg-gray-800 transition-all duration-300 ease-in-out`}>
+        <style jsx>{`
+          :global(.react-player video) {
+            object-fit: cover !important;
+            width: 100% !important;
+            height: 100% !important;
+          }
+          .video-overlay {
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+          }
+          .video-overlay.show {
+            opacity: 1;
+          }
+          .poster-overlay {
+            opacity: 1;
+            transition: opacity 0.3s ease-in-out;
+          }
+          .poster-overlay.hide {
+            opacity: 0;
+          }
+        `}</style>
+        
+        {/* Poster Image - always present, fades out when video plays */}
+        <div className={`absolute inset-0 poster-overlay ${showPlayer ? 'hide' : ''}`}>
+          {poster ? (
+            <img 
+              src={poster} 
+              alt="Video poster" 
+              className="w-full h-full object-cover"
+            />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center text-white">
+              <div className="text-center">
+                <div className="text-2xl mb-2">📹</div>
+                <div>Video: {src}</div>
+                <div className="text-sm text-gray-300">No poster available</div>
+              </div>
+            </div>
+          )}
+          
+          {/* Play button overlay - only visible when poster is shown */}
+          {!showPlayer && (
+            <div className="absolute inset-0 flex items-center justify-center">
+              <button
+                onClick={togglePlay}
+                className="bg-white bg-opacity-90 rounded-full p-4 hover:bg-opacity-100 transition-all duration-200 transform hover:scale-105"
+                aria-label="Play video"
+              >
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor" className="text-gray-800">
+                  <path d="M8 5v14l11-7z"/>
+                </svg>
+              </button>
+            </div>
+          )}
+        </div>
+        
+        {/* Video Player - fades in when showPlayer is true */}
+        {showPlayer && (
+          <div className={`absolute inset-0 video-overlay show`}>
+            <ReactPlayer
+              width="100%"
+              height="100%"
+              playing={true}
+              muted={isMuted}
+              loop
+              controls={false}
+              src={src}
+              style={{
+                objectFit: 'cover',
+                position: 'absolute',
+                top: 0,
+                left: 0,
+              }}
+              onError={(error) => {
+                // Fallback to poster if video fails to load
+                setShowPlayer(false);
+              }}
+              onEnded={handleVideoEnded}
+              onPlay={handleVideoPlay}
+              onPause={handleVideoPause}
+            />
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  // For desktop devices, use native video player with autoplay
   return (
     <div className={`relative ${className}`}>
       <video 
+        ref={videoRef}
         src={src} 
-        autoPlay 
+        autoPlay={true}
         muted={isMuted} 
         loop 
-        playsInline
-        controls
-        poster={poster}
-        className="w-full h-full object-cover"
+        className="object-fill w-full h-full"
+        onEnded={handleVideoEnded}
+        onPlay={handleVideoPlay}
+        onPause={handleVideoPause}
       />
       
       {/* Simple mute/unmute button overlay */}

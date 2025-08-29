@@ -10,6 +10,7 @@ async function getPortfolioData(slug: string) {
       where: {
         slug: { equals: slug }
       },
+      depth: 2, // Increase depth to populate nested fields like poster
       limit: 1
     });
     return portfolio.docs[0] || null;
