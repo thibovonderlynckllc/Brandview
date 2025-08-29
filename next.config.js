@@ -9,13 +9,14 @@ const nextConfig = {
   // Performance optimizations
   experimental: {
     optimizePackageImports: ['lucide-react'],
-    optimizeCss: true,
-    turbo: {
-      rules: {
-        '*.svg': {
-          loaders: ['@svgr/webpack'],
-          as: '*.js',
-        },
+    // Removed optimizeCss as it's causing the critters error
+  },
+  // Turbopack configuration (moved from experimental.turbo)
+  turbopack: {
+    rules: {
+      '*.svg': {
+        loaders: ['@svgr/webpack'],
+        as: '*.js',
       },
     },
   },
@@ -38,8 +39,7 @@ const nextConfig = {
   },
   // Enable compression
   compress: true,
-  // Optimize bundle size
-  swcMinify: true,
+  // Removed swcMinify as it's not needed in Next.js 15
   // Additional performance optimizations
   poweredByHeader: false,
   generateEtags: false,
