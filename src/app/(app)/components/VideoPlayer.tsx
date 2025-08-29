@@ -169,7 +169,7 @@ const VideoPlayer = ({ src, className, poster }: { src: string; className?: stri
       <div className="absolute bottom-4 right-4 z-10">
         <button
           onClick={toggleMute}
-          className="text-white transition-colors duration-200 p-2 bg-black bg-opacity-50 rounded-full"
+          className="text-white transition-colors duration-200 p-2"
           aria-label={isMuted ? "Unmute" : "Mute"}
         >
           {isMuted ? (
