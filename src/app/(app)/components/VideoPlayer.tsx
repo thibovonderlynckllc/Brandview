@@ -159,7 +159,7 @@ const VideoPlayer = ({ src, className, poster }: { src: string; className?: stri
         autoPlay={true}
         muted={isMuted} 
         loop 
-        className="object-fill w-full h-full"
+        className="object-cover w-full h-full"
         onEnded={handleVideoEnded}
         onPlay={handleVideoPlay}
         onPause={handleVideoPause}
