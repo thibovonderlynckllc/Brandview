@@ -9,6 +9,7 @@ import Masonry from 'react-masonry-css';
 interface MediaItem {
   url: string;
   alt?: string;
+  poster?: string | { url: string };
 }
 
 interface GalleryPosition {
@@ -96,6 +97,12 @@ export default function PortfolioDetailClient({ data }: PortfolioDetailClientPro
   const getVideoSrc = (position?: MediaItem) => {
     if (!position || !isVideo(position)) return null;
     return position.url;
+  };
+
+  // Helper function to get poster src
+  const getPosterSrc = (position?: MediaItem) => {
+    if (!position?.poster) return undefined;
+    return typeof position.poster === 'string' ? position.poster : position.poster.url;
   };
 
   // Portfolio-type-specific icon rendering functions
@@ -283,7 +290,11 @@ export default function PortfolioDetailClient({ data }: PortfolioDetailClientPro
                 />
               )}
               {getVideoSrc(galleryGrid.row1?.position1) && (
-                <VideoPlayer src={getVideoSrc(galleryGrid.row1?.position1)!} className="object-cover w-full h-full" />
+                <VideoPlayer 
+                  src={getVideoSrc(galleryGrid.row1?.position1)!} 
+                  poster={getPosterSrc(galleryGrid.row1?.position1)} 
+                  className="object-cover w-full h-full" 
+                />
               )}
               {/* Icon1 for food portfolio goes on position1 */}
               {portfolioType === 'food' && portfolioIcons.icon1}
@@ -300,7 +311,11 @@ export default function PortfolioDetailClient({ data }: PortfolioDetailClientPro
                 />
               )}
               {getVideoSrc(galleryGrid.row1?.position2) && (
-                <VideoPlayer src={getVideoSrc(galleryGrid.row1?.position2)!} className="object-cover w-full h-full" />
+                <VideoPlayer 
+                  src={getVideoSrc(galleryGrid.row1?.position2)!} 
+                  poster={getPosterSrc(galleryGrid.row1?.position2)} 
+                  className="object-cover w-full h-full" 
+                />
               )}
               {/* Icon1 for business, corporate-events, portraits, products goes on position2 */}
               {(['business', 'corporate-events', 'portraits', 'products'].includes(portfolioType)) && portfolioIcons.icon1}
@@ -317,7 +332,11 @@ export default function PortfolioDetailClient({ data }: PortfolioDetailClientPro
                 />
               )}
               {getVideoSrc(galleryGrid.row1?.position3) && (
-                <VideoPlayer src={getVideoSrc(galleryGrid.row1?.position3)!} className="object-cover w-full h-full" />
+                <VideoPlayer 
+                  src={getVideoSrc(galleryGrid.row1?.position3)!} 
+                  poster={getPosterSrc(galleryGrid.row1?.position3)} 
+                  className="object-cover w-full h-full" 
+                />
               )}
             </div>
 

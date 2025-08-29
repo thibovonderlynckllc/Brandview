@@ -32,6 +32,14 @@ export const Media: CollectionConfig = {
       },
     },
     {
+      name: 'poster',
+      type: 'upload',
+      relationTo: 'media',
+      admin: {
+        description: 'Poster/thumbnail image for videos (optional). If not provided, a default thumbnail will be used.',
+      },
+    },
+    {
       name: 'tags',
       type: 'select',
       hasMany: true,

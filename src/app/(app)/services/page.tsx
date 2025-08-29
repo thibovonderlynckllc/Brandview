@@ -224,6 +224,14 @@ const ServicesPage = async () => {
         return null;
     };
 
+    const getPosterSrc = (item: ServiceItem) => {
+        if (typeof item.image === 'object' && item.image !== null && 'poster' in item.image && item.image.poster) {
+            const poster = item.image.poster as { url: string } | string;
+            return typeof poster === 'string' ? poster : poster.url;
+        }
+        return undefined;
+    };
+
     const isVideo = (media: MediaItem) => {
         if (!media?.filename) return false;
         const videoExtensions = ['.mp4', '.mov', '.webm', '.avi', '.mkv'];
@@ -256,7 +264,11 @@ const ServicesPage = async () => {
                                     />
                                 )}
                                 {getVideoSrc(service) && (
-                                    <VideoPlayer src={getVideoSrc(service)!} className="w-full h-[400px]" />
+                                    <VideoPlayer 
+                                        src={getVideoSrc(service)!} 
+                                        poster={getPosterSrc(service)} 
+                                        className="w-full h-[400px]" 
+                                    />
                                 )}
                             </div>
                             {renderIcon(service)}

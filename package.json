@@ -6,7 +6,11 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "generate-posters": "node scripts/generate-posters.js",
+    "generate-multiple-posters": "node scripts/generate-multiple-posters.js",
+    "convert-posters-to-webp": "node scripts/convert-posters-to-webp.js",
+    "rename-posters": "node scripts/rename-posters.js"
   },
   "dependencies": {
     "@payloadcms/db-postgres": "^3.46.0",
