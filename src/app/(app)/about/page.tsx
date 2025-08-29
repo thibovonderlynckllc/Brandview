@@ -128,6 +128,7 @@ interface AboutData {
             description: string;
         }>;
         bulbIcon?: MediaItem;
+        backgroundImage?: MediaItem;
     };
 }
 
@@ -229,7 +230,17 @@ const AboutPage = async () => {
                         ))}
                     </div>
                     <div className="w-full xl:w-1/2 flex justify-center">
-                        <div className="w-full aspect-square gallery-item relative">
+                        <div 
+                            className="w-full aspect-square gallery-item relative"
+                            style={{
+                                backgroundImage: data.whatWeDoSection.backgroundImage?.url 
+                                    ? `url(${data.whatWeDoSection.backgroundImage.url})` 
+                                    : 'none',
+                                backgroundSize: 'cover',
+                                backgroundPosition: 'center',
+                                backgroundRepeat: 'no-repeat'
+                            }}
+                        >
                             <Image 
                                 src={getIconSrc(data.whatWeDoSection.bulbIcon, "/images/icons/bulb.svg")} 
                                 alt="Bulb icon" 

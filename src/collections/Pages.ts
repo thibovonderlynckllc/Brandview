@@ -522,6 +522,14 @@ export const Pages: CollectionConfig = {
             description: 'Bulb decorative icon',
           },
         },
+        {
+          name: 'backgroundImage',
+          type: 'upload',
+          relationTo: 'media',
+          admin: {
+            description: 'Background image for what we do section',
+          },
+        },
       ],
       admin: {
         condition: (data) => data.pageType === 'about',
