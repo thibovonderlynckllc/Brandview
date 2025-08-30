@@ -113,7 +113,8 @@ async function getServicesData() {
                     }
                 ]
             },
-            limit: 1
+            limit: 1,
+            depth: 2, // Increase depth to populate nested relations like poster
         });
         
         if (pages.docs.length > 0) {
@@ -227,7 +228,12 @@ const ServicesPage = async () => {
     const getPosterSrc = (item: ServiceItem) => {
         if (typeof item.image === 'object' && item.image !== null && 'poster' in item.image && item.image.poster) {
             const poster = item.image.poster as { url: string } | string;
-            return typeof poster === 'string' ? poster : poster.url;
+            // Handle different poster field structures
+            if (typeof poster === 'object' && 'url' in poster) {
+                return poster.url;
+            } else if (typeof poster === 'string') {
+                return poster;
+            }
         }
         return undefined;
     };
@@ -381,7 +387,11 @@ const ServicesPage = async () => {
                                     />
                                 )}
                                 {getVideoSrc(service) && (
-                                    <VideoPlayer src={getVideoSrc(service)!} className="w-full h-[400px]" />
+                                    <VideoPlayer 
+                                        src={getVideoSrc(service)!} 
+                                        poster={getPosterSrc(service)} 
+                                        className="w-full h-[400px]" 
+                                    />
                                 )}
                             </div>
                             {renderIcon(service)}
