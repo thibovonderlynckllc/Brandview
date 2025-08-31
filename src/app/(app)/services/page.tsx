@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import SwirlArrow from '../components/SwirlArrow';
 import Link from 'next/link';
-import VideoPlayer from '../components/VideoPlayer';
+import ReactVideoPlayer from '../components/ReactVideoPlayer';
 import { getPayload } from 'payload';
 import config from '../../../payload.config';
 
@@ -270,7 +270,7 @@ const ServicesPage = async () => {
                                     />
                                 )}
                                 {getVideoSrc(service) && (
-                                    <VideoPlayer 
+                                    <ReactVideoPlayer 
                                         src={getVideoSrc(service)!} 
                                         poster={getPosterSrc(service)} 
                                         className="w-full h-[400px]" 
@@ -387,7 +387,7 @@ const ServicesPage = async () => {
                                     />
                                 )}
                                 {getVideoSrc(service) && (
-                                    <VideoPlayer 
+                                    <ReactVideoPlayer 
                                         src={getVideoSrc(service)!} 
                                         poster={getPosterSrc(service)} 
                                         className="w-full h-[400px]" 
