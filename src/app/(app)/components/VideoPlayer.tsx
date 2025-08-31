@@ -2,24 +2,72 @@
 
 import { useState, useEffect, useRef } from 'react';
 
-// Robust Video Player Component with mobile crash prevention
+// iOS-optimized Video Player Component with crash prevention
 const VideoPlayer = ({ src, className, poster }: { src: string; className?: string; poster?: string }) => {
   const [isMobile, setIsMobile] = useState(false);
+  const [isIOS, setIsIOS] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const [hasError, setHasError] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
+  const [isVisible, setIsVisible] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const observerRef = useRef<IntersectionObserver | null>(null);
 
+  // Detect device type
   useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth <= 768);
+    const checkDevice = () => {
+      const mobile = window.innerWidth <= 768;
+      const ios = /iPad|iPhone|iPod/.test(navigator.userAgent) || 
+                  (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+      
+      setIsMobile(mobile);
+      setIsIOS(ios);
     };
     
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
+    checkDevice();
+    window.addEventListener('resize', checkDevice);
     
-    return () => window.removeEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkDevice);
   }, []);
+
+  // Intersection Observer for memory management (iOS only)
+  useEffect(() => {
+    if (!videoRef.current || !isIOS) return;
+
+    observerRef.current = new IntersectionObserver(
+      ([entry]) => {
+        setIsVisible(entry.isIntersecting);
+      },
+      { threshold: 0.1 }
+    );
+
+    observerRef.current.observe(videoRef.current);
+
+    return () => {
+      if (observerRef.current) {
+        observerRef.current.disconnect();
+      }
+    };
+  }, [isIOS]);
+
+  // Memory management for iOS
+  useEffect(() => {
+    if (!videoRef.current || !isIOS) return;
+
+    if (isVisible) {
+      // Restore video source when visible
+      videoRef.current.src = src;
+      videoRef.current.load();
+      if (!isMobile) {
+        videoRef.current.play().catch(console.error);
+      }
+    } else {
+      // Unload video to free memory when not visible
+      videoRef.current.pause();
+      videoRef.current.src = "";
+      videoRef.current.load();
+    }
+  }, [isVisible, isIOS, isMobile, src]);
 
   const handleError = (e: React.SyntheticEvent<HTMLVideoElement, Event>) => {
     console.error('Video error:', e);
@@ -42,47 +90,70 @@ const VideoPlayer = ({ src, className, poster }: { src: string; className?: stri
     }
   };
 
-  // For mobile devices - simplified approach to prevent crashes
+  // For mobile devices - iOS-optimized approach
   if (isMobile) {
     return (
       <div className={`relative ${className} bg-gray-800`}>
         <video 
           ref={videoRef}
-          src={src}
+          src={isIOS && !isVisible ? "" : src} // Empty src when not visible on iOS
           poster={poster}
           controls
           playsInline
-          preload="metadata"
+          preload={isIOS ? "none" : "metadata"} // Prevent upfront loading on iOS
           className="w-full h-full object-cover"
           onError={handleError}
           onLoadedData={handleLoadedData}
           onLoadStart={handleLoadStart}
-          // Prevent mobile crashes
+          // iOS-specific attributes
           muted={false}
-          // Additional mobile attributes
           data-webkit-playsinline="true"
           data-x-webkit-airplay="allow"
+          webkit-playsinline="true"
+          x-webkit-airplay="allow"
         />
+        
+        {/* Loading indicator for mobile */}
+        {!isLoaded && !hasError && (
+          <div className="absolute inset-0 flex items-center justify-center bg-gray-800">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
+          </div>
+        )}
+        
+        {/* Error fallback for mobile */}
+        {hasError && (
+          <div className="absolute inset-0 flex items-center justify-center bg-gray-800 text-white">
+            <div className="text-center">
+              <p className="text-sm">Video unavailable</p>
+              <p className="text-xs opacity-75">Please try again later</p>
+            </div>
+          </div>
+        )}
       </div>
     );
   }
 
-  // For desktop devices - autoplay with loop
+  // For desktop devices - autoplay with loop (iOS-optimized)
   return (
     <div className={`relative ${className}`}>
       <video 
         ref={videoRef}
-        src={src}
+        src={isIOS && !isVisible ? "" : src} // Empty src when not visible on iOS
         poster={poster}
-        autoPlay={true}
+        autoPlay={!isIOS} // Disable autoplay on iOS to prevent crashes
         muted={true} 
         loop
         playsInline
-        preload="metadata"
+        preload={isIOS ? "none" : "metadata"} // Prevent upfront loading on iOS
         className="object-cover w-full h-full"
         onError={handleError}
         onLoadedData={handleLoadedData}
         onLoadStart={handleLoadStart}
+        // iOS-specific attributes
+        data-webkit-playsinline="true"
+        data-x-webkit-airplay="allow"
+        webkit-playsinline="true"
+        x-webkit-airplay="allow"
       />
       
       {/* Audio toggle button for desktop */}
