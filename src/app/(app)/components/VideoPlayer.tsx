@@ -58,16 +58,14 @@ const VideoPlayer = ({ src, className, poster }: { src: string; className?: stri
       // Restore video source when visible
       videoRef.current.src = src;
       videoRef.current.load();
-      if (!isMobile) {
-        videoRef.current.play().catch(console.error);
-      }
+      // Don't autoplay - let user control playback
     } else {
       // Unload video to free memory when not visible
       videoRef.current.pause();
       videoRef.current.src = "";
       videoRef.current.load();
     }
-  }, [isVisible, isIOS, isMobile, src]);
+  }, [isVisible, isIOS, src]);
 
   const handleError = (e: React.SyntheticEvent<HTMLVideoElement, Event>) => {
     console.error('Video error:', e);
@@ -90,7 +88,7 @@ const VideoPlayer = ({ src, className, poster }: { src: string; className?: stri
     }
   };
 
-  // For mobile devices - iOS-optimized approach
+  // For mobile devices - iOS-optimized approach with controls
   if (isMobile) {
     return (
       <div className={`relative ${className} bg-gray-800`}>
@@ -133,17 +131,18 @@ const VideoPlayer = ({ src, className, poster }: { src: string; className?: stri
     );
   }
 
-  // For desktop devices - autoplay with loop (iOS-optimized)
+  // For desktop devices - no autoplay, user-controlled playback
   return (
     <div className={`relative ${className}`}>
       <video 
         ref={videoRef}
         src={isIOS && !isVisible ? "" : src} // Empty src when not visible on iOS
         poster={poster}
-        autoPlay={!isIOS} // Disable autoplay on iOS to prevent crashes
+        autoPlay={false} // Disable autoplay to prevent crashes
         muted={true} 
         loop
         playsInline
+        controls // Add controls for desktop so users can play manually
         preload={isIOS ? "none" : "metadata"} // Prevent upfront loading on iOS
         className="object-cover w-full h-full"
         onError={handleError}
