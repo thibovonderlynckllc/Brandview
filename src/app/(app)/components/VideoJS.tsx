@@ -79,7 +79,9 @@ const VideoJS = ({
   useEffect(() => {
     if (!isClient || !isVideoReady) return;
 
-    // Wait for Video.js to be available
+    // Add a small delay to prevent multiple videos loading simultaneously on iPad
+    const initDelay = isMobile ? 0 : Math.random() * 500; // Random delay between 0-500ms for desktop
+
     const initVideoJS = () => {
       if (typeof window === 'undefined' || !window.videojs) {
         // Retry after a short delay if Video.js isn't loaded yet
@@ -160,7 +162,8 @@ const VideoJS = ({
       }
     };
 
-    initVideoJS();
+    // Add delay before initialization
+    setTimeout(initVideoJS, initDelay);
 
     return () => {
       if (playerRef.current) {
