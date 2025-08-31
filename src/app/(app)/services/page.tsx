@@ -148,6 +148,7 @@ interface MediaItem {
     url: string;
     filename?: string;
     mimeType?: string;
+    cloudinaryMobileVideo?: string;
 }
 
 interface PricingContentPlan {
@@ -225,6 +226,13 @@ const ServicesPage = async () => {
         return null;
     };
 
+    const getMobileVideoSrc = (item: ServiceItem) => {
+        if (typeof item.image === 'object' && item.image !== null && 'cloudinaryMobileVideo' in item.image && item.image.cloudinaryMobileVideo) {
+            return item.image.cloudinaryMobileVideo;
+        }
+        return null;
+    };
+
     const getPosterSrc = (item: ServiceItem) => {
         if (typeof item.image === 'object' && item.image !== null && 'poster' in item.image && item.image.poster) {
             const poster = item.image.poster as { url: string } | string;
@@ -239,9 +247,9 @@ const ServicesPage = async () => {
     };
 
     const isVideo = (media: MediaItem) => {
-        if (!media?.filename) return false;
+        if (!media?.url) return false;
         const videoExtensions = ['.mp4', '.mov', '.webm', '.avi', '.mkv'];
-        return videoExtensions.some(ext => media.filename?.toLowerCase().endsWith(ext));
+        return videoExtensions.some(ext => media.url.toLowerCase().includes(ext));
     };
 
     return (
@@ -271,7 +279,7 @@ const ServicesPage = async () => {
                                 )}
                                 {getVideoSrc(service) && (
                                     <ReactVideoPlayer 
-                                        src={getVideoSrc(service)!} 
+                                        src={getMobileVideoSrc(service) || getVideoSrc(service)!} 
                                         poster={getPosterSrc(service)} 
                                         className="w-full h-[400px]" 
                                     />
@@ -388,7 +396,7 @@ const ServicesPage = async () => {
                                 )}
                                 {getVideoSrc(service) && (
                                     <ReactVideoPlayer 
-                                        src={getVideoSrc(service)!} 
+                                        src={getMobileVideoSrc(service) || getVideoSrc(service)!} 
                                         poster={getPosterSrc(service)} 
                                         className="w-full h-[400px]" 
                                     />

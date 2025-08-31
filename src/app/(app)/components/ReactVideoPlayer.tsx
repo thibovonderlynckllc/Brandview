@@ -3,12 +3,12 @@
 import { useState, useEffect } from 'react';
 import ReactPlayer from 'react-player';
 
-// ReactPlayer-based Video Player Component optimized for iOS
+// Simplified ReactPlayer-based Video Player Component
 const ReactVideoPlayer = ({ 
   src, 
   className, 
   poster,
-  autoPlay = false, // Changed default to false to prevent autoplay issues
+  autoPlay = true,
   loop = true,
   muted = true,
   controls = false,
@@ -26,21 +26,15 @@ const ReactVideoPlayer = ({
   height?: string | number;
 }) => {
   const [isMobile, setIsMobile] = useState(false);
-  const [isIOS, setIsIOS] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const [hasError, setHasError] = useState(false);
   const [isMuted, setIsMuted] = useState(muted);
-  const [isPlaying, setIsPlaying] = useState(false);
 
   // Detect device type
   useEffect(() => {
     const checkDevice = () => {
       const mobile = window.innerWidth <= 768;
-      const ios = /iPad|iPhone|iPod/.test(navigator.userAgent) || 
-                  (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-      
       setIsMobile(mobile);
-      setIsIOS(ios);
     };
     
     checkDevice();
@@ -61,22 +55,13 @@ const ReactVideoPlayer = ({
 
   const handleStart = () => {
     setIsLoaded(true);
-    setIsPlaying(true);
-  };
-
-  const handlePause = () => {
-    setIsPlaying(false);
-  };
-
-  const handlePlay = () => {
-    setIsPlaying(true);
   };
 
   const toggleMute = () => {
     setIsMuted(!isMuted);
   };
 
-  // For mobile devices - use ReactPlayer with iOS optimizations and no autoplay
+  // For mobile devices - use ReactPlayer with controls
   if (isMobile) {
     return (
       <div className={`relative ${className} bg-gray-800`}>
@@ -84,7 +69,7 @@ const ReactVideoPlayer = ({
           src={src}
           width="100%"
           height="100%"
-          playing={false} // Never autoplay on mobile
+          playing={false} // Don't autoplay on mobile
           controls={true} // Show controls on mobile
           loop={loop}
           muted={isMuted}
@@ -92,8 +77,6 @@ const ReactVideoPlayer = ({
           onReady={handleReady}
           onError={handleError}
           onStart={handleStart}
-          onPause={handlePause}
-          onPlay={handlePlay}
           style={{
             objectFit: 'cover'
           }}
@@ -119,14 +102,14 @@ const ReactVideoPlayer = ({
     );
   }
 
-  // For desktop devices - only autoplay if explicitly requested and not iOS
+  // For desktop devices - autoplay with loop
   return (
     <div className={`relative ${className}`}>
       <ReactPlayer
         src={src}
         width={width}
         height={height}
-        playing={autoPlay && !isIOS} // Only autoplay on desktop if requested and not iOS
+        playing={autoPlay}
         controls={controls}
         loop={loop}
         muted={isMuted}
@@ -134,8 +117,6 @@ const ReactVideoPlayer = ({
         onReady={handleReady}
         onError={handleError}
         onStart={handleStart}
-        onPause={handlePause}
-        onPlay={handlePlay}
         style={{
           objectFit: 'cover'
         }}
