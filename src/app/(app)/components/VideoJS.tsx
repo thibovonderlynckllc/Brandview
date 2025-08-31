@@ -53,18 +53,22 @@ const VideoJS = ({
     const checkDevice = () => {
       // More reliable mobile detection
       const isMobileDevice = () => {
-        // Check user agent for mobile/tablet devices
+        // Check user agent for mobile/tablet devices - this is the primary method
         const userAgent = navigator.userAgent.toLowerCase();
         const isMobileUA = /mobile|android|iphone|ipad|ipod|blackberry|windows phone/.test(userAgent);
         
-        // Check for touch capability
+        // If user agent indicates mobile/tablet, always treat as mobile regardless of screen size
+        if (isMobileUA) {
+          return true;
+        }
+        
+        // Fallback: check for touch capability (for edge cases)
         const hasTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
         
-        // Check screen size (but not as primary indicator)
-        const isSmallScreen = window.innerWidth <= 1024;
+        // Only use screen size as a last resort for non-mobile user agents
+        const isSmallScreen = window.innerWidth <= 768;
         
-        // Consider it mobile if it has mobile user agent OR (has touch AND small screen)
-        return isMobileUA || (hasTouch && isSmallScreen);
+        return hasTouch && isSmallScreen;
       };
       
       const mobile = isMobileDevice();
