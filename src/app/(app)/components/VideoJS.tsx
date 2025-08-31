@@ -51,17 +51,29 @@ const VideoJS = ({
     if (!isClient) return;
     
     const checkDevice = () => {
-      // Better mobile detection including iPads
+      // More reliable mobile detection
       const isMobileDevice = () => {
-        // Check for touch capability and screen size
-        const hasTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-        const isTablet = /iPad|Android/.test(navigator.userAgent) && window.innerWidth <= 1024;
-        const isMobile = window.innerWidth <= 768;
+        // Check user agent for mobile/tablet devices
+        const userAgent = navigator.userAgent.toLowerCase();
+        const isMobileUA = /mobile|android|iphone|ipad|ipod|blackberry|windows phone/.test(userAgent);
         
-        return hasTouch && (isMobile || isTablet);
+        // Check for touch capability
+        const hasTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+        
+        // Check screen size (but not as primary indicator)
+        const isSmallScreen = window.innerWidth <= 1024;
+        
+        // Consider it mobile if it has mobile user agent OR (has touch AND small screen)
+        return isMobileUA || (hasTouch && isSmallScreen);
       };
       
       const mobile = isMobileDevice();
+      console.log('Device detection:', {
+        userAgent: navigator.userAgent,
+        hasTouch: 'ontouchstart' in window || navigator.maxTouchPoints > 0,
+        screenWidth: window.innerWidth,
+        isMobile: mobile
+      });
       setIsMobile(mobile);
       setShowMuteButton(!mobile); // Show mute button only on desktop
     };
