@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import VideoJS from './VideoJS';
+import { isMobile, isTablet, isIOS } from 'react-device-detect';
 
 interface MediaItem {
     id: string;
@@ -31,33 +32,18 @@ const ServiceVideo = ({ service }: ServiceVideoProps) => {
         if (!isClient) return;
         
                 const checkDevice = () => {
-          // More reliable mobile detection
-          const isMobileDevice = () => {
-            // Check user agent for mobile/tablet devices - this is the primary method
-            const userAgent = navigator.userAgent.toLowerCase();
-            const isMobileUA = /mobile|android|iphone|ipad|ipod|blackberry|windows phone/.test(userAgent);
-            
-            // If user agent indicates mobile/tablet, always treat as mobile regardless of screen size
-            if (isMobileUA) {
-              return true;
-            }
-            
-            // Fallback: check for touch capability (for edge cases)
-            const hasTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-            
-            // Only use screen size as a last resort for non-mobile user agents
-            const isSmallScreen = window.innerWidth <= 768;
-            
-            return hasTouch && isSmallScreen;
-          };
+          // Use react-device-detect for more reliable device detection
+          const mobile = isMobile || isTablet || isIOS;
           
-          const mobile = isMobileDevice();
           console.log('ServiceVideo Device detection:', {
             userAgent: navigator.userAgent,
-            hasTouch: 'ontouchstart' in window || navigator.maxTouchPoints > 0,
+            isMobile: isMobile,
+            isTablet: isTablet,
+            isIOS: isIOS,
             screenWidth: window.innerWidth,
-            isMobile: mobile
+            finalMobile: mobile
           });
+          
           setIsMobile(mobile);
         };
         
