@@ -4,7 +4,7 @@ import Masonry from 'react-masonry-css';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useLayoutEffect, useState, useMemo, useEffect } from 'react';
-import ReactVideoPlayer from './ReactVideoPlayer';
+import VideoJS from './VideoJS';
 
 interface MasonryPosition {
     image?: { url: string; alt?: string; cloudinaryMobileVideo?: string } | string | null;
@@ -131,7 +131,7 @@ export default function MasonryGallery({ masonryGalleryGrid }: MasonryGalleryPro
         
         if (isVideoUrl(videoSrc || src)) {
             return (
-                <ReactVideoPlayer 
+                <VideoJS 
                     src={videoSrc || src} 
                     className="absolute inset-0 w-full h-full" 
                 />

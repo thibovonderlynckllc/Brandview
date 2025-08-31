@@ -18,6 +18,8 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <link rel="stylesheet" href="https://use.typekit.net/gtj8rpo.css" />
+        <link href="https://vjs.zencdn.net/8.23.4/video-js.min.css" rel="stylesheet" />
+        <script src="https://vjs.zencdn.net/8.23.4/video.min.js"></script>
       </head>
       <body suppressHydrationWarning={true}>
         <div className="antialiased relative">

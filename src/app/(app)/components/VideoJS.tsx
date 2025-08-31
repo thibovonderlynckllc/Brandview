@@ -34,9 +34,18 @@ const VideoJS = ({
   const [isMobile, setIsMobile] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const [hasError, setHasError] = useState(false);
+  const [isClient, setIsClient] = useState(false);
+  const [isVideoReady, setIsVideoReady] = useState(false);
+
+  // Ensure we're on the client side
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   // Detect device type
   useEffect(() => {
+    if (!isClient) return;
+    
     const checkDevice = () => {
       const mobile = window.innerWidth <= 768;
       setIsMobile(mobile);
@@ -46,23 +55,41 @@ const VideoJS = ({
     window.addEventListener('resize', checkDevice);
     
     return () => window.removeEventListener('resize', checkDevice);
-  }, []);
+  }, [isClient]);
 
+  // Initialize Video.js with proper timing
   useEffect(() => {
-    // Make sure Video.js is available
-    if (typeof window !== 'undefined' && window.videojs) {
-      if (!playerRef.current) {
-        const videoElement = videoRef.current;
-        if (!videoElement) return;
+    if (!isClient || !isVideoReady) return;
 
+    // Wait for Video.js to be available
+    const initVideoJS = () => {
+      if (typeof window === 'undefined' || !window.videojs) {
+        // Retry after a short delay if Video.js isn't loaded yet
+        setTimeout(initVideoJS, 100);
+        return;
+      }
+
+      const videoElement = videoRef.current;
+      if (!videoElement || !videoElement.parentNode) {
+        // Retry if video element isn't ready
+        setTimeout(initVideoJS, 100);
+        return;
+      }
+
+      // Check if player is already initialized
+      if (playerRef.current) {
+        return;
+      }
+
+      try {
         const player = window.videojs(videoElement, {
           controls: isMobile ? true : controls,
           autoplay: isMobile ? false : autoPlay,
           loop: loop,
           muted: muted,
           preload: 'metadata',
-          responsive: true,
-          fluid: true,
+          responsive: false,
+          fluid: false,
           playbackRates: [0.5, 1, 1.25, 1.5, 2],
           userActions: {
             hotkeys: true
@@ -90,8 +117,13 @@ const VideoJS = ({
         });
 
         playerRef.current = player;
+      } catch (error) {
+        console.error('Error initializing Video.js:', error);
+        setHasError(true);
       }
-    }
+    };
+
+    initVideoJS();
 
     return () => {
       if (playerRef.current) {
@@ -103,26 +135,46 @@ const VideoJS = ({
         }
       }
     };
-  }, [src, autoPlay, loop, muted, controls, isMobile]);
+  }, [src, autoPlay, loop, muted, controls, isMobile, isClient, isVideoReady]);
 
   // Update player when props change
   useEffect(() => {
-    if (playerRef.current) {
-      playerRef.current.src(src);
-      playerRef.current.muted(muted);
-      playerRef.current.loop(loop);
+    if (playerRef.current && isClient) {
+      try {
+        playerRef.current.src(src);
+        playerRef.current.muted(muted);
+        playerRef.current.loop(loop);
+      } catch (error) {
+        console.error('Error updating player:', error);
+      }
     }
-  }, [src, muted, loop]);
+  }, [src, muted, loop, isClient]);
+
+  // Mark video as ready when it's mounted
+  useEffect(() => {
+    if (isClient && videoRef.current) {
+      setIsVideoReady(true);
+    }
+  }, [isClient]);
+
+  // Don't render video element until client-side
+  if (!isClient) {
+    return (
+      <div className={`relative ${className}`}>
+        <div className="bg-gray-800 flex items-center justify-center absolute inset-0">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={`relative ${className}`}>
       <video
         ref={videoRef}
-        className="video-js vjs-default-skin"
+        className="video-js vjs-default-skin absolute inset-0 w-full h-full"
         data-setup="{}"
         style={{
-          width: width,
-          height: height,
           objectFit: 'cover'
         }}
       >

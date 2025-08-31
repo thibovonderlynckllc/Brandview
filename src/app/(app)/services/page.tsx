@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import SwirlArrow from '../components/SwirlArrow';
 import Link from 'next/link';
-import ReactVideoPlayer from '../components/ReactVideoPlayer';
+import VideoJS from '../components/VideoJS';
 import { getPayload } from 'payload';
 import config from '../../../payload.config';
 
@@ -228,10 +228,8 @@ const ServicesPage = async () => {
 
     const getMobileVideoSrc = (item: ServiceItem) => {
         if (typeof item.image === 'object' && item.image !== null && 'cloudinaryMobileVideo' in item.image && item.image.cloudinaryMobileVideo) {
-            console.log('Mobile video found:', item.image.cloudinaryMobileVideo);
             return item.image.cloudinaryMobileVideo;
         }
-        console.log('No mobile video found for:', item.title);
         return null;
     };
 
@@ -267,7 +265,7 @@ const ServicesPage = async () => {
                                     />
                                 )}
                                 {getVideoSrc(service) && (
-                                    <ReactVideoPlayer 
+                                    <VideoJS 
                                         src={getMobileVideoSrc(service) || getVideoSrc(service)!} 
                                         className="w-full h-[400px]" 
                                     />
@@ -383,7 +381,7 @@ const ServicesPage = async () => {
                                     />
                                 )}
                                 {getVideoSrc(service) && (
-                                    <ReactVideoPlayer 
+                                    <VideoJS 
                                         src={getMobileVideoSrc(service) || getVideoSrc(service)!} 
                                         className="w-full h-[400px]" 
                                     />
