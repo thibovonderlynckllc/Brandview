@@ -134,6 +134,7 @@ export default function MasonryGallery({ masonryGalleryGrid }: MasonryGalleryPro
                 <VideoJS 
                     src={videoSrc || src} 
                     className="absolute inset-0 w-full h-full" 
+                    poster={posterSrc}
                 />
             );
         }

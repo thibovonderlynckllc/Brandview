@@ -149,6 +149,7 @@ interface MediaItem {
     filename?: string;
     mimeType?: string;
     cloudinaryMobileVideo?: string;
+    poster?: { url: string; alt?: string } | null;
 }
 
 interface PricingContentPlan {
@@ -234,10 +235,11 @@ const ServicesPage = async () => {
     };
 
     const getPosterSrc = (item: ServiceItem) => {
-        if (typeof item.image === 'object' && item.image !== null && 'url' in item.image && isVideo(item.image)) {
-            // For videos, we can use the first frame as poster or a specific poster image
-            // For now, we'll use the video URL itself as Video.js will extract the first frame
-            return item.image.url;
+        if (typeof item.image === 'object' && item.image !== null && 'poster' in item.image && item.image.poster) {
+            // Use the dedicated poster image from CMS if available
+            if (typeof item.image.poster === 'object' && item.image.poster !== null && 'url' in item.image.poster) {
+                return item.image.poster.url;
+            }
         }
         return null;
     };
@@ -277,6 +279,7 @@ const ServicesPage = async () => {
                                     <VideoJS 
                                         src={getMobileVideoSrc(service) || getVideoSrc(service)!} 
                                         className="w-full h-[400px]" 
+                                        poster={getPosterSrc(service) || undefined}
                                     />
                                 )}
                             </div>
@@ -393,6 +396,7 @@ const ServicesPage = async () => {
                                     <VideoJS 
                                         src={getMobileVideoSrc(service) || getVideoSrc(service)!} 
                                         className="w-full h-[400px]" 
+                                        poster={getPosterSrc(service) || undefined}
                                     />
                                 )}
                             </div>
