@@ -18,7 +18,8 @@ const VideoJS = ({
   muted = true,
   controls = false,
   width = '100%',
-  height = '100%'
+  height = '100%',
+  poster
 }: { 
   src: string; 
   className?: string; 
@@ -28,6 +29,7 @@ const VideoJS = ({
   controls?: boolean;
   width?: string | number;
   height?: string | number;
+  poster?: string;
 }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const playerRef = useRef<any>(null);
@@ -36,6 +38,8 @@ const VideoJS = ({
   const [hasError, setHasError] = useState(false);
   const [isClient, setIsClient] = useState(false);
   const [isVideoReady, setIsVideoReady] = useState(false);
+  const [isMuted, setIsMuted] = useState(muted);
+  const [showMuteButton, setShowMuteButton] = useState(false);
 
   // Ensure we're on the client side
   useEffect(() => {
@@ -49,6 +53,7 @@ const VideoJS = ({
     const checkDevice = () => {
       const mobile = window.innerWidth <= 768;
       setIsMobile(mobile);
+      setShowMuteButton(!mobile); // Show mute button only on desktop
     };
     
     checkDevice();
@@ -56,6 +61,19 @@ const VideoJS = ({
     
     return () => window.removeEventListener('resize', checkDevice);
   }, [isClient]);
+
+  // Handle mute toggle
+  const toggleMute = () => {
+    if (playerRef.current) {
+      try {
+        const newMutedState = !isMuted;
+        playerRef.current.muted(newMutedState);
+        setIsMuted(newMutedState);
+      } catch (error) {
+        console.error('Error toggling mute:', error);
+      }
+    }
+  };
 
   // Initialize Video.js with proper timing
   useEffect(() => {
@@ -93,10 +111,12 @@ const VideoJS = ({
           playbackRates: [0.5, 1, 1.25, 1.5, 2],
           userActions: {
             hotkeys: true
-          }
+          },
+          poster: poster
         }, () => {
           setIsLoaded(true);
           setHasError(false);
+          setIsMuted(muted);
           
           // Add event listeners
           player.on('error', () => {
@@ -114,6 +134,23 @@ const VideoJS = ({
               player.play();
             }
           });
+
+          // Listen for mute state changes
+          player.on('volumechange', () => {
+            setIsMuted(player.muted());
+          });
+
+          // Explicitly trigger autoplay for desktop
+          if (!isMobile && autoPlay && muted) {
+            // Small delay to ensure everything is ready
+            setTimeout(() => {
+              try {
+                player.play();
+              } catch (error) {
+                console.log('Autoplay failed (this is normal in some browsers):', error);
+              }
+            }, 100);
+          }
         });
 
         playerRef.current = player;
@@ -135,7 +172,7 @@ const VideoJS = ({
         }
       }
     };
-  }, [src, autoPlay, loop, muted, controls, isMobile, isClient, isVideoReady]);
+  }, [src, autoPlay, loop, muted, controls, isMobile, isClient, isVideoReady, poster]);
 
   // Update player when props change
   useEffect(() => {
@@ -144,11 +181,14 @@ const VideoJS = ({
         playerRef.current.src(src);
         playerRef.current.muted(muted);
         playerRef.current.loop(loop);
+        if (poster) {
+          playerRef.current.poster(poster);
+        }
       } catch (error) {
         console.error('Error updating player:', error);
       }
     }
-  }, [src, muted, loop, isClient]);
+  }, [src, muted, loop, isClient, poster]);
 
   // Mark video as ready when it's mounted
   useEffect(() => {
@@ -174,6 +214,7 @@ const VideoJS = ({
         ref={videoRef}
         className="video-js vjs-default-skin absolute inset-0 w-full h-full"
         data-setup="{}"
+        poster={poster}
         style={{
           objectFit: 'cover'
         }}
@@ -187,6 +228,25 @@ const VideoJS = ({
           </a>
         </p>
       </video>
+      
+      {/* Custom Mute Button for Desktop */}
+      {showMuteButton && isLoaded && !hasError && (
+        <button
+          onClick={toggleMute}
+          className="absolute top-4 right-4 z-10 text-white rounded-full p-2 transition-all duration-200 transform hover:scale-110 focus:outline-none"
+          aria-label={isMuted ? "Unmute video" : "Mute video"}
+        >
+          {isMuted ? (
+            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.617.794L4.5 14H2a1 1 0 01-1-1V7a1 1 0 011-1h2.5l3.883-2.794a1 1 0 011.617.794zM12.293 7.293a1 1 0 011.414 0L15 8.586l1.293-1.293a1 1 0 111.414 1.414L16.414 10l1.293 1.293a1 1 0 01-1.414 1.414L15 11.414l-1.293 1.293a1 1 0 01-1.414-1.414L13.586 10l-1.293-1.293a1 1 0 010-1.414z" clipRule="evenodd" />
+            </svg>
+          ) : (
+            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.617.794L4.5 14H2a1 1 0 01-1-1V7a1 1 0 011-1h2.5l3.883-2.794a1 1 0 011.617.794z" clipRule="evenodd" />
+            </svg>
+          )}
+        </button>
+      )}
       
       {/* Loading indicator */}
       {!isLoaded && !hasError && (

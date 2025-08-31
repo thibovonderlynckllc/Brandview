@@ -233,6 +233,15 @@ const ServicesPage = async () => {
         return null;
     };
 
+    const getPosterSrc = (item: ServiceItem) => {
+        if (typeof item.image === 'object' && item.image !== null && 'url' in item.image && isVideo(item.image)) {
+            // For videos, we can use the first frame as poster or a specific poster image
+            // For now, we'll use the video URL itself as Video.js will extract the first frame
+            return item.image.url;
+        }
+        return null;
+    };
+
     const isVideo = (media: MediaItem) => {
         if (!media?.url) return false;
         const videoExtensions = ['.mp4', '.mov', '.webm', '.avi', '.mkv'];
