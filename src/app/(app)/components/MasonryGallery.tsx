@@ -133,7 +133,6 @@ export default function MasonryGallery({ masonryGalleryGrid }: MasonryGalleryPro
             return (
                 <ReactVideoPlayer 
                     src={videoSrc || src} 
-                    poster={posterSrc}
                     className="absolute inset-0 w-full h-full" 
                 />
             );

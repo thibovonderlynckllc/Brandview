@@ -228,22 +228,11 @@ const ServicesPage = async () => {
 
     const getMobileVideoSrc = (item: ServiceItem) => {
         if (typeof item.image === 'object' && item.image !== null && 'cloudinaryMobileVideo' in item.image && item.image.cloudinaryMobileVideo) {
+            console.log('Mobile video found:', item.image.cloudinaryMobileVideo);
             return item.image.cloudinaryMobileVideo;
         }
+        console.log('No mobile video found for:', item.title);
         return null;
-    };
-
-    const getPosterSrc = (item: ServiceItem) => {
-        if (typeof item.image === 'object' && item.image !== null && 'poster' in item.image && item.image.poster) {
-            const poster = item.image.poster as { url: string } | string;
-            // Handle different poster field structures
-            if (typeof poster === 'object' && 'url' in poster) {
-                return poster.url;
-            } else if (typeof poster === 'string') {
-                return poster;
-            }
-        }
-        return undefined;
     };
 
     const isVideo = (media: MediaItem) => {
@@ -280,7 +269,6 @@ const ServicesPage = async () => {
                                 {getVideoSrc(service) && (
                                     <ReactVideoPlayer 
                                         src={getMobileVideoSrc(service) || getVideoSrc(service)!} 
-                                        poster={getPosterSrc(service)} 
                                         className="w-full h-[400px]" 
                                     />
                                 )}
@@ -397,7 +385,6 @@ const ServicesPage = async () => {
                                 {getVideoSrc(service) && (
                                     <ReactVideoPlayer 
                                         src={getMobileVideoSrc(service) || getVideoSrc(service)!} 
-                                        poster={getPosterSrc(service)} 
                                         className="w-full h-[400px]" 
                                     />
                                 )}

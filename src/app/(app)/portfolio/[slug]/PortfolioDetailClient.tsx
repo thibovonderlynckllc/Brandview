@@ -327,7 +327,6 @@ export default function PortfolioDetailClient({ data }: PortfolioDetailClientPro
               {getVideoSrc(galleryGrid.row1?.position1) && (
                 <ReactVideoPlayer 
                   src={getVideoSrc(galleryGrid.row1?.position1)!} 
-                  poster={getPosterSrc(galleryGrid.row1?.position1)} 
                   className="object-cover w-full h-full" 
                 />
               )}
@@ -348,7 +347,6 @@ export default function PortfolioDetailClient({ data }: PortfolioDetailClientPro
               {getVideoSrc(galleryGrid.row1?.position2) && (
                 <ReactVideoPlayer 
                   src={getVideoSrc(galleryGrid.row1?.position2)!} 
-                  poster={getPosterSrc(galleryGrid.row1?.position2)} 
                   className="object-cover w-full h-full" 
                 />
               )}
@@ -369,7 +367,6 @@ export default function PortfolioDetailClient({ data }: PortfolioDetailClientPro
               {getVideoSrc(galleryGrid.row1?.position3) && (
                 <ReactVideoPlayer 
                   src={getVideoSrc(galleryGrid.row1?.position3)!} 
-                  poster={getPosterSrc(galleryGrid.row1?.position3)} 
                   className="object-cover w-full h-full" 
                 />
               )}
@@ -387,7 +384,7 @@ export default function PortfolioDetailClient({ data }: PortfolioDetailClientPro
                 />
               )}
               {getVideoSrc(galleryGrid.row2?.position4) && (
-                <ReactVideoPlayer src={getVideoSrc(galleryGrid.row2?.position4)!} poster={getPosterSrc(galleryGrid.row2?.position4)} className="object-cover w-full h-full" />
+                <ReactVideoPlayer src={getVideoSrc(galleryGrid.row2?.position4)!} className="object-cover w-full h-full" />
               )}
             </div>
 
@@ -402,7 +399,7 @@ export default function PortfolioDetailClient({ data }: PortfolioDetailClientPro
                 />
               )}
               {getVideoSrc(galleryGrid.row2?.position5) && (
-                <ReactVideoPlayer src={getVideoSrc(galleryGrid.row2?.position5)!} poster={getPosterSrc(galleryGrid.row2?.position5)} className="object-cover w-full h-full" />
+                <ReactVideoPlayer src={getVideoSrc(galleryGrid.row2?.position5)!} className="object-cover w-full h-full" />
               )}
             </div>
 
@@ -417,7 +414,7 @@ export default function PortfolioDetailClient({ data }: PortfolioDetailClientPro
                 />
               )}
               {getVideoSrc(galleryGrid.row2?.position6) && (
-                <ReactVideoPlayer src={getVideoSrc(galleryGrid.row2?.position6)!} poster={getPosterSrc(galleryGrid.row2?.position6)} className="object-cover w-full h-full" />
+                <ReactVideoPlayer src={getVideoSrc(galleryGrid.row2?.position6)!} className="object-cover w-full h-full" />
               )}
             </div>
 
@@ -433,7 +430,7 @@ export default function PortfolioDetailClient({ data }: PortfolioDetailClientPro
                 />
               )}
               {getVideoSrc(galleryGrid.row3?.position7) && (
-                <ReactVideoPlayer src={getVideoSrc(galleryGrid.row3?.position7)!} poster={getPosterSrc(galleryGrid.row3?.position7)} className="object-cover w-full h-full" />
+                <ReactVideoPlayer src={getVideoSrc(galleryGrid.row3?.position7)!} className="object-cover w-full h-full" />
               )}
             </div>
 
@@ -448,7 +445,7 @@ export default function PortfolioDetailClient({ data }: PortfolioDetailClientPro
                 />
               )}
               {getVideoSrc(galleryGrid.row3?.position8) && (
-                <ReactVideoPlayer src={getVideoSrc(galleryGrid.row3?.position8)!} poster={getPosterSrc(galleryGrid.row3?.position8)} className="object-cover w-full h-full" />
+                <ReactVideoPlayer src={getVideoSrc(galleryGrid.row3?.position8)!} className="object-cover w-full h-full" />
               )}
               {/* Icon1 for short-content goes on position8 */}
               {portfolioType === 'short-content' && portfolioIcons.icon1}
@@ -465,7 +462,7 @@ export default function PortfolioDetailClient({ data }: PortfolioDetailClientPro
                 />
               )}
               {getVideoSrc(galleryGrid.row3?.position9) && (
-                <ReactVideoPlayer src={getVideoSrc(galleryGrid.row3?.position9)!} poster={getPosterSrc(galleryGrid.row3?.position9)} className="object-cover w-full h-full" />
+                <ReactVideoPlayer src={getVideoSrc(galleryGrid.row3?.position9)!} className="object-cover w-full h-full" />
               )}
             </div>
           </Masonry>
@@ -497,7 +494,7 @@ export default function PortfolioDetailClient({ data }: PortfolioDetailClientPro
                       />
                     )}
                     {getVideoSrc(galleryGrid.row4?.position10) && (
-                      <ReactVideoPlayer src={getVideoSrc(galleryGrid.row4?.position10)!} poster={getPosterSrc(galleryGrid.row4?.position10)} className="object-cover w-full h-full" />
+                      <ReactVideoPlayer src={getVideoSrc(galleryGrid.row4?.position10)!} className="object-cover w-full h-full" />
                     )}
                   </div>
                   <div className="bg-white h-[400px] flex items-center justify-center gallery-item relative p-0">
@@ -511,7 +508,7 @@ export default function PortfolioDetailClient({ data }: PortfolioDetailClientPro
                       />
                     )}
                     {getVideoSrc(galleryGrid.row4?.position11) && (
-                      <ReactVideoPlayer src={getVideoSrc(galleryGrid.row4?.position11)!} poster={getPosterSrc(galleryGrid.row4?.position11)} className="object-cover w-full h-full" />
+                      <ReactVideoPlayer src={getVideoSrc(galleryGrid.row4?.position11)!} className="object-cover w-full h-full" />
                     )}
                     {/* Icon2 for business and portraits goes on position11 */}
                     {(['business', 'portraits'].includes(portfolioType)) && portfolioIcons.icon2}
@@ -527,7 +524,7 @@ export default function PortfolioDetailClient({ data }: PortfolioDetailClientPro
                       />
                     )}
                     {getVideoSrc(galleryGrid.row5?.position12) && (
-                      <ReactVideoPlayer src={getVideoSrc(galleryGrid.row5?.position12)!} poster={getPosterSrc(galleryGrid.row5?.position12)} className="object-cover w-full h-full" />
+                      <ReactVideoPlayer src={getVideoSrc(galleryGrid.row5?.position12)!} className="object-cover w-full h-full" />
                     )}
                   </div>
                   <div className="bg-white h-[400px] flex items-center justify-center gallery-item relative p-0">
@@ -541,7 +538,7 @@ export default function PortfolioDetailClient({ data }: PortfolioDetailClientPro
                       />
                     )}
                     {getVideoSrc(galleryGrid.row5?.position13) && (
-                      <ReactVideoPlayer src={getVideoSrc(galleryGrid.row5?.position13)!} poster={getPosterSrc(galleryGrid.row5?.position13)} className="object-cover w-full h-full" />
+                      <ReactVideoPlayer src={getVideoSrc(galleryGrid.row5?.position13)!} className="object-cover w-full h-full" />
                     )}
                     {/* Icon2 for corporate-events goes on position13 */}
                     {portfolioType === 'corporate-events' && portfolioIcons.icon2}
@@ -557,7 +554,7 @@ export default function PortfolioDetailClient({ data }: PortfolioDetailClientPro
                       />
                     )}
                     {getVideoSrc(galleryGrid.row6?.position14) && (
-                      <ReactVideoPlayer src={getVideoSrc(galleryGrid.row6?.position14)!} poster={getPosterSrc(galleryGrid.row6?.position14)} className="object-cover w-full h-full" />
+                      <ReactVideoPlayer src={getVideoSrc(galleryGrid.row6?.position14)!} className="object-cover w-full h-full" />
                     )}
                   </div>
                   <div className="bg-white h-[405px] flex items-center justify-center gallery-item relative p-0">
@@ -571,7 +568,7 @@ export default function PortfolioDetailClient({ data }: PortfolioDetailClientPro
                       />
                     )}
                     {getVideoSrc(galleryGrid.row6?.position15) && (
-                      <ReactVideoPlayer src={getVideoSrc(galleryGrid.row6?.position15)!} poster={getPosterSrc(galleryGrid.row6?.position15)} className="object-cover w-full h-full" />
+                      <ReactVideoPlayer src={getVideoSrc(galleryGrid.row6?.position15)!} className="object-cover w-full h-full" />
                     )}
                   </div>
                 </div>
@@ -588,7 +585,7 @@ export default function PortfolioDetailClient({ data }: PortfolioDetailClientPro
                       />
                     )}
                     {getVideoSrc(galleryGrid.row6?.position16) && (
-                      <ReactVideoPlayer src={getVideoSrc(galleryGrid.row6?.position16)!} poster={getPosterSrc(galleryGrid.row6?.position16)} className="object-cover w-full h-full" />
+                      <ReactVideoPlayer src={getVideoSrc(galleryGrid.row6?.position16)!} className="object-cover w-full h-full" />
                     )}
                     {/* Icon2 for products goes on position16 */}
                     {portfolioType === 'products' && portfolioIcons.icon2}
@@ -604,7 +601,7 @@ export default function PortfolioDetailClient({ data }: PortfolioDetailClientPro
                       />
                     )}
                     {getVideoSrc(galleryGrid.row7?.position17) && (
-                      <ReactVideoPlayer src={getVideoSrc(galleryGrid.row7?.position17)!} poster={getPosterSrc(galleryGrid.row7?.position17)} className="object-cover w-full h-full" />
+                      <ReactVideoPlayer src={getVideoSrc(galleryGrid.row7?.position17)!} className="object-cover w-full h-full" />
                     )}
                   </div>
 
@@ -620,7 +617,7 @@ export default function PortfolioDetailClient({ data }: PortfolioDetailClientPro
                         />
                       )}
                       {getVideoSrc(galleryGrid.row7?.position18) && (
-                        <ReactVideoPlayer src={getVideoSrc(galleryGrid.row7?.position18)!} poster={getPosterSrc(galleryGrid.row7?.position18)} className="object-cover w-full h-full" />
+                        <ReactVideoPlayer src={getVideoSrc(galleryGrid.row7?.position18)!} className="object-cover w-full h-full" />
                       )}
                       {/* Icon2 for short-content goes on position18 */}
                       {portfolioType === 'short-content' && portfolioIcons.icon2}
@@ -636,7 +633,7 @@ export default function PortfolioDetailClient({ data }: PortfolioDetailClientPro
                         />
                       )}
                       {getVideoSrc(galleryGrid.row7?.position19) && (
-                        <ReactVideoPlayer src={getVideoSrc(galleryGrid.row7?.position19)!} poster={getPosterSrc(galleryGrid.row7?.position19)} className="object-cover w-full h-full" />
+                        <ReactVideoPlayer src={getVideoSrc(galleryGrid.row7?.position19)!} className="object-cover w-full h-full" />
                       )}
                     </div>
                   </div>
@@ -653,7 +650,7 @@ export default function PortfolioDetailClient({ data }: PortfolioDetailClientPro
                         />
                       )}
                                               {getVideoSrc(galleryGrid.row7?.position20) && (
-                          <ReactVideoPlayer src={getVideoSrc(galleryGrid.row7?.position20)!} poster={getPosterSrc(galleryGrid.row7?.position20)} className="object-cover w-full h-full" />
+                          <ReactVideoPlayer src={getVideoSrc(galleryGrid.row7?.position20)!} className="object-cover w-full h-full" />
                         )}
                       </div>
                       <div className="w-full md:w-1/2 space-y-0">
@@ -668,7 +665,7 @@ export default function PortfolioDetailClient({ data }: PortfolioDetailClientPro
                             />
                           )}
                           {getVideoSrc(galleryGrid.row7?.position21) && (
-                            <ReactVideoPlayer src={getVideoSrc(galleryGrid.row7?.position21)!} poster={getPosterSrc(galleryGrid.row7?.position21)} className="object-cover w-full h-full" />
+                            <ReactVideoPlayer src={getVideoSrc(galleryGrid.row7?.position21)!} className="object-cover w-full h-full" />
                           )}
                         {/* Icon2 for food goes on position21 */}
                         {portfolioType === 'food' && portfolioIcons.icon2}
@@ -684,7 +681,7 @@ export default function PortfolioDetailClient({ data }: PortfolioDetailClientPro
                           />
                         )}
                         {getVideoSrc(galleryGrid.row8?.position22) && (
-                          <ReactVideoPlayer src={getVideoSrc(galleryGrid.row8?.position22)!} poster={getPosterSrc(galleryGrid.row8?.position22)} className="object-cover w-full h-full" />
+                          <ReactVideoPlayer src={getVideoSrc(galleryGrid.row8?.position22)!} className="object-cover w-full h-full" />
                         )}
                       </div>
                     </div>
@@ -701,7 +698,7 @@ export default function PortfolioDetailClient({ data }: PortfolioDetailClientPro
                       />
                     )}
                     {getVideoSrc(galleryGrid.row8?.position23) && (
-                      <ReactVideoPlayer src={getVideoSrc(galleryGrid.row8?.position23)!} poster={getPosterSrc(galleryGrid.row8?.position23)} className="object-cover w-full h-full" />
+                      <ReactVideoPlayer src={getVideoSrc(galleryGrid.row8?.position23)!} className="object-cover w-full h-full" />
                     )}
                   </div>
                 </div>

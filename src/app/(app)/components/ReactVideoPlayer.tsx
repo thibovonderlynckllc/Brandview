@@ -7,7 +7,6 @@ import ReactPlayer from 'react-player';
 const ReactVideoPlayer = ({ 
   src, 
   className, 
-  poster,
   autoPlay = true,
   loop = true,
   muted = true,
@@ -17,7 +16,6 @@ const ReactVideoPlayer = ({
 }: { 
   src: string; 
   className?: string; 
-  poster?: string;
   autoPlay?: boolean;
   loop?: boolean;
   muted?: boolean;
