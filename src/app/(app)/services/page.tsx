@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import SwirlArrow from '../components/SwirlArrow';
 import Link from 'next/link';
-import VideoJS from '../components/VideoJS';
+import ServiceVideo from '../components/ServiceVideo';
 import { getPayload } from 'payload';
 import config from '../../../payload.config';
 
@@ -275,13 +275,7 @@ const ServicesPage = async () => {
                                         className="w-full h-full object-cover" 
                                     />
                                 )}
-                                {getVideoSrc(service) && (
-                                    <VideoJS 
-                                        src={getMobileVideoSrc(service) || getVideoSrc(service)!} 
-                                        className="w-full h-[400px]" 
-                                        poster={getPosterSrc(service) || undefined}
-                                    />
-                                )}
+                                <ServiceVideo service={service} />
                             </div>
                             {renderIcon(service)}
                             <div className="w-full lg:w-1/2 text-center lg:text-left">
@@ -392,13 +386,7 @@ const ServicesPage = async () => {
                                         className="w-full h-full object-cover" 
                                     />
                                 )}
-                                {getVideoSrc(service) && (
-                                    <VideoJS 
-                                        src={getMobileVideoSrc(service) || getVideoSrc(service)!} 
-                                        className="w-full h-[400px]" 
-                                        poster={getPosterSrc(service) || undefined}
-                                    />
-                                )}
+                                <ServiceVideo service={service} />
                             </div>
                             {renderIcon(service)}
                             <div className="w-full lg:w-1/2 text-center lg:text-left">

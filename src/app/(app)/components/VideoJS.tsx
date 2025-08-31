@@ -51,7 +51,17 @@ const VideoJS = ({
     if (!isClient) return;
     
     const checkDevice = () => {
-      const mobile = window.innerWidth <= 768;
+      // Better mobile detection including iPads
+      const isMobileDevice = () => {
+        // Check for touch capability and screen size
+        const hasTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+        const isTablet = /iPad|Android/.test(navigator.userAgent) && window.innerWidth <= 1024;
+        const isMobile = window.innerWidth <= 768;
+        
+        return hasTouch && (isMobile || isTablet);
+      };
+      
+      const mobile = isMobileDevice();
       setIsMobile(mobile);
       setShowMuteButton(!mobile); // Show mute button only on desktop
     };
@@ -79,9 +89,7 @@ const VideoJS = ({
   useEffect(() => {
     if (!isClient || !isVideoReady) return;
 
-    // Add a small delay to prevent multiple videos loading simultaneously on iPad
-    const initDelay = isMobile ? 0 : Math.random() * 500; // Random delay between 0-500ms for desktop
-
+    // Wait for Video.js to be available
     const initVideoJS = () => {
       if (typeof window === 'undefined' || !window.videojs) {
         // Retry after a short delay if Video.js isn't loaded yet
@@ -107,7 +115,7 @@ const VideoJS = ({
           autoplay: isMobile ? false : autoPlay,
           loop: loop,
           muted: muted,
-          preload: 'metadata',
+          preload: isMobile ? 'none' : 'metadata', // Don't preload on mobile to prevent crashes
           responsive: false,
           fluid: false,
           playbackRates: [0.5, 1, 1.25, 1.5, 2],
@@ -162,8 +170,7 @@ const VideoJS = ({
       }
     };
 
-    // Add delay before initialization
-    setTimeout(initVideoJS, initDelay);
+    initVideoJS();
 
     return () => {
       if (playerRef.current) {
