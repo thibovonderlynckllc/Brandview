@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Nav from "./core/Nav";
 import Footer from "./core/Footer";
+import { Analytics } from "@vercel/analytics/react";
 
 export const metadata: Metadata = {
   title: "Brandview",
@@ -27,6 +28,7 @@ export default function RootLayout({
             {children}
           </main>
           <Footer />
+          <Analytics />
         </div>
       </body>
     </html>
