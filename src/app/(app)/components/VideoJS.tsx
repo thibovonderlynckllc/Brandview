@@ -41,6 +41,7 @@ const VideoJS = ({
   const [isVideoReady, setIsVideoReady] = useState(false);
   const [isMuted, setIsMuted] = useState(muted);
   const [showMuteButton, setShowMuteButton] = useState(false);
+  const [isSafari, setIsSafari] = useState(false);
 
   // Ensure we're on the client side
   useEffect(() => {
@@ -74,6 +75,12 @@ const VideoJS = ({
     return () => window.removeEventListener('resize', checkDevice);
   }, [isClient]);
 
+  // Detect Safari browser
+  useEffect(() => {
+    const isSafariBrowser = /Safari/.test(navigator.userAgent) && !/Chrome/.test(navigator.userAgent);
+    setIsSafari(isSafariBrowser);
+  }, []);
+
   // Handle mute toggle
   const toggleMute = () => {
     if (playerRef.current) {
@@ -84,6 +91,23 @@ const VideoJS = ({
       } catch (error) {
         console.error('Error toggling mute:', error);
       }
+    }
+  };
+
+  // Get the correct video type based on file extension
+  const getVideoType = (videoSrc: string) => {
+    const extension = videoSrc.split('.').pop()?.toLowerCase();
+    switch (extension) {
+      case 'mp4':
+        return 'video/mp4';
+      case 'webm':
+        return 'video/webm';
+      case 'mov':
+        return 'video/quicktime';
+      case 'avi':
+        return 'video/x-msvideo';
+      default:
+        return 'video/mp4'; // fallback
     }
   };
 
@@ -117,23 +141,43 @@ const VideoJS = ({
           autoplay: isMobile ? false : autoPlay,
           loop: loop,
           muted: muted,
-          preload: isMobile ? 'none' : 'metadata', // Don't preload on mobile to prevent crashes
+          preload: isSafari ? 'metadata' : (isMobile ? 'none' : 'metadata'), // Safari prefers metadata preload
           responsive: false,
           fluid: false,
           playbackRates: [0.5, 1, 1.25, 1.5, 2],
           userActions: {
             hotkeys: true
           },
-          poster: poster
+          poster: poster,
+          // Safari-specific options
+          html5: {
+            hls: {
+              overrideNative: true
+            }
+          }
         }, () => {
           setIsLoaded(true);
           setHasError(false);
           setIsMuted(muted);
           
           // Add event listeners
-          player.on('error', () => {
-            console.error('Video error occurred');
+          player.on('error', (error: any) => {
+            console.error('Video error occurred:', error);
             setHasError(true);
+            
+            // Safari-specific error handling
+            if (isSafari) {
+              console.log('Safari video error - trying fallback');
+              // Try to reload with different settings
+              setTimeout(() => {
+                try {
+                  player.src(src);
+                  player.load();
+                } catch (e) {
+                  console.error('Safari fallback failed:', e);
+                }
+              }, 1000);
+            }
           });
 
           player.on('loadeddata', () => {
@@ -154,14 +198,14 @@ const VideoJS = ({
 
           // Explicitly trigger autoplay for desktop
           if (!isMobile && autoPlay && muted) {
-            // Small delay to ensure everything is ready
-            setTimeout(() => {
-              try {
-                player.play();
-              } catch (error) {
+            // Safari-compatible autoplay
+            const playPromise = player.play();
+            if (playPromise !== undefined) {
+              playPromise.catch((error: any) => {
                 console.log('Autoplay failed (this is normal in some browsers):', error);
-              }
-            }, 100);
+                // Safari often blocks autoplay - this is expected behavior
+              });
+            }
           }
         });
 
@@ -184,7 +228,7 @@ const VideoJS = ({
         }
       }
     };
-  }, [src, autoPlay, loop, muted, controls, isMobile, isClient, isVideoReady, poster]);
+  }, [src, autoPlay, loop, muted, controls, isMobile, isClient, isVideoReady, poster, isSafari]);
 
   // Update player when props change
   useEffect(() => {
@@ -231,7 +275,8 @@ const VideoJS = ({
           objectFit: 'cover'
         }}
       >
-        <source src={src} type="video/mp4" />
+        {/* Use dynamic MIME type detection for better compatibility */}
+        <source src={src} type={getVideoType(src)} />
         <p className="vjs-no-js">
           To view this video please enable JavaScript, and consider upgrading to a
           web browser that
