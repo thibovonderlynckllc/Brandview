@@ -194,7 +194,7 @@ const RatesPage = async () => {
                             <div className="absolute inset-x-0 top-0 h-12 bg-red rounded-t-3xl"></div>
                             <div className="bg-white w-full h-full rounded-3xl border-2 border-red relative py-8 px-4 md:px-15 pt-16 flex flex-col">
                                 <p className="text-lg md:text-[23px] font-light text-center mb-4 pb-4 border-b-2 border-red">{data.ratesPricingSection.contentPlans.starterPack.description}</p>
-                                <div className="flex flex-col gap-2 text-base sm:text-lg md:text-[23px] font-light">
+                                <div className="flex flex-col gap-2 text-base sm:text-lg md:text-[23px] font-light pb-4">
                                     {data.ratesPricingSection.contentPlans.starterPack.features.map((item, index) => (
                                         <p key={index}>{item.feature}</p>
                                     ))}
@@ -212,7 +212,7 @@ const RatesPage = async () => {
                             <div className="absolute inset-x-0 top-0 h-12 bg-red rounded-t-3xl"></div>
                             <div className="bg-white w-full h-full rounded-3xl border-2 border-red relative py-8 px-4 md:px-15 pt-16 flex flex-col">
                                 <p className="text-lg md:text-[23px] font-light text-center mb-4 pb-4 border-b-2 border-red">{data.ratesPricingSection.contentPlans.brandBuilder.description}</p>
-                                <div className="flex flex-col gap-2 text-base sm:text-lg md:text-[23px] font-light">
+                                <div className="flex flex-col gap-2 text-base sm:text-lg md:text-[23px] font-light pb-4">
                                     {data.ratesPricingSection.contentPlans.brandBuilder.features.map((item, index) => (
                                         <p key={index}>{item.feature}</p>
                                     ))}
@@ -234,7 +234,7 @@ const RatesPage = async () => {
                             <div className="absolute inset-x-0 top-0 h-12 bg-red rounded-t-3xl"></div>
                             <div className="bg-white w-full h-full rounded-3xl border-2 border-red relative py-8 px-4 md:px-15 pt-16 flex flex-col">
                                 <p className="text-lg md:text-[23px] font-light text-center mb-4 pb-4 border-b-2 border-red">{data.ratesPricingSection.flashDeals.focus.description}</p>
-                                <div className="flex flex-col gap-2 text-base sm:text-lg md:text-[23px] font-light">
+                                <div className="flex flex-col gap-2 text-base sm:text-lg md:text-[23px] font-light pb-4">
                                     {data.ratesPricingSection.flashDeals.focus.features.map((item, index) => (
                                         <p key={index}>{item.feature}</p>
                                     ))}
@@ -252,7 +252,7 @@ const RatesPage = async () => {
                             <div className="absolute inset-x-0 top-0 h-12 bg-red rounded-t-3xl"></div>
                             <div className="bg-white w-full h-full rounded-3xl border-2 border-red relative py-8 px-4 md:px-15 pt-16 flex flex-col">
                                 <p className="text-lg md:text-[23px] font-light text-center mb-4 pb-4 border-b-2 border-red">{data.ratesPricingSection.flashDeals.fullFrame.description}</p>
-                                <div className="flex flex-col gap-2 text-base sm:text-lg md:text-[23px] font-light">
+                                <div className="flex flex-col gap-2 text-base sm:text-lg md:text-[23px] font-light pb-4">
                                     {data.ratesPricingSection.flashDeals.fullFrame.features.map((item, index) => (
                                         <p key={index}>{item.feature}</p>
                                     ))}
