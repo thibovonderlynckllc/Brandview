@@ -3,6 +3,7 @@ import "./globals.css";
 import Nav from "./core/Nav";
 import Footer from "./core/Footer";
 import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export const metadata: Metadata = {
   title: "Brandview",
@@ -29,6 +30,7 @@ export default function RootLayout({
           </main>
           <Footer />
           <Analytics />
+          <SpeedInsights />
         </div>
       </body>
     </html>

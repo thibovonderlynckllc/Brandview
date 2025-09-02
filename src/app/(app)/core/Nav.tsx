@@ -2,13 +2,24 @@
 
 import { Menu, X } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 const Nav = () => {
     const [isOpen, setIsOpen] = useState(false);
     const pathname = usePathname();
+    const router = useRouter();
+
+    // Proactively prefetch key routes to reduce first-click delay
+    useEffect(() => {
+        const routesToPrefetch = ["/", "/services", "/portfolio", "/about", "/rates", "/contact"];
+        routesToPrefetch.forEach((route) => {
+            try {
+                router.prefetch(route);
+            } catch {}
+        });
+    }, [router]);
 
     const isActive = (path: string) => {
         if (path === "/") {
@@ -38,8 +49,8 @@ const Nav = () => {
             <nav className="px-8 sm:px-14 py-6">
                 <div className="flex justify-between items-center max-w-[1600px] mx-auto">
                     <div className="w-[220px] sm:w-[200px] lg:w-[220px] xl:w-[330px]">
-                        <Link href="/">
-                            <Image src="/images/logo.svg" width={380} height={380} alt="Brandview Logo" className="w-full h-auto" />
+                        <Link href="/" prefetch>
+                            <Image src="/images/logo.svg" width={380} height={380} alt="Brandview Logo" className="w-full h-auto" priority />
                         </Link>
                     </div>
 
@@ -47,22 +58,22 @@ const Nav = () => {
                     <div className="hidden lg:block flex-1 pl-8">
                         <ul className="flex gap-3 xl:gap-6 font-medium text-[1.1rem] xl:text-[1.2rem] cursor-pointer justify-end">
                             <li className={getNavItemClasses("/")}>
-                                <Link href="/" className="w-full">home</Link>
+                                <Link href="/" className="w-full" prefetch>home</Link>
                             </li>
                             <li className={getNavItemClasses("/services")}>
-                                <Link href="/services" className="w-full">services</Link>
+                                <Link href="/services" className="w-full" prefetch>services</Link>
                             </li>
                             <li className={getNavItemClasses("/portfolio")}>
-                                <Link href="/portfolio" className="w-full">portfolio</Link>
+                                <Link href="/portfolio" className="w-full" prefetch>portfolio</Link>
                             </li>
                             <li className={getNavItemClasses("/about")}>
-                                <Link href="/about" className="w-full">about us</Link>
+                                <Link href="/about" className="w-full" prefetch>about us</Link>
                             </li>
                             <li className={getNavItemClasses("/rates")}>
-                                <Link href="/rates" className="w-full">our packages</Link>
+                                <Link href="/rates" className="w-full" prefetch>our packages</Link>
                             </li>
                             <li className={getNavItemClasses("/contact")}>
-                                <Link href="/contact" className="w-full">contact</Link>
+                                <Link href="/contact" className="w-full" prefetch>contact</Link>
                             </li>
                         </ul>
                     </div>
