@@ -3,7 +3,8 @@
 import Masonry from 'react-masonry-css';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useLayoutEffect, useState, useMemo, useEffect } from 'react';
+import { useLayoutEffect, useState, useMemo } from 'react';
+import { isMobile } from 'react-device-detect';
 import VideoJS from './VideoJS';
 
 interface MasonryPosition {
@@ -39,21 +40,9 @@ interface MasonryGalleryProps {
 
 export default function MasonryGallery({ masonryGalleryGrid }: MasonryGalleryProps) {
     const [mounted, setMounted] = useState(false);
-    const [isMobile, setIsMobile] = useState(false);
 
     useLayoutEffect(() => {
         setMounted(true);
-    }, []);
-
-    useEffect(() => {
-        const checkMobile = () => {
-            setIsMobile(window.innerWidth <= 768);
-        };
-        
-        checkMobile();
-        window.addEventListener('resize', checkMobile);
-        
-        return () => window.removeEventListener('resize', checkMobile);
     }, []);
 
     const breakpointColumnsObj = useMemo(() => ({
@@ -198,6 +187,7 @@ export default function MasonryGallery({ masonryGalleryGrid }: MasonryGalleryPro
     const galleryItems = useMemo(() => [
         {
             height: "h-[600px]",
+            hasText: true,
             content: (
                 <>
                     <Link href="/portfolio/portraits" className="block">
@@ -219,6 +209,7 @@ export default function MasonryGallery({ masonryGalleryGrid }: MasonryGalleryPro
         { height: "h-[600px]" },
         {
             height: "h-[400px]",
+            hasText: true,
             content: (
                 <>
                     <Link href="/portfolio/business" className="block">
@@ -239,6 +230,7 @@ export default function MasonryGallery({ masonryGalleryGrid }: MasonryGalleryPro
         { height: "h-[600px]" },
         {
             height: "xl:h-[400px] h-[600px]",
+            hasText: true,
             content: (
                 <Link href="/portfolio/short-content" className="block">
                     <h1 className="text-3xl md:text-5xl xl:text-6xl font-medium absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] whitespace-nowrap text-center hover:scale-103 transition-all duration-300 cursor-pointer">short content</h1>
@@ -248,9 +240,10 @@ export default function MasonryGallery({ masonryGalleryGrid }: MasonryGalleryPro
         { height: "h-[600px]" },
         {
             height: "xl:h-[400px] h-[600px]",
+            hasText: true,
             content: (
                 <Link href="/portfolio/products" className="block">
-                    <h1 className="text-3xl md:text-5xl xl:text-6xl font-medium absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] whitespace-nowrap text-center hover:scale-103 transition-all duration-300 cursor-pointer">product<br/>photography</h1>
+                    <h1 className="text-3xl md:text-5xl xl:text-6xl font-medium absolute top-[50%] left-[50%] translate-y-[-50%] whitespace-nowrap text-center hover:scale-103 transition-all duration-300 cursor-pointer">product<br/>photography</h1>
                 </Link>
             )
         },
@@ -286,6 +279,7 @@ export default function MasonryGallery({ masonryGalleryGrid }: MasonryGalleryPro
         { height: "h-[600px]" },
         {
             height: "h-[600px]",
+            hasText: true,
             content: (
                 <Link href="/portfolio/corporate-events" className="block">
                     <h1 className="text-3xl md:text-5xl xl:text-6xl font-medium absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] whitespace-nowrap text-center hover:scale-103 transition-all duration-300 cursor-pointer">(corporate)<br/>events</h1>
@@ -295,6 +289,7 @@ export default function MasonryGallery({ masonryGalleryGrid }: MasonryGalleryPro
         { height: "h-[600px]" },
         {
             height: "h-[600px]",
+            hasText: true,
             content: (
                 <Link href="/portfolio/food" className="block">
                     <h1 className="text-3xl md:text-5xl xl:text-6xl font-medium absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] whitespace-nowrap text-center hover:scale-103 transition-all duration-300 cursor-pointer">food<br/>photography</h1>
@@ -322,7 +317,7 @@ export default function MasonryGallery({ masonryGalleryGrid }: MasonryGalleryPro
                         const hasLink = positionData?.link;
                         
                         return (
-                            <div key={`gallery-item-${index}`} className={`gallery-item ${item.height} relative`}>
+                            <div key={`gallery-item-${index}`} className={`gallery-item ${item.height} relative ${(hasText || item.hasText) ? 'mobile-text-bg' : ''}`}>
                                 {/* Render CMS image if present for this position */}
                                 {hasImage && (
                                     <RenderMedia
@@ -418,7 +413,7 @@ export default function MasonryGallery({ masonryGalleryGrid }: MasonryGalleryPro
                         const hasLink = positionData?.link;
                         
                         return (
-                            <div key={`gallery-item-${index}`} className={`gallery-item ${item.height} relative`}>
+                            <div key={`gallery-item-${index}`} className={`gallery-item ${item.height} relative ${(hasText || item.hasText) ? 'mobile-text-bg' : ''}`}>
                                 {/* Render CMS image if present for this position */}
                                 {hasImage && (
                                     <RenderMedia

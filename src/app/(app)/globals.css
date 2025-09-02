@@ -84,3 +84,10 @@ body {
   box-sizing: border-box;
   overflow: visible;
 }
+
+/* Mobile-specific styling for text backgrounds */
+@media (max-width: 768px) {
+  .mobile-text-bg {
+    background-color: #A9CEEF !important;
+  }
+}
