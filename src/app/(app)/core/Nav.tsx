@@ -37,7 +37,7 @@ const Nav = () => {
     };
 
     const getMobileNavItemClasses = (path: string) => {
-        const baseClasses = "border border-red border-[1.5px] rounded-full px-6 py-[6.5px] transition-all duration-300 flex items-center";
+        const baseClasses = "border border-red border-[1.5px] rounded-full px-6 py-[6.5px] transition-all duration-300 flex items-center justify-center";
         const activeClasses = "bg-red text-blue";
         const inactiveClasses = "hover:bg-red hover:text-blue";
         
@@ -110,22 +110,22 @@ const Nav = () => {
                         <div className="p-4">
                             <ul className="flex flex-col gap-4 font-medium text-[1.4rem] cursor-pointer">
                                 <li className={getMobileNavItemClasses("/")}>
-                                    <Link href="/" className="w-full" onClick={() => setIsOpen(false)}>home</Link>
+                                    <Link href="/" className="w-full text-center" onClick={() => setIsOpen(false)}>home</Link>
                                 </li>
                                 <li className={getMobileNavItemClasses("/services")}>
-                                    <Link href="/services" className="w-full" onClick={() => setIsOpen(false)}>services</Link>
+                                    <Link href="/services" className="w-full text-center" onClick={() => setIsOpen(false)}>services</Link>
                                 </li>
                                 <li className={getMobileNavItemClasses("/portfolio")}>
-                                    <Link href="/portfolio" className="w-full" onClick={() => setIsOpen(false)}>portfolio</Link>
+                                    <Link href="/portfolio" className="w-full text-center" onClick={() => setIsOpen(false)}>portfolio</Link>
                                 </li>
                                 <li className={getMobileNavItemClasses("/about")}>
-                                    <Link href="/about" className="w-full" onClick={() => setIsOpen(false)}>about us</Link>
+                                    <Link href="/about" className="w-full text-center" onClick={() => setIsOpen(false)}>about us</Link>
                                 </li>
                                 <li className={getMobileNavItemClasses("/rates")}>
-                                    <Link href="/rates" className="w-full" onClick={() => setIsOpen(false)}>our packages</Link>
+                                    <Link href="/rates" className="w-full text-center" onClick={() => setIsOpen(false)}>our packages</Link>
                                 </li>
                                 <li className={getMobileNavItemClasses("/contact")}>
-                                    <Link href="/contact" className="w-full" onClick={() => setIsOpen(false)}>contact</Link>
+                                    <Link href="/contact" className="w-full text-center" onClick={() => setIsOpen(false)}>contact</Link>
                                 </li>
                             </ul>
                         </div>
