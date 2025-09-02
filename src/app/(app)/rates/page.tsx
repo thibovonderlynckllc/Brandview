@@ -281,17 +281,15 @@ const RatesPage = async () => {
                                         height={208} 
                                     />
                                 </div>
-                                <div className="grid grid-cols-2 gap-2 text-base sm:text-lg md:text-[23px] font-light relative">
-                                    <div className="flex flex-col items-end gap-4 pr-4 md:pr-8">
-                                        {data.ratesPricingSection.addOns.items.map((item: { name: string; price: string }, index: number) => (
-                                            <p key={index}>{item.name}</p>
-                                        ))}
-                                    </div>
-                                    <div className="flex flex-col items-start gap-4 pl-4 md:pl-8 border-l-2 border-red">
-                                        {(data.ratesPricingSection.addOns.items as { name: string; price: string }[]).map((item, index) => (
-                                            <p key={index}>{item.price}</p>
-                                        ))}
-                                    </div>
+                                <div className="flex flex-col gap-4 text-base sm:text-lg md:text-[23px] font-light relative">
+                                    <div className="absolute left-1/2 top-0 bottom-0 w-[2px] bg-red transform -translate-x-1/2"></div>
+                                    {data.ratesPricingSection.addOns.items.map((item: { name: string; price: string }, index: number) => (
+                                        <div key={index} className="flex justify-between items-start pb-2">
+                                            <span className="text-left flex-1 pr-2">{item.name}</span>
+                                            <span className="text-right flex-1 pl-2">{item.price}</span>
+                                        </div>
+                                    ))}
+                                    
                                 </div>
                             </div>
                         </div>
