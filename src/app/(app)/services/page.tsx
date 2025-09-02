@@ -372,7 +372,7 @@ const ServicesPage = async () => {
             </div>
 
             {/* 2nd Services section */}
-            <div className="bg-blue py-8 md:py-10 px-6 md:px-16">
+            <div className="bg-blue py-8 md:py-10 px-6 md:px-16 pb-0">
                 <div className="flex flex-col gap-10">
                     {secondSectionServices.map((service) => (
                         <div key={service.title} className="flex flex-col lg:flex-row items-center gap-6 relative">
@@ -407,6 +407,11 @@ const ServicesPage = async () => {
                             </div>
                         </div>
                     ))}
+                </div>
+
+                {/* Border above footer */}
+                <div className="pt-10">
+                    <div className="h-[2px] bg-red w-full"></div>
                 </div>
             </div>
         </div>
