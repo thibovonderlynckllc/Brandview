@@ -6,6 +6,10 @@ import ContactForm from '../components/ContactForm';
 interface ContactPageData {
   contactHeroTitle: string;
   contactHeroSubtitle: string;
+  contactBannerImage?: {
+    url: string;
+    alt?: string;
+  };
   contactInfo: {
     brandName: string;
     phoneNumber: string;
@@ -34,6 +38,7 @@ interface ContactPageData {
 const fallbackData: ContactPageData = {
   contactHeroTitle: 'Big ideas start with a simple hello.',
   contactHeroSubtitle: 'contact',
+  contactBannerImage: undefined,
   contactInfo: {
     brandName: 'brandview',
     phoneNumber: '(+32) 471 46 07 08',
@@ -164,6 +169,18 @@ const ContactPage = async () => {
                     </div>
                 </div>
             </div>
+            {/* Contact Banner Image (from CMS) */}
+            {pageData.contactBannerImage?.url && (
+              <div className="px-0 sm:px-0">
+                <Image
+                  src={pageData.contactBannerImage.url}
+                  alt={pageData.contactBannerImage.alt || 'Contact banner'}
+                  width={1920}
+                  height={600}
+                  className="w-full h-auto"
+                />
+              </div>
+            )}
         </div>
     );
 };
