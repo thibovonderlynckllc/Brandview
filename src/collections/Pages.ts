@@ -324,6 +324,14 @@ export const Pages: CollectionConfig = {
           },
         },
         {
+          name: 'image',
+          type: 'upload',
+          relationTo: 'media',
+          admin: {
+            description: 'Background image for the portfolio card (like homepage tiles)',
+          },
+        },
+        {
           name: 'icon',
           type: 'upload',
           relationTo: 'media',

@@ -76,6 +76,7 @@ export const revalidate = 3600; // Cache for 1 hour, revalidate on demand
 interface PortfolioCard {
     title: string;
     slug: string;
+    image?: { url: string; alt?: string } | string | null;
     icon?: { url: string; alt?: string } | string | null;
     iconPosition: 'none' | 'top-right';
 }
@@ -98,7 +99,7 @@ const PortfolioPage = async () => {
         if (!iconSrc || card.iconPosition === 'none') return null;
 
         return (
-            <div className="absolute -right-5 md:-right-28 -top-25 sm:-top-30 md:-top-32 w-32 sm:w-40 lg:w-48 rotate-10 z-10 transition-transform duration-300 group-hover:rotate-12">
+            <div className="absolute -right-5 md:-right-28 -top-19 sm:-top-24 md:-top-26 w-32 sm:w-40 lg:w-48 rotate-10 z-30 transition-transform duration-300 group-hover:rotate-12 pointer-events-none">
                 <Image src={iconSrc} alt={`${card.title} icon`} width={208} height={208} />
             </div>
         );
@@ -119,18 +120,22 @@ const PortfolioPage = async () => {
                           (typeof card.icon === 'object' && card.icon !== null && 'url' in card.icon && card.icon.url) ||
                           (typeof card.icon === 'string' && card.icon)
                         );
+                        const bgSrc = typeof card.image === 'object' && card.image !== null && 'url' in card.image ? card.image.url : undefined;
                         return (
                             <Link key={card.slug} href={`/portfolio/${card.slug}`} className={`cursor-pointer transform transition-transform duration-300 hover:scale-102 group ${hasIcon ? 'z-10' : ''}`}>
                                 <div className="relative pt-6">
                                     <div className="absolute inset-x-0 top-0 h-12 bg-red rounded-t-3xl"></div>
-                                    <div className="bg-white h-80 w-full rounded-3xl border-[1.5px] border-red relative">
-                                        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+                                    <div className="bg-white h-80 w-full rounded-3xl border-[1.5px] border-red relative overflow-hidden">
+                                        {bgSrc && (
+                                          <Image src={bgSrc} alt={card.title} fill className="object-cover opacity-90 z-0" />
+                                        )}
+                                        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-20">
                                             <div className="bg-blue rounded-full px-6 py-[6.5px] transition-colors duration-300 group-hover:bg-red">
                                                 <span className="text-[23px] font-medium text-red whitespace-nowrap transition-colors duration-300 group-hover:text-blue">{card.title}</span>
                                             </div>
                                         </div>
-                                        {renderIcon(card)}
                                     </div>
+                                    {renderIcon(card)}
                                 </div>
                             </Link>
                         );
