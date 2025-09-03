@@ -6,6 +6,10 @@ import config from '../../../payload.config';
 const fallbackData = {
     ratesHeroTitle: "A fixed package or customized?",
     ratesHeroSubtitle: "our rates",
+
+    ratesHeroBackgroundImage: null as any,
+    ratesHeroShowOnMobile: false,
+    ratesHeroShowOnDesktop: true,
     ratesPricingSection: {
         contentPlans: {
             title: "content plans",
@@ -119,6 +123,9 @@ export const revalidate = 3600; // Cache for 1 hour, revalidate on demand
 interface RatesData {
     ratesHeroTitle: string;
     ratesHeroSubtitle: string;
+    ratesHeroBackgroundImage?: { url: string; alt?: string } | string | null;
+    ratesHeroShowOnMobile?: boolean;
+    ratesHeroShowOnDesktop?: boolean;
     ratesPricingSection: {
         contentPlans: {
             title: string;
@@ -171,14 +178,47 @@ const RatesPage = async () => {
         return fallback;
     };
 
+    const getMediaUrl = (media: { url: string; alt?: string } | string | null | undefined): string | null => {
+        if (!media) return null;
+        if (typeof media === 'object' && 'url' in media && media.url) return media.url as string;
+        if (typeof media === 'string') return media;
+        return null;
+    };
+
     return (
         <div>
-            {/* Hero section */}
-            <div className="px-8 sm:px-16 py-20 md:py-55 text-center">
-                <div className="flex items-center justify-center gap-4">
+            {/* Hero section with optional background image */}
+            <div className="relative px-8 sm:px-16 py-20 md:py-55 text-center overflow-hidden">
+                {/* Mobile background */}
+                {data.ratesHeroShowOnMobile && getMediaUrl(data.ratesHeroBackgroundImage) && (
+                    <div className="absolute inset-0 block md:hidden -z-10">
+                        <Image
+                            src={getMediaUrl(data.ratesHeroBackgroundImage)!}
+                            alt="Rates hero background"
+                            fill
+                            priority
+                            className="object-cover"
+                            sizes="100vw"
+                        />
+                    </div>
+                )}
+                {/* Desktop background */}
+                {data.ratesHeroShowOnDesktop && getMediaUrl(data.ratesHeroBackgroundImage) && (
+                    <div className="absolute inset-0 hidden md:block -z-10">
+                        <Image
+                            src={getMediaUrl(data.ratesHeroBackgroundImage)!}
+                            alt="Rates hero background"
+                            fill
+                            priority
+                            className="object-cover"
+                            sizes="100vw"
+                        />
+                    </div>
+                )}
+                <div className="relative z-10 flex items-center justify-center gap-4">
                     <h1 className="text-3xl md:text-5xl xl:text-6xl font-medium">{data.ratesHeroTitle}</h1>
                 </div>
-                <p className="text-xl md:text-2xl font-thin mt-2">{data.ratesHeroSubtitle}</p>
+                <p className="relative z-10 text-xl md:text-2xl font-thin mt-2">{data.ratesHeroSubtitle}</p>
             </div>
 
             <div className="bg-blue pt-10">

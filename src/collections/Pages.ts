@@ -782,6 +782,33 @@ export const Pages: CollectionConfig = {
       },
     },
     {
+      name: 'ratesHeroBackgroundImage',
+      type: 'upload',
+      relationTo: 'media',
+      admin: {
+        description: 'Optional background image behind the hero title on the rates page',
+        condition: (data) => data.pageType === 'rates',
+      },
+    },
+    {
+      name: 'ratesHeroShowOnMobile',
+      type: 'checkbox',
+      label: 'Show hero background image on mobile',
+      defaultValue: false,
+      admin: {
+        condition: (data) => data.pageType === 'rates',
+      },
+    },
+    {
+      name: 'ratesHeroShowOnDesktop',
+      type: 'checkbox',
+      label: 'Show hero background image on desktop',
+      defaultValue: true,
+      admin: {
+        condition: (data) => data.pageType === 'rates',
+      },
+    },
+    {
       name: 'ratesPricingSection',
       type: 'group',
       admin: {
