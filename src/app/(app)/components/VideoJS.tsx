@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from 'react';
-import { isMobile, isTablet, isIOS } from 'react-device-detect';
+import { isMobile as deviceIsMobile, isTablet, isIOS } from 'react-device-detect';
 
 // TypeScript declarations for Video.js
 declare global {
@@ -34,7 +34,7 @@ const VideoJS = ({
 }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const playerRef = useRef<any>(null);
-  const [isMobile, setIsMobile] = useState(false);
+  const [isOnMobile, setIsOnMobile] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const [hasError, setHasError] = useState(false);
   const [isClient, setIsClient] = useState(false);
@@ -54,18 +54,18 @@ const VideoJS = ({
     
     const checkDevice = () => {
       // Use react-device-detect for more reliable device detection
-      const mobile = isMobile || isTablet || isIOS;
+      const mobile = deviceIsMobile || isTablet || isIOS;
       
       console.log('Device detection:', {
         userAgent: navigator.userAgent,
-        isMobile: isMobile,
+        isMobile: mobile,
         isTablet: isTablet,
         isIOS: isIOS,
         screenWidth: window.innerWidth,
         finalMobile: mobile
       });
       
-      setIsMobile(mobile);
+      setIsOnMobile(mobile);
       setShowMuteButton(!mobile); // Show mute button only on desktop
     };
     
@@ -137,11 +137,11 @@ const VideoJS = ({
 
       try {
         const player = window.videojs(videoElement, {
-          controls: isMobile ? true : controls,
-          autoplay: isMobile ? false : autoPlay,
+          controls: isOnMobile ? true : controls,
+          autoplay: isOnMobile ? false : autoPlay,
           loop: loop,
           muted: muted,
-          preload: isSafari ? 'metadata' : (isMobile ? 'none' : 'metadata'), // Safari prefers metadata preload
+          preload: isSafari ? 'metadata' : (isOnMobile ? 'metadata' : 'auto'),
           responsive: false,
           fluid: false,
           playbackRates: [0.5, 1, 1.25, 1.5, 2],
@@ -197,7 +197,7 @@ const VideoJS = ({
           });
 
           // Explicitly trigger autoplay for desktop
-          if (!isMobile && autoPlay && muted) {
+          if (!isOnMobile && autoPlay && muted) {
             // Safari-compatible autoplay
             const playPromise = player.play();
             if (playPromise !== undefined) {
@@ -206,6 +206,13 @@ const VideoJS = ({
                 // Safari often blocks autoplay - this is expected behavior
               });
             }
+          }
+        });
+
+        // As an extra safeguard, try to play once canplay fires (first visit cases)
+        player.on('canplay', () => {
+          if (!isOnMobile && autoPlay && muted) {
+            try { player.play(); } catch {}
           }
         });
 
@@ -228,7 +235,7 @@ const VideoJS = ({
         }
       }
     };
-  }, [src, autoPlay, loop, muted, controls, isMobile, isClient, isVideoReady, poster, isSafari]);
+  }, [src, autoPlay, loop, muted, controls, isOnMobile, isClient, isVideoReady, poster, isSafari]);
 
   // Update player when props change
   useEffect(() => {
@@ -271,6 +278,9 @@ const VideoJS = ({
         className="video-js vjs-default-skin absolute inset-0 w-full h-full"
         data-setup="{}"
         poster={poster}
+        playsInline
+        muted={muted}
+        controls={isOnMobile}
         style={{
           objectFit: 'cover'
         }}
@@ -305,8 +315,8 @@ const VideoJS = ({
         </button>
       )}
       
-      {/* Loading indicator */}
-      {!isLoaded && !hasError && (
+      {/* Loading indicator (don't cover poster if provided) and never on mobile */}
+      {!isLoaded && !hasError && !poster && !isOnMobile && (
         <div className="absolute inset-0 flex items-center justify-center bg-gray-800">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
         </div>
