@@ -49,6 +49,12 @@ body {
   object-fit: cover !important;
 }
 
+.video-js .vjs-poster img {
+  object-fit: cover !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
 /* Ensure Video.js doesn't override container dimensions */
 .video-js-container {
   position: relative !important;
