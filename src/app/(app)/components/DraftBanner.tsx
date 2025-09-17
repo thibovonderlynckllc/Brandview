@@ -1,25 +1,17 @@
-'use client';
-
-import { useSearchParams } from 'next/navigation';
-
 interface DraftBannerProps {
   isDraftMode: boolean;
 }
 
 export default function DraftBanner({ isDraftMode }: DraftBannerProps) {
-  const searchParams = useSearchParams();
-  const isPreview = searchParams.get('preview') === 'true';
-  
-  if (!isDraftMode && !isPreview) return null;
+  if (!isDraftMode) return null;
 
   return (
-    <div className="bg-red-600 text-white px-4 py-3 text-center font-bold text-lg border-b-4 border-red-800 shadow-lg sticky top-0 z-50">
-      ⚠️ DRAFT PREVIEW - This content is NOT live on your website yet! 
-      <br />
-      <span className="text-sm font-normal">
-        Only you can see this preview. Visitors see the published version. 
-        <a href="/api/exit-draft" className="underline ml-2 hover:text-red-200">
-          Exit Preview Mode
+    <div className="fixed bottom-0 left-0 right-0 bg-red-600 text-white px-4 py-2 text-center font-bold text-sm shadow-lg z-50 border-t-4 border-red-800">
+      ⚠️ DRAFT PREVIEW - Not live yet! 
+      <span className="text-xs font-normal ml-2">
+        Only you see this. 
+        <a href="/api/exit-draft" className="underline ml-1 hover:text-red-200">
+          Exit
         </a>
       </span>
     </div>

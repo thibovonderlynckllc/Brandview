@@ -39,5 +39,5 @@ export default async function PortfolioDetailPage({
     return <div>Portfolio not found</div>;
   }
 
-  return <PortfolioDetailClient data={portfolioData} />;
+  return <PortfolioDetailClient data={portfolioData} isDraftMode={isDraftMode} />;
 } 
