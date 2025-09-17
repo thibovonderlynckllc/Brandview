@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import { getPayload } from 'payload';
+import { draftMode } from 'next/headers';
 import config from '../../../payload.config';
 
 // Fallback data
@@ -88,7 +89,7 @@ const fallbackData = {
     }
 };
 
-async function getRatesData() {
+async function getRatesData(isDraftMode: boolean) {
     try {
         const payload = await getPayload({ config });
         const pages = await payload.find({
@@ -103,7 +104,9 @@ async function getRatesData() {
                     }
                 ]
             },
-            limit: 1
+            limit: 1,
+            draft: isDraftMode,
+            overrideAccess: isDraftMode,
         });
         
         if (pages.docs.length > 0) {
@@ -170,7 +173,8 @@ interface RatesData {
 }
 
 const RatesPage = async () => {
-    const data: RatesData = await getRatesData();
+    const { isEnabled: isDraftMode } = await draftMode();
+    const data: RatesData = await getRatesData(isDraftMode);
 
     const getIconSrc = (icon: { url: string; alt?: string } | string | null | undefined, fallback: string) => {
         if (typeof icon === 'object' && icon !== null && 'url' in icon) return icon.url;

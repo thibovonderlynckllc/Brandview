@@ -3,6 +3,7 @@ import MasonryGallery from './components/MasonryGallery';
 import Image from 'next/image';
 import Link from 'next/link';
 import { getPayload } from 'payload';
+import { draftMode } from 'next/headers';
 import config from '@/payload.config';
 
 interface ServiceCard {
@@ -48,6 +49,11 @@ interface PageData {
 }
 
 export default async function Home() {
+    const { isEnabled: isDraftMode } = await draftMode();
+    
+    // Debug draft mode status
+    console.log('Homepage - Draft mode status:', isDraftMode);
+
     // Fallback data
     const fallbackData: PageData = {
         heroText: "Hire brandview for short content, (corporate) events, portraits, product, business and food photography. And so much more...",
@@ -89,8 +95,11 @@ export default async function Home() {
     try {
         const payload = await getPayload({ config });
         const pages = await payload.find({
-            // @ts-expect-error Payload types do not include 'pages' but it is valid
-            collection: 'pages',
+            collection: 'pages' as any,
+            depth: 2, // Increase depth to populate nested relations
+            draft: isDraftMode,
+            limit: 1,
+            overrideAccess: isDraftMode,
             where: {
                 and: [
                     {
@@ -105,15 +114,23 @@ export default async function Home() {
                     }
                 ]
             },
-            depth: 2, // Increase depth to populate nested relations
         });
 
+        console.log('Pages query result:', { totalDocs: pages.totalDocs, docsLength: pages.docs.length });
+        
         if (pages.docs.length > 0) {
             const homePage = pages.docs[0] as {
                 heroText?: string;
                 serviceCards?: ServiceCard[];
                 masonryGalleryGrid?: MasonryGalleryGrid | null;
             };
+            
+            console.log('Home page data found:', {
+                heroText: homePage.heroText,
+                serviceCardsLength: homePage.serviceCards?.length || 0,
+                masonryGalleryGrid: !!homePage.masonryGalleryGrid
+            });
+            
             pageData = {
                 heroText: homePage.heroText || fallbackData.heroText,
                 serviceCards: homePage.serviceCards && homePage.serviceCards.length > 0 
@@ -122,6 +139,8 @@ export default async function Home() {
                 masonryGalleryGrid: homePage.masonryGalleryGrid || null,
             };
             masonryGalleryGrid = homePage.masonryGalleryGrid || null;
+        } else {
+            console.log('No home page found, using fallback data');
         }
     } catch (error) {
         console.log('Using fallback data:', error);
@@ -130,6 +149,11 @@ export default async function Home() {
 
     return (
         <div>
+            {isDraftMode && (
+                <div className="bg-yellow-500 text-black px-4 py-2 text-center font-medium">
+                    🔍 Draft Mode - You are viewing draft content
+                </div>
+            )}
             <div className="px-8 sm:px-16 bg-blue pt-1">
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                     {pageData.serviceCards.map((item, index) => (

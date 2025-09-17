@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import { getPayload } from 'payload';
+import { draftMode } from 'next/headers';
 import config from '../../../payload.config';
 import ContactForm from '../components/ContactForm';
 
@@ -60,7 +61,7 @@ const fallbackData: ContactPageData = {
   },
 };
 
-async function getContactPageData(): Promise<ContactPageData> {
+async function getContactPageData(isDraftMode: boolean): Promise<ContactPageData> {
   try {
     const payload = await getPayload({ config });
     const pages = await payload.find({
@@ -75,7 +76,9 @@ async function getContactPageData(): Promise<ContactPageData> {
           }
         ]
       },
-      limit: 1
+      limit: 1,
+      draft: isDraftMode,
+      overrideAccess: isDraftMode,
     });
     
     if (pages.docs.length > 0) {
@@ -93,7 +96,8 @@ export const dynamic = 'force-dynamic';
 export const revalidate = 3600; // Cache for 1 hour, revalidate on demand
 
 const ContactPage = async () => {
-    const pageData = await getContactPageData();
+    const { isEnabled: isDraftMode } = await draftMode();
+    const pageData = await getContactPageData(isDraftMode);
     
     return (
         <div>

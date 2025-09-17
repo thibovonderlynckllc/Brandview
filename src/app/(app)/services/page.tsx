@@ -3,6 +3,7 @@ import SwirlArrow from '../components/SwirlArrow';
 import Link from 'next/link';
 import ServiceVideo from '../components/ServiceVideo';
 import { getPayload } from 'payload';
+import { draftMode } from 'next/headers';
 import config from '../../../payload.config';
 
 // Fallback data
@@ -98,7 +99,7 @@ const fallbackData = {
     },
 };
 
-async function getServicesData() {
+async function getServicesData(isDraftMode: boolean) {
     try {
         const payload = await getPayload({ config });
         const pages = await payload.find({
@@ -115,6 +116,8 @@ async function getServicesData() {
             },
             limit: 1,
             depth: 2, // Increase depth to populate nested relations like poster
+            draft: isDraftMode,
+            overrideAccess: isDraftMode,
         });
         
         if (pages.docs.length > 0) {
@@ -191,7 +194,8 @@ interface ServicesData {
 }
 
 const ServicesPage = async () => {
-    const data: ServicesData = await getServicesData();
+    const { isEnabled: isDraftMode } = await draftMode();
+    const data: ServicesData = await getServicesData(isDraftMode);
     
     // Split service items into two sections (first 3, last 3)
     const firstSectionServices = data.serviceItems.slice(0, 3);

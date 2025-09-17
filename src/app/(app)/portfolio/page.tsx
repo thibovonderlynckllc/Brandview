@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { getPayload } from 'payload';
+import { draftMode } from 'next/headers';
 import config from '../../../payload.config';
 
 // Fallback data
@@ -41,7 +42,7 @@ const fallbackData = {
     bannerImage: "/images/banner.svg",
 };
 
-async function getPortfolioData() {
+async function getPortfolioData(isDraftMode: boolean) {
     try {
         const payload = await getPayload({ config });
         const pages = await payload.find({
@@ -56,7 +57,9 @@ async function getPortfolioData() {
                     }
                 ]
             },
-            limit: 1
+            limit: 1,
+            draft: isDraftMode,
+            overrideAccess: isDraftMode,
         });
         
         if (pages.docs.length > 0) {
@@ -87,7 +90,8 @@ interface PortfolioData {
 }
 
 const PortfolioPage = async () => {
-    const data: PortfolioData = await getPortfolioData();
+    const { isEnabled: isDraftMode } = await draftMode();
+    const data: PortfolioData = await getPortfolioData(isDraftMode);
 
     const renderIcon = (card: PortfolioCard) => {
         const iconSrc =

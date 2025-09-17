@@ -1,8 +1,9 @@
 import { getPayload } from 'payload';
+import { draftMode } from 'next/headers';
 import config from '../../../../payload.config';
 import PortfolioDetailClient from './PortfolioDetailClient';
 
-async function getPortfolioData(slug: string) {
+async function getPortfolioData(slug: string, isDraftMode: boolean) {
   const payload = await getPayload({ config });
   try {
     const portfolio = await payload.find({
@@ -11,7 +12,9 @@ async function getPortfolioData(slug: string) {
         slug: { equals: slug }
       },
       depth: 2, // Increase depth to populate nested fields like poster
-      limit: 1
+      limit: 1,
+      draft: isDraftMode, // Include drafts when in draft mode
+      overrideAccess: isDraftMode, // Override access restrictions in draft mode
     });
     return portfolio.docs[0] || null;
   } catch (error) {
@@ -29,7 +32,8 @@ export default async function PortfolioDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const portfolioData = await getPortfolioData(slug);
+  const { isEnabled: isDraftMode } = await draftMode();
+  const portfolioData = await getPortfolioData(slug, isDraftMode);
 
   if (!portfolioData) {
     return <div>Portfolio not found</div>;

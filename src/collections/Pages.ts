@@ -8,6 +8,26 @@ export const Pages: CollectionConfig = {
       defaultLimit: 10,
       limits: [5, 10, 20, 50],
     },
+    preview: ({ slug, collection }) => {
+      const encodedParams = new URLSearchParams({
+        slug: slug as string,
+        collection: collection as string,
+        path: slug === 'home' ? '/' : `/${slug}`,
+        previewSecret: process.env.PREVIEW_SECRET || '',
+      });
+
+      return `/preview?${encodedParams.toString()}`;
+    },
+    livePreview: {
+      url: ({ data, locale }) => {
+        const slug = data?.slug || 'home';
+        const path = slug === 'home' ? '/' : `/${slug}`;
+        return `http://localhost:3000${path}`;
+      },
+    },
+  },
+  versions: {
+    drafts: true,
   },
   access: {
     read: () => true, // Allow public read access

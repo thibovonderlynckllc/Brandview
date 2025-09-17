@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import { getPayload } from 'payload';
+import { draftMode } from 'next/headers';
 import config from '../../../payload.config';
 
 // Fallback data
@@ -64,7 +65,7 @@ const fallbackData = {
     },
 };
 
-async function getAboutData() {
+async function getAboutData(isDraftMode: boolean) {
     try {
         const payload = await getPayload({ config });
         const pages = await payload.find({
@@ -79,7 +80,9 @@ async function getAboutData() {
                     }
                 ]
             },
-            limit: 1
+            limit: 1,
+            draft: isDraftMode, // Include drafts when in draft mode
+            overrideAccess: isDraftMode, // Override access restrictions in draft mode
         });
         
         if (pages.docs.length > 0) {
@@ -133,7 +136,8 @@ interface AboutData {
 }
 
 const AboutPage = async () => {
-    const data: AboutData = await getAboutData();
+    const { isEnabled: isDraftMode } = await draftMode();
+    const data: AboutData = await getAboutData(isDraftMode);
 
     const getIconSrc = (icon: MediaItem | string | undefined, fallback: string) => {
         if (icon && typeof icon === 'object' && icon.url) return icon.url;
