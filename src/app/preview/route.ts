@@ -65,5 +65,10 @@ export async function GET(
 
   draft.enable();
 
-  redirect(path);
+  // Add clear preview indicators to the URL
+  const previewUrl = new URL(path, 'http://localhost:3000');
+  previewUrl.searchParams.set('preview', 'true');
+  previewUrl.searchParams.set('timestamp', Date.now().toString());
+
+  redirect(previewUrl.toString());
 }

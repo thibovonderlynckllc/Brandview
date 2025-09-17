@@ -150,8 +150,15 @@ export default async function Home() {
     return (
         <div>
             {isDraftMode && (
-                <div className="bg-yellow-500 text-black px-4 py-2 text-center font-medium">
-                    🔍 Draft Mode - You are viewing draft content
+                <div className="bg-red-600 text-white px-4 py-3 text-center font-bold text-lg border-b-4 border-red-800 shadow-lg">
+                    ⚠️ DRAFT PREVIEW - This content is NOT live on your website yet! 
+                    <br />
+                    <span className="text-sm font-normal">
+                        Only you can see this preview. Visitors see the published version. 
+                        <a href="/api/exit-draft" className="underline ml-2 hover:text-red-200">
+                            Exit Preview Mode
+                        </a>
+                    </span>
                 </div>
             )}
             <div className="px-8 sm:px-16 bg-blue pt-1">

@@ -10,8 +10,8 @@ export const Pages: CollectionConfig = {
     },
     preview: ({ slug, collection }) => {
       const encodedParams = new URLSearchParams({
-        slug: slug as string,
-        collection: collection as string,
+        slug: (slug as string) || 'home',
+        collection: (collection as string) || 'pages',
         path: slug === 'home' ? '/' : `/${slug}`,
         previewSecret: process.env.PREVIEW_SECRET || '',
       });
