@@ -18,13 +18,6 @@ export const Pages: CollectionConfig = {
 
       return `/preview?${encodedParams.toString()}`;
     },
-    livePreview: {
-      url: ({ data, locale }) => {
-        const slug = data?.slug || 'home';
-        const path = slug === 'home' ? '/' : `/${slug}`;
-        return `http://localhost:3000${path}`;
-      },
-    },
   },
   versions: {
     drafts: true,

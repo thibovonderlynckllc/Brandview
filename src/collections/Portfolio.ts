@@ -19,12 +19,6 @@ export const Portfolio: CollectionConfig = {
 
       return `/preview?${encodedParams.toString()}`;
     },
-    livePreview: {
-      url: ({ data, locale }) => {
-        const slug = data?.slug;
-        return `http://localhost:3000/portfolio/${slug}`;
-      },
-    },
   },
   versions: {
     drafts: true,
