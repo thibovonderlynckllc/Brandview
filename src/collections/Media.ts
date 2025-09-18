@@ -6,15 +6,75 @@ export const Media: CollectionConfig = {
     read: () => true,
   },
   admin: {
-    useAsTitle: 'name',
-    defaultColumns: ['name', 'alt', 'tags', 'updatedAt'],
+    useAsTitle: 'filename',
+    defaultColumns: ['filename', 'alt', 'tags', 'updatedAt'],
     pagination: {
       defaultLimit: 25,
       limits: [10, 25, 50, 100],
     },
-    listSearchableFields: ['name', 'alt'],
+    listSearchableFields: ['filename', 'alt'],
   },
   fields: [
+    {
+      name: 'directUpload',
+      type: 'ui',
+      admin: {
+        components: {
+          Field: '@/app/(payload)/admin/components/DirectUpload',
+        },
+      },
+    },
+    {
+      name: 'filename',
+      type: 'text',
+      required: true,
+      admin: {
+        readOnly: true,
+        description: 'Filename of the uploaded file',
+      },
+    },
+    {
+      name: 'url',
+      type: 'text',
+      required: false, // Temporarily optional to allow migration
+      admin: {
+        readOnly: true,
+        description: 'Public URL of the uploaded file',
+      },
+    },
+    {
+      name: 'mimeType',
+      type: 'text',
+      required: true,
+      admin: {
+        readOnly: true,
+        description: 'MIME type of the uploaded file',
+      },
+    },
+    {
+      name: 'filesize',
+      type: 'number',
+      admin: {
+        readOnly: true,
+        description: 'File size in bytes',
+      },
+    },
+    {
+      name: 'width',
+      type: 'number',
+      admin: {
+        readOnly: true,
+        description: 'Width in pixels (for images)',
+      },
+    },
+    {
+      name: 'height',
+      type: 'number',
+      admin: {
+        readOnly: true,
+        description: 'Height in pixels (for images)',
+      },
+    },
     {
       name: 'name',
       type: 'text',
@@ -86,17 +146,4 @@ export const Media: CollectionConfig = {
       },
     },
   ],
-  upload: true,
-  hooks: {
-    beforeChange: [
-      ({ data }) => {
-        // Store the file extension for easier detection
-        if (data?.filename) {
-          const extension = data.filename.split('.').pop()?.toLowerCase();
-          data.fileExtension = extension;
-        }
-        return data;
-      },
-    ],
-  },
 };

@@ -13,7 +13,10 @@
     "rename-posters": "node scripts/rename-posters.js"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.891.0",
+    "@aws-sdk/s3-request-presigner": "^3.891.0",
     "@payloadcms/db-postgres": "^3.46.0",
+    "@payloadcms/live-preview-react": "3.54.0",
     "@payloadcms/next": "^3.46.0",
     "@payloadcms/payload-cloud": "^3.46.0",
     "@payloadcms/richtext-lexical": "^3.46.0",

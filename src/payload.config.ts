@@ -77,7 +77,7 @@ export default buildConfig({
   sharp,
   upload: {
     limits: {
-      fileSize: 50 * 1000 * 1000, // 50MB
+      fileSize: 500 * 1000 * 1000, // 500MB
     },
   },
   plugins: [storage],
