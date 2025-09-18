@@ -138,7 +138,8 @@ const VideoJS = ({
       try {
         const player = window.videojs(videoElement, {
           controls: isOnMobile ? true : controls,
-          autoplay: isOnMobile ? false : autoPlay,
+          // Use 'muted' for better autoplay support across browsers
+          autoplay: isOnMobile ? false : (autoPlay ? 'muted' : false),
           loop: loop,
           muted: muted,
           preload: isSafari ? 'metadata' : (isOnMobile ? 'metadata' : 'auto'),
@@ -159,6 +160,61 @@ const VideoJS = ({
           setIsLoaded(true);
           setHasError(false);
           setIsMuted(muted);
+          
+          // Enhanced autoplay handling for desktop
+          if (!isOnMobile && autoPlay) {
+            // Try to play with different strategies
+            const attemptAutoplay = async () => {
+              try {
+                // Ensure video is muted for autoplay
+                player.muted(true);
+                const playPromise = player.play();
+                
+                if (playPromise !== undefined) {
+                  await playPromise;
+                  console.log('Autoplay successful');
+                }
+              } catch (error) {
+                console.warn('Autoplay failed, trying fallback:', error);
+                
+                // Fallback: Show mute button and try again on user interaction
+                setShowMuteButton(true);
+                
+                // Add click listener to try playing on user interaction
+                const tryPlayOnInteraction = async () => {
+                  try {
+                    player.muted(true);
+                    await player.play();
+                    setShowMuteButton(false);
+                    document.removeEventListener('click', tryPlayOnInteraction);
+                    document.removeEventListener('touchstart', tryPlayOnInteraction);
+                  } catch (e) {
+                    console.warn('Play on interaction also failed:', e);
+                  }
+                };
+                
+                document.addEventListener('click', tryPlayOnInteraction, { once: true });
+                document.addEventListener('touchstart', tryPlayOnInteraction, { once: true });
+              }
+            };
+            
+            // Use intersection observer for better performance
+            const observer = new IntersectionObserver(
+              (entries) => {
+                entries.forEach((entry) => {
+                  if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
+                    attemptAutoplay();
+                    observer.disconnect();
+                  }
+                });
+              },
+              { threshold: 0.5 }
+            );
+            
+            if (videoElement) {
+              observer.observe(videoElement);
+            }
+          }
           
           // Add event listeners
           player.on('error', (error: any) => {

@@ -57,7 +57,8 @@ const VideoJS = ({
 
         const player = window.videojs(videoElement, {
           controls: isMobile ? true : controls,
-          autoplay: isMobile ? false : autoPlay,
+          // Use 'muted' for better autoplay support across browsers
+          autoplay: isMobile ? false : (autoPlay ? 'muted' : false),
           loop: loop,
           muted: muted,
           preload: 'metadata',
@@ -70,6 +71,53 @@ const VideoJS = ({
         }, () => {
           setIsLoaded(true);
           setHasError(false);
+          
+          // Enhanced autoplay handling for desktop
+          if (!isMobile && autoPlay) {
+            const attemptAutoplay = async () => {
+              try {
+                player.muted(true);
+                const playPromise = player.play();
+                
+                if (playPromise !== undefined) {
+                  await playPromise;
+                  console.log('Autoplay successful');
+                }
+              } catch (error) {
+                console.warn('Autoplay failed:', error);
+                
+                // Try again on user interaction
+                const tryPlayOnInteraction = async () => {
+                  try {
+                    player.muted(true);
+                    await player.play();
+                    document.removeEventListener('click', tryPlayOnInteraction);
+                  } catch (e) {
+                    console.warn('Play on interaction failed:', e);
+                  }
+                };
+                
+                document.addEventListener('click', tryPlayOnInteraction, { once: true });
+              }
+            };
+            
+            // Use intersection observer
+            const observer = new IntersectionObserver(
+              (entries) => {
+                entries.forEach((entry) => {
+                  if (entry.isIntersecting && entry.intersectionRatio > 0.3) {
+                    attemptAutoplay();
+                    observer.disconnect();
+                  }
+                });
+              },
+              { threshold: 0.3 }
+            );
+            
+            if (videoElement) {
+              observer.observe(videoElement);
+            }
+          }
           
           // Add event listeners
           player.on('error', () => {
