@@ -309,13 +309,37 @@ export default function PortfolioDetailClient({ data, isDraftMode }: PortfolioDe
         </div>
       )}
       {/* Header Section */}
-      <div className="px-8 sm:px-16 py-20 md:py-55 text-center">
-        <div className="flex items-center justify-center gap-4">
-          <h1 className="text-3xl md:text-6xl font-medium">{data.title}</h1>
+      <div className="px-8 sm:px-16 py-20 md:py-55">
+        <div className="flex flex-col items-start">
+          <div className="w-full text-center">
+            <div className="flex items-center justify-center gap-4">
+              <h1 className="text-3xl md:text-6xl font-medium">{data.title}</h1>
+            </div>
+            {data.description && (
+              <p className="text-xl md:text-2xl font-thin mt-2">{data.description}</p>
+            )}
+          </div>
+          {/* Additional subtitle for food portfolio */}
+          {portfolioType === 'food' && (
+            <div className="mt-6">
+              <div className="px-8 py-4 sm:px-16 sm:py-6" style={{ backgroundColor: '#5D1522', borderRadius: '50%', width: isMobile ? '240px' : '305px', height: isMobile ? '95px' : '120px', display: 'flex', alignItems: 'center', justifyContent: 'center', transform: 'rotate(-3deg)' }}>
+                <p className="text-xl md:text-2xl font-medium text-white text-center leading-tight">
+                  Official partner of <br />Foodphoto Ghent
+                </p>
+              </div>
+            </div>
+          )}
         </div>
-        {data.description && (
-          <p className="text-xl md:text-2xl font-thin mt-2">{data.description}</p>
-        )}
+          {/* Additional subtitle for short content portfolio */}
+          {portfolioType === 'short-content' && (
+            <div className="mt-6">
+              <div className="px-8 py-4 sm:px-16 sm:py-6" style={{ backgroundColor: '#5D1522', borderRadius: '50%', width: isMobile ? '240px' : '305px', height: isMobile ? '95px' : '120px', display: 'flex', alignItems: 'center', justifyContent: 'center', transform: 'rotate(-3deg)' }}>
+                <p className="text-xl md:text-2xl font-medium text-white text-center leading-tight">
+                  Official partner of <br />Foodphoto Ghent
+                </p>
+              </div>
+            </div>
+          )}
       </div>
 
       {/* Gallery Section */}
