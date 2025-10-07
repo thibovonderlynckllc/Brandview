@@ -16,7 +16,6 @@
 
 > Version 3 of ReactPlayer is a major update with a new architecture and many new features. It is not backwards compatible with v2, so please see the [migration guide](MIGRATING.md) for details.
 
-
 > Using Next.js and need to handle video upload/processing? Check out [next-video](https://github.com/muxinc/next-video).
 
 ### ✨ The future of ReactPlayer
@@ -32,11 +31,11 @@ npm install react-player # or yarn add react-player
 ```
 
 ```jsx
-import React from 'react'
-import ReactPlayer from 'react-player'
+import React from 'react';
+import ReactPlayer from 'react-player';
 
 // Render a YouTube video player
-<ReactPlayer src='https://www.youtube.com/watch?v=LXb3EKWsInQ' />
+<ReactPlayer src="https://www.youtube.com/watch?v=LXb3EKWsInQ" />;
 ```
 
 If your build system supports `import()` statements and code splitting enable this to lazy load the appropriate player for the `src` you pass in. This adds several `reactPlayer` chunks to your output, but reduces your main bundle size.
@@ -53,51 +52,51 @@ As of Chrome 66, [videos must be `muted` in order to play automatically](https:/
 
 ### Props
 
-Prop | Description | Default
----- | ----------- | -------
-`src` | The url of a video or song to play | `undefined`
-`playing` | Set to `true` or `false` to play or pause the media | `undefined`
-`preload` | Applies the `preload` attribute where supported | `undefined`
-`playsInline` | Applies the `playsInline` attribute where supported | `false`
-`crossOrigin` | Applies the `crossOrigin` attribute where supported | `undefined`
-`loop` | Set to `true` or `false` to loop the media | `false`
-`controls` | Set to `true` or `false` to display native player controls.<br/>&nbsp; ◦ &nbsp;For Vimeo videos, hiding controls must be enabled by the video owner. | `false`
-`volume` | Set the volume of the player, between `0` and `1`<br/>&nbsp; ◦ &nbsp;`null` uses default volume on all players [`#357`](https://github.com/cookpete/react-player/issues/357) | `null`
-`muted` | Mutes the player | `false`
-`playbackRate` | Set the playback rate of the player<br />&nbsp; ◦ &nbsp;Only supported by YouTube, Wistia, and file paths | `1`
-`pip` | Set to `true` or `false` to enable or disable [picture-in-picture mode](https://developers.google.com/web/updates/2018/10/watch-video-using-picture-in-picture)<br/>&nbsp; ◦ &nbsp;Only available when playing file URLs in [certain browsers](https://caniuse.com/#feat=picture-in-picture) | `false`
-`width` | Set the width of the player | `320px`
-`height` | Set the height of the player | `180px`
-`style` | Add [inline styles](https://facebook.github.io/react/tips/inline-styles.html) to the root element | `{}`
-`light` | Set to `true` to show just the video thumbnail, which loads the full player on click<br />&nbsp; ◦ &nbsp;Pass in an image URL to override the preview image | `false`
-`fallback` | Element or component to use as a fallback if you are using lazy loading | `null`
-`wrapper` | Element or component to use as the container element | `null`
-`playIcon` | Element or component to use as the play icon in light mode
-`previewTabIndex` | Set the tab index to be used on light mode | `0`
+| Prop              | Description                                                                                                                                                                                                                                                                                  | Default     |
+| ----------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
+| `src`             | The url of a video or song to play                                                                                                                                                                                                                                                           | `undefined` |
+| `playing`         | Set to `true` or `false` to play or pause the media                                                                                                                                                                                                                                          | `undefined` |
+| `preload`         | Applies the `preload` attribute where supported                                                                                                                                                                                                                                              | `undefined` |
+| `playsInline`     | Applies the `playsInline` attribute where supported                                                                                                                                                                                                                                          | `false`     |
+| `crossOrigin`     | Applies the `crossOrigin` attribute where supported                                                                                                                                                                                                                                          | `undefined` |
+| `loop`            | Set to `true` or `false` to loop the media                                                                                                                                                                                                                                                   | `false`     |
+| `controls`        | Set to `true` or `false` to display native player controls.<br/>&nbsp; ◦ &nbsp;For Vimeo videos, hiding controls must be enabled by the video owner.                                                                                                                                         | `false`     |
+| `volume`          | Set the volume of the player, between `0` and `1`<br/>&nbsp; ◦ &nbsp;`null` uses default volume on all players [`#357`](https://github.com/cookpete/react-player/issues/357)                                                                                                                 | `null`      |
+| `muted`           | Mutes the player                                                                                                                                                                                                                                                                             | `false`     |
+| `playbackRate`    | Set the playback rate of the player<br />&nbsp; ◦ &nbsp;Only supported by YouTube, Wistia, and file paths                                                                                                                                                                                    | `1`         |
+| `pip`             | Set to `true` or `false` to enable or disable [picture-in-picture mode](https://developers.google.com/web/updates/2018/10/watch-video-using-picture-in-picture)<br/>&nbsp; ◦ &nbsp;Only available when playing file URLs in [certain browsers](https://caniuse.com/#feat=picture-in-picture) | `false`     |
+| `width`           | Set the width of the player                                                                                                                                                                                                                                                                  | `320px`     |
+| `height`          | Set the height of the player                                                                                                                                                                                                                                                                 | `180px`     |
+| `style`           | Add [inline styles](https://facebook.github.io/react/tips/inline-styles.html) to the root element                                                                                                                                                                                            | `{}`        |
+| `light`           | Set to `true` to show just the video thumbnail, which loads the full player on click<br />&nbsp; ◦ &nbsp;Pass in an image URL to override the preview image                                                                                                                                  | `false`     |
+| `fallback`        | Element or component to use as a fallback if you are using lazy loading                                                                                                                                                                                                                      | `null`      |
+| `wrapper`         | Element or component to use as the container element                                                                                                                                                                                                                                         | `null`      |
+| `playIcon`        | Element or component to use as the play icon in light mode                                                                                                                                                                                                                                   |
+| `previewTabIndex` | Set the tab index to be used on light mode                                                                                                                                                                                                                                                   | `0`         |
 
 #### Callback props
 
 Callback props take a function that gets fired on various player events:
 
-Prop | Description
----- | -----------
-`onClickPreview` | Called when user clicks the `light` mode preview
-`onReady` | Called when media is loaded and ready to play. If `playing` is set to `true`, media will play immediately
-`onStart` | Called when media starts playing
-`onPlay` | Called when the `playing` prop is set to true
-`onPlaying` | Called when media actually starts playing
-`onProgress` | Called when media data is loaded
-`onTimeUpdate` | Called when the media's current time changes
-`onDurationChange` | Callback containing duration of the media, in seconds
-`onPause` | Called when media is paused
-`onWaiting` | Called when media is buffering and waiting for more data
-`onSeeking` | Called when media is seeking
-`onSeeked` | Called when media has finished seeking
-`onRateChange` | Called when playback rate of the player changed<br />&nbsp; ◦ &nbsp;Only supported by YouTube, Vimeo ([if enabled](https://developer.vimeo.com/player/sdk/reference#playbackratechange)), Wistia, and file paths
-`onEnded` | Called when media finishes playing<br />&nbsp; ◦ &nbsp;Does not fire when `loop` is set to `true`
-`onError` | Called when an error occurs whilst attempting to play media
-`onEnterPictureInPicture` | Called when entering picture-in-picture mode
-`onLeavePictureInPicture` | Called when leaving picture-in-picture mode
+| Prop                      | Description                                                                                                                                                                                                      |
+| ------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `onClickPreview`          | Called when user clicks the `light` mode preview                                                                                                                                                                 |
+| `onReady`                 | Called when media is loaded and ready to play. If `playing` is set to `true`, media will play immediately                                                                                                        |
+| `onStart`                 | Called when media starts playing                                                                                                                                                                                 |
+| `onPlay`                  | Called when the `playing` prop is set to true                                                                                                                                                                    |
+| `onPlaying`               | Called when media actually starts playing                                                                                                                                                                        |
+| `onProgress`              | Called when media data is loaded                                                                                                                                                                                 |
+| `onTimeUpdate`            | Called when the media's current time changes                                                                                                                                                                     |
+| `onDurationChange`        | Callback containing duration of the media, in seconds                                                                                                                                                            |
+| `onPause`                 | Called when media is paused                                                                                                                                                                                      |
+| `onWaiting`               | Called when media is buffering and waiting for more data                                                                                                                                                         |
+| `onSeeking`               | Called when media is seeking                                                                                                                                                                                     |
+| `onSeeked`                | Called when media has finished seeking                                                                                                                                                                           |
+| `onRateChange`            | Called when playback rate of the player changed<br />&nbsp; ◦ &nbsp;Only supported by YouTube, Vimeo ([if enabled](https://developer.vimeo.com/player/sdk/reference#playbackratechange)), Wistia, and file paths |
+| `onEnded`                 | Called when media finishes playing<br />&nbsp; ◦ &nbsp;Does not fire when `loop` is set to `true`                                                                                                                |
+| `onError`                 | Called when an error occurs whilst attempting to play media                                                                                                                                                      |
+| `onEnterPictureInPicture` | Called when entering picture-in-picture mode                                                                                                                                                                     |
+| `onLeavePictureInPicture` | Called when leaving picture-in-picture mode                                                                                                                                                                      |
 
 #### Config prop
 
@@ -116,21 +115,21 @@ There is a single `config` prop to override settings for each type of player:
 
 Settings for each player live under different keys:
 
-Key | Options
---- | -------
-`youtube` | https://developers.google.com/youtube/player_parameters#Parameters
-`vimeo` | https://developer.vimeo.com/player/sdk/embed
-`hls` | https://github.com/video-dev/hls.js/blob/master/docs/API.md#fine-tuning
+| Key       | Options                                                                 |
+| --------- | ----------------------------------------------------------------------- |
+| `youtube` | https://developers.google.com/youtube/player_parameters#Parameters      |
+| `vimeo`   | https://developer.vimeo.com/player/sdk/embed                            |
+| `hls`     | https://github.com/video-dev/hls.js/blob/master/docs/API.md#fine-tuning |
 
 ### Methods
 
 #### Static Methods
 
-Method | Description
------- | -----------
-`ReactPlayer.canPlay(src)` | Determine if a URL can be played. This does *not* detect media that is unplayable due to privacy settings, streaming permissions, etc. In that case, the `onError` prop will be invoked after attempting to play. Any URL that does not match any patterns will fall back to a native HTML5 media player.
-`ReactPlayer.addCustomPlayer(CustomPlayer)` | Add a custom player. See [Adding custom players](#adding-custom-players)
-`ReactPlayer.removeCustomPlayers()` | Remove any players that have been added using `addCustomPlayer()`
+| Method                                      | Description                                                                                                                                                                                                                                                                                               |
+| ------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `ReactPlayer.canPlay(src)`                  | Determine if a URL can be played. This does _not_ detect media that is unplayable due to privacy settings, streaming permissions, etc. In that case, the `onError` prop will be invoked after attempting to play. Any URL that does not match any patterns will fall back to a native HTML5 media player. |
+| `ReactPlayer.addCustomPlayer(CustomPlayer)` | Add a custom player. See [Adding custom players](#adding-custom-players)                                                                                                                                                                                                                                  |
+| `ReactPlayer.removeCustomPlayers()`         | Remove any players that have been added using `addCustomPlayer()`                                                                                                                                                                                                                                         |
 
 #### Instance Methods
 
@@ -144,7 +143,7 @@ with the [HTMLMediaElement](https://developer.mozilla.org/en-US/docs/Web/API/HTM
 By default ReactPlayer is a chromeless player. By setting the `controls` prop to `true`, you can enable the native controls for the player. However, the controls will look different for each player. The ones based on HTML5 media players will look like the native controls for that browser, while the ones based on third-party players will look like the native controls for that player.
 
 ```jsx
-<ReactPlayer src='https://www.youtube.com/watch?v=LXb3EKWsInQ' controls />
+<ReactPlayer src="https://www.youtube.com/watch?v=LXb3EKWsInQ" controls />
 ```
 
 If you like to add your own custom controls in a convenient way, you can use
@@ -153,27 +152,15 @@ If you like to add your own custom controls in a convenient way, you can use
 ##### Simple example ([Codesandbox](https://codesandbox.io/p/sandbox/react-player-media-chrome-simple-nl3pg4))
 
 ```tsx
-import ReactPlayer from "react-player";
-import {
-  MediaController,
-  MediaControlBar,
-  MediaTimeRange,
-  MediaTimeDisplay,
-  MediaVolumeRange,
-  MediaPlaybackRateButton,
-  MediaPlayButton,
-  MediaSeekBackwardButton,
-  MediaSeekForwardButton,
-  MediaMuteButton,
-  MediaFullscreenButton,
-} from "media-chrome/react";
+import ReactPlayer from 'react-player';
+import { MediaController, MediaControlBar, MediaTimeRange, MediaTimeDisplay, MediaVolumeRange, MediaPlaybackRateButton, MediaPlayButton, MediaSeekBackwardButton, MediaSeekForwardButton, MediaMuteButton, MediaFullscreenButton } from 'media-chrome/react';
 
 export default function Player() {
   return (
     <MediaController
       style={{
-        width: "100%",
-        aspectRatio: "16/9",
+        width: '100%',
+        aspectRatio: '16/9',
       }}
     >
       <ReactPlayer
@@ -181,9 +168,9 @@ export default function Player() {
         src="https://stream.mux.com/maVbJv2GSYNRgS02kPXOOGdJMWGU1mkA019ZUjYE7VU7k"
         controls={false}
         style={{
-          width: "100%",
-          height: "100%",
-          "--controls": "none",
+          width: '100%',
+          height: '100%',
+          '--controls': 'none',
         }}
       ></ReactPlayer>
       <MediaControlBar>
@@ -211,7 +198,7 @@ If you want to pass in your own thumbnail to use, set `light` to the image URL r
 You can also pass a component through the `light` prop:
 
 ```jsx
-<ReactPlayer light={<img src='https://example.com/thumbnail.png' alt='Thumbnail' />} />
+<ReactPlayer light={<img src="https://example.com/thumbnail.png" alt="Thumbnail" />} />
 ```
 
 The styles for the preview image and play icon can be overridden by targeting the CSS classes `react-player__preview`, `react-player__shadow` and `react-player__play-icon`.
@@ -221,10 +208,7 @@ The styles for the preview image and play icon can be overridden by targeting th
 Set `width` to `100%`, `height` to `auto` and add an `aspectRatio` like `16 / 9` to get a responsive player:
 
 ```js
-<ReactPlayer
-  src="https://www.youtube.com/watch?v=LXb3EKWsInQ"
-  style={{ width: '100%', height: 'auto', aspectRatio: '16/9' }}
-/>
+<ReactPlayer src="https://www.youtube.com/watch?v=LXb3EKWsInQ" style={{ width: '100%', height: 'auto', aspectRatio: '16/9' }} />
 ```
 
 #### SDK Overrides
@@ -289,13 +273,13 @@ ReactPlayer `v2` changes single player imports and adds lazy loading players. Su
 
 ### Supported media
 
-* [Supported file types](https://developer.mozilla.org/en-US/docs/Web/HTML/Supported_media_formats) are playing using [`<video>`](https://developer.mozilla.org/en/docs/Web/HTML/Element/video) or [`<audio>`](https://developer.mozilla.org/en/docs/Web/HTML/Element/audio) elements
-* HLS streams are played using [`hls.js`](https://github.com/video-dev/hls.js)
-* DASH streams are played using [`dash.js`](https://github.com/Dash-Industry-Forum/dash.js)
-* Mux videos use the [`<mux-player>`](https://github.com/muxinc/elements/blob/main/packages/mux-player/README.md) element
-* YouTube videos use the [YouTube iFrame Player API](https://developers.google.com/youtube/iframe_api_reference)
-* Vimeo videos use the [Vimeo Player API](https://developer.vimeo.com/player/sdk)
-* Wistia videos use the [Wistia Player API](https://wistia.com/doc/player-api)
+- [Supported file types](https://developer.mozilla.org/en-US/docs/Web/HTML/Supported_media_formats) are playing using [`<video>`](https://developer.mozilla.org/en/docs/Web/HTML/Element/video) or [`<audio>`](https://developer.mozilla.org/en/docs/Web/HTML/Element/audio) elements
+- HLS streams are played using [`hls.js`](https://github.com/video-dev/hls.js)
+- DASH streams are played using [`dash.js`](https://github.com/Dash-Industry-Forum/dash.js)
+- Mux videos use the [`<mux-player>`](https://github.com/muxinc/elements/blob/main/packages/mux-player/README.md) element
+- YouTube videos use the [YouTube iFrame Player API](https://developers.google.com/youtube/iframe_api_reference)
+- Vimeo videos use the [Vimeo Player API](https://developer.vimeo.com/player/sdk)
+- Wistia videos use the [Wistia Player API](https://wistia.com/doc/player-api)
 
 ### Contributing
 
@@ -316,3 +300,21 @@ See the [contribution guidelines](https://github.com/cookpete/react-player/blob/
     </td>
   </tr>
 </table>
+
+## Contact form email (Gmail SMTP)
+
+Set these env vars to send contact emails to Gmail via SMTP:
+
+```
+GMAIL_USER=your.address@gmail.com
+GMAIL_APP_PASSWORD=your-google-app-password
+GMAIL_FROM=Brandview <your.address@gmail.com>   # optional, defaults to GMAIL_USER
+GMAIL_SMTP_HOST=smtp.gmail.com                  # optional
+GMAIL_SMTP_PORT=465                             # optional
+CONTACT_RECEIVER_EMAIL=reinout@brandview.be     # or any recipient
+```
+
+Notes:
+
+- Use a Google App Password (2FA required) for `GMAIL_APP_PASSWORD`.
+- The API route `src/app/api/contact/route.ts` uses Nodemailer and sets `replyTo` to the submitter's email.
