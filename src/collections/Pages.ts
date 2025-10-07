@@ -870,11 +870,7 @@ export const Pages: CollectionConfig = {
                   ],
                   defaultValue: [{ feature: '2 shortform videos (max. 30 sec)' }, { feature: '8 edited photos' }, { feature: 'professional lightning' }, { feature: 'Simple image correction & color editing' }, { feature: 'Basic post-processing in your house style' }, { feature: 'Delivery within 14 working days' }],
                 },
-                {
-                  name: 'price',
-                  type: 'text',
-                  defaultValue: '€ 950 exclusive btw',
-                },
+                // price field removed
               ],
             },
             {
@@ -904,11 +900,7 @@ export const Pages: CollectionConfig = {
                   ],
                   defaultValue: [{ feature: '12 edited photos' }, { feature: '4 shortform video (max. 30 sec)' }, { feature: 'creative on set' }, { feature: 'Simple image correction & color editing' }, { feature: 'Basic post-processing in your house style' }, { feature: 'Delivery within 14 working days' }],
                 },
-                {
-                  name: 'price',
-                  type: 'text',
-                  defaultValue: '€ 1.470 exclusive btw',
-                },
+                // price field removed
               ],
             },
           ],
@@ -955,11 +947,7 @@ export const Pages: CollectionConfig = {
                   ],
                   defaultValue: [{ feature: '2 shortform videos (max. 30 sec)' }, { feature: '8 edited photos' }, { feature: 'professional lightning' }, { feature: 'Simple image correction & color editing' }, { feature: 'Basic post-processing in your house style' }, { feature: 'Delivery within 14 working days' }],
                 },
-                {
-                  name: 'price',
-                  type: 'text',
-                  defaultValue: '€ 1.100 exclusive btw',
-                },
+                // price field removed
               ],
             },
             {
@@ -989,11 +977,7 @@ export const Pages: CollectionConfig = {
                   ],
                   defaultValue: [{ feature: '12 edited photos' }, { feature: '4 shortform video (max. 30 sec)' }, { feature: 'creative on set' }, { feature: 'Simple image correction & color editing' }, { feature: 'Basic post-processing in your house style' }, { feature: 'Delivery within 14 working days' }],
                 },
-                {
-                  name: 'price',
-                  type: 'text',
-                  defaultValue: '€ 1.570 exclusive btw',
-                },
+                // price field removed
               ],
             },
           ],
@@ -1028,19 +1012,15 @@ export const Pages: CollectionConfig = {
                   type: 'text',
                   required: true,
                 },
-                {
-                  name: 'price',
-                  type: 'text',
-                  required: true,
-                },
+                // price removed from boosters items
               ],
               defaultValue: [
-                { name: 'extra video', price: '€ 450 exclusive btw' },
-                { name: "10 extra photo's", price: '€ 150 exclusive btw' },
-                { name: 'fast delivery 48h', price: '€ 100 exclusive btw' },
-                { name: 'fast delivery 72h', price: '€ 150 exclusive btw' },
-                { name: 'stylist on set', price: '€ 500 exclusive btw' },
-                { name: 'subtitles', price: '€ 50 exclusive btw' },
+                { name: 'extra video' },
+                { name: "10 extra photo's" },
+                { name: 'fast delivery 48h' },
+                { name: 'fast delivery 72h' },
+                { name: 'stylist on set' },
+                { name: 'subtitles' },
               ],
             },
             {

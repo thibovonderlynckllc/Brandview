@@ -26,7 +26,7 @@ const fallbackData = {
                     { feature: "Basic post-processing in your house style" },
                     { feature: "Delivery within 14 working days" }
                 ],
-                price: "€ 950 exclusive btw"
+                // price removed
             },
             brandBuilder: {
                 title: "brand builder",
@@ -39,7 +39,7 @@ const fallbackData = {
                     { feature: "Basic post-processing in your house style" },
                     { feature: "Delivery within 14 working days" }
                 ],
-                price: "€ 1.470 exclusive btw"
+                // price removed
             }
         },
         flashDeals: {
@@ -56,7 +56,7 @@ const fallbackData = {
                     { feature: "Basic post-processing in your house style" },
                     { feature: "Delivery within 14 working days" }
                 ],
-                price: "€ 1.100 exclusive btw"
+                // price removed
             },
             fullFrame: {
                 title: "full frame",
@@ -69,7 +69,7 @@ const fallbackData = {
                     { feature: "Basic post-processing in your house style" },
                     { feature: "Delivery within 14 working days" }
                 ],
-                price: "€ 1.570 exclusive btw"
+                // price removed
             }
         },
         addOns: {
@@ -77,12 +77,12 @@ const fallbackData = {
             subtitle: "optional extras",
             boostersTitle: "boosters",
             items: [
-                { name: "extra video", price: "€ 450 exclusive btw" },
-                { name: "10 extra photo's", price: "€ 150 exclusive btw" },
-                { name: "fast delivery 48h", price: "€ 100 exclusive btw" },
-                { name: "fast delivery 72h", price: "€ 150 exclusive btw" },
-                { name: "stylist on set", price: "€ 500 exclusive btw" },
-                { name: "subtitles", price: "€ 50 exclusive btw" }
+                { name: "extra video" },
+                { name: "10 extra photo's" },
+                { name: "fast delivery 48h" },
+                { name: "fast delivery 72h" },
+                { name: "stylist on set" },
+                { name: "subtitles" }
             ],
             megaphoneIcon: "/images/icons/megaphone.svg"
         }
@@ -254,9 +254,7 @@ const RatesPage = async () => {
                                         <p key={index}>{item.feature}</p>
                                     ))}
                                 </div>
-                                <div className="mt-auto border-t-2 border-red">
-                                    <p className="text-lg md:text-[23px] font-light pt-4">{data.ratesPricingSection.contentPlans.starterPack.price}</p>
-                                </div>
+                                {/* price removed */}
                             </div>
                         </div>
                         {/* Brand builder */}
@@ -272,9 +270,7 @@ const RatesPage = async () => {
                                         <p key={index}>{item.feature}</p>
                                     ))}
                                 </div>
-                                <div className="mt-auto border-t-2 border-red">
-                                    <p className="text-lg md:text-[23px] font-light pt-4">{data.ratesPricingSection.contentPlans.brandBuilder.price}</p>
-                                </div>
+                                {/* price removed */}
                             </div>
                         </div>
                     </div>
@@ -294,9 +290,7 @@ const RatesPage = async () => {
                                         <p key={index}>{item.feature}</p>
                                     ))}
                                 </div>
-                                <div className="mt-auto border-t-2 border-red">
-                                    <p className="text-lg md:text-[23px] font-light pt-4">{data.ratesPricingSection.flashDeals.focus.price}</p>
-                                </div>
+                                {/* price removed */}
                             </div>
                         </div>
                         {/* Full frame */}
@@ -312,9 +306,7 @@ const RatesPage = async () => {
                                         <p key={index}>{item.feature}</p>
                                     ))}
                                 </div>
-                                <div className="mt-auto border-t-2 border-red">
-                                    <p className="text-lg md:text-[23px] font-light pt-4">{data.ratesPricingSection.flashDeals.fullFrame.price}</p>
-                                </div>
+                                {/* price removed */}
                             </div>
                         </div>
                     </div>
@@ -322,7 +314,7 @@ const RatesPage = async () => {
                     <p className="text-lg md:text-[23px] font-light text-center mb-8 md:mb-15">{data.ratesPricingSection.addOns.subtitle}</p>
                     <div className="flex justify-center pb-10">
                         {/* Boosters */}
-                        <div className="relative pt-6 w-full md:w-[min(100%,800px)]">
+                        <div className="relative pt-6 w-full md:w-[min(100%,680px)]">
                             <div className="absolute -top-6 left-1/2 -translate-x-1/2 bg-blue border-[2px] border-red flex items-center justify-center z-10 px-4 sm:px-8 py-4 sm:py-6 rounded-full">
                                 <span className="text-2xl sm:text-3xl md:text-[3rem] font-medium leading-none whitespace-nowrap">{data.ratesPricingSection.addOns.boostersTitle}</span>
                             </div>
@@ -336,15 +328,12 @@ const RatesPage = async () => {
                                         height={208} 
                                     />
                                 </div>
-                                <div className="flex flex-col gap-4 text-base sm:text-lg md:text-[23px] font-light relative">
-                                    <div className="absolute left-1/2 top-0 bottom-0 w-[2px] bg-red transform -translate-x-1/2"></div>
-                                    {data.ratesPricingSection.addOns.items.map((item: { name: string; price: string }, index: number) => (
-                                        <div key={index} className="flex justify-between items-start pb-2">
-                                            <span className="text-left flex-1 pr-2">{item.name}</span>
-                                            <span className="text-right flex-1 pl-2">{item.price}</span>
+                                <div className="flex flex-col gap-4 text-base sm:text-lg md:text-[23px] font-light items-center">
+                                    {data.ratesPricingSection.addOns.items.map((item: { name: string }, index: number) => (
+                                        <div key={index} className="pb-2 text-center">
+                                            <span>{item.name}</span>
                                         </div>
                                     ))}
-                                    
                                 </div>
                             </div>
                         </div>
