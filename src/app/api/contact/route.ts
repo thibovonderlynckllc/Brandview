@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
 
     const info = await transporter.sendMail({
       from: `Brandview Contact Form <${process.env.GMAIL_FROM || process.env.GMAIL_USER}>`,
-      to: process.env.CONTACT_RECEIVER_EMAIL || 'thibovonderlynckllc@gmail.com',
+      to: process.env.CONTACT_RECEIVER_EMAIL || 'ghijsreinout@gmail.com',
       subject: `New Contact Form Submission from ${firstName} ${lastName}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
