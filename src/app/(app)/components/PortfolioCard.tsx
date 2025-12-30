@@ -16,17 +16,16 @@ interface MediaItem {
     poster?: { url: string; alt?: string } | null;
 }
 
-interface ServiceCardProps {
+interface PortfolioCardProps {
     title: string;
-    description?: string;
-    icon?: string | { url: string; alt?: string } | null;
-    link?: string;
+    slug: string;
     image?: MediaItem | string | null;
-    backgroundImage?: string;
+    icon?: string | { url: string; alt?: string } | null;
+    iconPosition: 'none' | 'top-right';
     index: number;
 }
 
-const HomeServiceCard = ({ title, description, icon, link, image, backgroundImage, index }: ServiceCardProps) => {
+const PortfolioCard = ({ title, slug, image, icon, iconPosition, index }: PortfolioCardProps) => {
     const [isClient, setIsClient] = useState(false);
     const [isMobile, setIsMobile] = useState(false);
     const [isPlaying, setIsPlaying] = useState(false);
@@ -63,14 +62,14 @@ const HomeServiceCard = ({ title, description, icon, link, image, backgroundImag
         return false;
     };
 
-    const getImageSrc = (): string => {
+    const getImageSrc = (): string | null => {
         if (typeof image === 'object' && image !== null && 'url' in image) {
             return image.url;
         }
         if (typeof image === 'string') {
             return image;
         }
-        return backgroundImage || '/images/aboutMe/Portrait.webp';
+        return null;
     };
 
     const getVideoSrc = (): string | null => {
@@ -101,6 +100,7 @@ const HomeServiceCard = ({ title, description, icon, link, image, backgroundImag
     const mobileVideoSrc = getMobileVideoSrc();
     const finalVideoSrc = isMobile && mobileVideoSrc ? mobileVideoSrc : (videoSrc || null);
     const posterSrc = getPosterSrc();
+    const imageSrc = getImageSrc();
 
     const handlePlayPause = (e: React.MouseEvent) => {
         e.preventDefault();
@@ -120,38 +120,58 @@ const HomeServiceCard = ({ title, description, icon, link, image, backgroundImag
         }
     };
 
+    const renderIcon = () => {
+        const iconSrc =
+            typeof icon === 'object' && icon !== null && 'url' in icon
+                ? icon.url
+                : typeof icon === 'string'
+                    ? icon
+                    : null;
+        if (!iconSrc || iconPosition === 'none') return null;
+
+        return (
+            <div className="absolute -right-5 md:-right-28 -top-19 sm:-top-24 md:-top-26 w-32 sm:w-40 lg:w-48 rotate-10 z-30 transition-transform duration-300 group-hover:rotate-12 pointer-events-none">
+                <Image src={iconSrc} alt={`${title} icon`} width={208} height={208} />
+            </div>
+        );
+    };
+
+    const hasIcon = iconPosition !== 'none' && (
+        (typeof icon === 'object' && icon !== null && 'url' in icon && icon.url) ||
+        (typeof icon === 'string' && icon)
+    );
+
     if (!isClient) {
         return (
-            <div className="relative group">
-                <div className="pt-6">
+            <div className={`cursor-pointer transform transition-transform duration-300 hover:scale-102 group ${hasIcon ? 'z-10' : ''}`}>
+                <div className="relative pt-6">
                     <div className="absolute inset-x-0 top-0 h-12 bg-red rounded-t-3xl"></div>
-                    <div className="h-80 w-full rounded-3xl border-[1.5px] border-red relative overflow-hidden bg-gray-200"></div>
+                    <div className="bg-white h-80 w-full rounded-3xl border-[1.5px] border-red relative overflow-hidden bg-gray-200"></div>
                 </div>
             </div>
         );
     }
 
     return (
-        <div className="relative group">
-            <Link 
-                href={link || '#'} 
-                className="block cursor-pointer transform transition-transform duration-300 hover:scale-102"
-            >
-                <div className="pt-6">
-                    <div className="absolute inset-x-0 top-0 h-12 bg-red rounded-t-3xl"></div>
-                    <div ref={videoContainerRef} className="h-80 w-full rounded-3xl border-[1.5px] border-red relative overflow-hidden">
-                        {hasVideo && finalVideoSrc ? (
-                            <>
-                                <VideoJS 
-                                    src={finalVideoSrc} 
-                                    className="w-full h-full absolute inset-0"
-                                    poster={posterSrc}
-                                    autoPlay={true}
-                                    loop={true}
-                                    muted={true}
-                                    controls={false}
-                                />
-                                {/* Custom Play Button for Mobile - Top Right Corner */}
+        <Link 
+            href={`/portfolio/${slug}`} 
+            className={`cursor-pointer transform transition-transform duration-300 hover:scale-102 group ${hasIcon ? 'z-10' : ''}`}
+        >
+            <div className="relative pt-6">
+                <div className="absolute inset-x-0 top-0 h-12 bg-red rounded-t-3xl"></div>
+                <div ref={videoContainerRef} className="bg-white h-80 w-full rounded-3xl border-[1.5px] border-red relative overflow-hidden">
+                    {hasVideo && finalVideoSrc ? (
+                        <>
+                            <VideoJS 
+                                src={finalVideoSrc} 
+                                className="w-full h-full absolute inset-0"
+                                poster={posterSrc}
+                                autoPlay={true}
+                                loop={true}
+                                muted={true}
+                                controls={false}
+                            />
+                            {/* Custom Play Button for Mobile - Top Right Corner */}
                             {isMobile && (
                                 <button
                                     onClick={handlePlayPause}
@@ -159,63 +179,41 @@ const HomeServiceCard = ({ title, description, icon, link, image, backgroundImag
                                     aria-label={isPlaying ? "Pause video" : "Play video"}
                                     type="button"
                                 >
-                                        {!isPlaying ? (
-                                            <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                                                <path d="M8 5v14l11-7z" />
-                                            </svg>
-                                        ) : (
-                                            <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                                                <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z" />
-                                            </svg>
-                                        )}
-                                    </button>
-                                )}
-                            </>
-                        ) : (
-                            <Image
-                                src={getImageSrc()}
-                                alt={title}
-                                fill
-                                className="object-cover z-0"
-                                priority={index === 0}
-                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-                                quality={85}
-                            />
-                        )}
-                        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
-                            <div className="bg-blue rounded-full px-6 py-[6.5px] transition-colors duration-300 group-hover:bg-red">
-                                <span className="text-[23px] font-medium whitespace-nowrap transition-colors duration-300 group-hover:text-blue">
-                                    {title}
-                                </span>
-                            </div>
+                                    {!isPlaying ? (
+                                        <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M8 5v14l11-7z" />
+                                        </svg>
+                                    ) : (
+                                        <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z" />
+                                        </svg>
+                                    )}
+                                </button>
+                            )}
+                        </>
+                    ) : imageSrc ? (
+                        <Image 
+                            src={imageSrc} 
+                            alt={title} 
+                            fill 
+                            className="object-cover opacity-90 z-0"
+                            priority={index === 0}
+                            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                        />
+                    ) : null}
+                    <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-20">
+                        <div className="bg-blue rounded-full px-6 py-[6.5px] transition-colors duration-300 group-hover:bg-red">
+                            <span className="text-[23px] font-medium text-red whitespace-nowrap transition-colors duration-300 group-hover:text-blue">
+                                {title}
+                            </span>
                         </div>
                     </div>
                 </div>
-            </Link>
-            {icon && (
-                <div className="absolute bottom-0 -right-6 lg:-right-26 sm:-right-15 sm:-bottom-5 lg:-bottom-23 w-32 sm:w-40 lg:w-48 rotate-10 z-[30] pointer-events-none transition-transform duration-300 group-hover:rotate-12 group-hover:scale-102">
-                    {typeof icon === 'string' ? (
-                        <Image 
-                            src={icon} 
-                            alt={`${title} icon`} 
-                            width={208}
-                            height={208}
-                            quality={90}
-                        />
-                    ) : icon?.url ? (
-                        <Image 
-                            src={icon.url} 
-                            alt={icon.alt || `${title} icon`} 
-                            width={208}
-                            height={208}
-                            quality={90}
-                        />
-                    ) : null}
-                </div>
-            )}
-        </div>
+                {renderIcon()}
+            </div>
+        </Link>
     );
 };
 
-export default HomeServiceCard;
+export default PortfolioCard;
 

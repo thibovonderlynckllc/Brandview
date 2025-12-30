@@ -1014,14 +1014,7 @@ export const Pages: CollectionConfig = {
                 },
                 // price removed from boosters items
               ],
-              defaultValue: [
-                { name: 'extra video' },
-                { name: "10 extra photo's" },
-                { name: 'fast delivery 48h' },
-                { name: 'fast delivery 72h' },
-                { name: 'stylist on set' },
-                { name: 'subtitles' },
-              ],
+              defaultValue: [{ name: 'extra video' }, { name: "10 extra photo's" }, { name: 'fast delivery 48h' }, { name: 'fast delivery 72h' }, { name: 'stylist on set' }, { name: 'subtitles' }],
             },
             {
               name: 'megaphoneIcon',

@@ -55,6 +55,11 @@ body {
   height: 100% !important;
 }
 
+/* Hide the default Video.js big play button */
+.video-js .vjs-big-play-button {
+  display: none !important;
+}
+
 /* Ensure Video.js doesn't override container dimensions */
 .video-js-container {
   position: relative !important;
