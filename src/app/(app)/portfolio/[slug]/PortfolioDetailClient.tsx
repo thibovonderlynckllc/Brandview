@@ -309,7 +309,7 @@ export default function PortfolioDetailClient({ data, isDraftMode }: PortfolioDe
         </div>
       )}
       {/* Header Section */}
-      <div className="px-8 sm:px-16 py-16 md:py-40">
+      <div className="px-8 sm:px-16 py-12 md:py-24">
         <div className="flex flex-col items-start">
           <div className="w-full text-center">
             <div className="flex items-center justify-center gap-4">
@@ -321,23 +321,29 @@ export default function PortfolioDetailClient({ data, isDraftMode }: PortfolioDe
           </div>
           {/* Additional subtitle for food portfolio */}
           {portfolioType === 'food' && (
-            <div className="mt-6">
-              <div className="px-8 py-4 sm:px-16 sm:py-6" style={{ backgroundColor: '#5D1522', borderRadius: '50%', width: isMobile ? '240px' : '305px', height: isMobile ? '95px' : '120px', display: 'flex', alignItems: 'center', justifyContent: 'center', transform: 'rotate(-3deg)' }}>
-                <p className="text-xl md:text-2xl font-medium text-white text-center leading-tight">
-                  Official partner of <br />Foodphoto Ghent
-                </p>
-              </div>
+            <div className="mt-6 flex items-center justify-center" style={{ transform: 'rotate(-3deg)' }}>
+              <img
+                src="/images/icons/food_sticker.svg"
+                alt="Official partner of Foodphoto Ghent"
+                width={isMobile ? 240 : 305}
+                height={isMobile ? 95 : 120}
+                className="object-contain"
+                style={{ display: 'block' }}
+              />
             </div>
           )}
         </div>
           {/* Additional subtitle for short content portfolio */}
           {portfolioType === 'short-content' && (
-            <div className="mt-6">
-              <div className="px-8 py-4 sm:px-16 sm:py-6" style={{ backgroundColor: '#5D1522', borderRadius: '50%', width: isMobile ? '240px' : '305px', height: isMobile ? '95px' : '120px', display: 'flex', alignItems: 'center', justifyContent: 'center', transform: 'rotate(-3deg)' }}>
-                <p className="text-xl md:text-2xl font-medium text-white text-center leading-tight">
-                  Official partner of <br />Foodphoto Ghent
-                </p>
-              </div>
+            <div className="mt-6 flex items-center justify-center" style={{ transform: 'rotate(-3deg)' }}>
+              <img
+                src="/images/icons/food_sticker.svg"
+                alt="Official partner of Foodphoto Ghent"
+                width={isMobile ? 240 : 305}
+                height={isMobile ? 95 : 120}
+                className="object-contain"
+                style={{ display: 'block' }}
+              />
             </div>
           )}
       </div>
