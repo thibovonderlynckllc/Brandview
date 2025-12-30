@@ -82,7 +82,9 @@ const VideoJS = ({
   }, []);
 
   // Handle mute toggle
-  const toggleMute = () => {
+  const toggleMute = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
     if (playerRef.current) {
       try {
         const newMutedState = !isMuted;
@@ -345,10 +347,10 @@ const VideoJS = ({
         <source src={src} type={getVideoType(src)} />
         <p className="vjs-no-js">
           To view this video please enable JavaScript, and consider upgrading to a
-          web browser that
-          <a href="https://videojs.com/html5-video-support/" target="_blank" rel="noopener noreferrer">
+          web browser that{' '}
+          <span className="underline">
             supports HTML5 video
-          </a>
+          </span>
         </p>
       </video>
       
@@ -356,8 +358,9 @@ const VideoJS = ({
       {showMuteButton && isLoaded && !hasError && (
         <button
           onClick={toggleMute}
-          className="absolute top-4 right-4 z-10 text-white rounded-full p-2 transition-all duration-200 transform hover:scale-110 focus:outline-none"
+          className="absolute top-4 right-4 z-50 text-white rounded-full p-2 transition-all duration-200 transform hover:scale-110 focus:outline-none pointer-events-auto"
           aria-label={isMuted ? "Unmute video" : "Mute video"}
+          type="button"
         >
           {isMuted ? (
             <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">

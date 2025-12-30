@@ -1,7 +1,6 @@
 export const revalidate = 60; // or 300 for 5 minutes
 import MasonryGallery from './components/MasonryGallery';
-import Image from 'next/image';
-import Link from 'next/link';
+import HomeServiceCard from './components/ServiceCard';
 import { getPayload } from 'payload';
 import { draftMode } from 'next/headers';
 import config from '@/payload.config';
@@ -11,7 +10,13 @@ interface ServiceCard {
     description?: string;
     icon?: string | { url: string; alt?: string } | null;
     link?: string;
-    image?: { url: string; alt?: string } | string | null;
+    image?: { 
+        url: string; 
+        alt?: string;
+        cloudinaryMobileVideo?: string;
+        poster?: { url: string; alt?: string } | null;
+        mimeType?: string;
+    } | string | null;
     backgroundImage?: string; // legacy fallback
 }
 
@@ -163,59 +168,16 @@ export default async function Home() {
             <div className="px-8 sm:px-16 bg-blue pt-1">
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                     {pageData.serviceCards.map((item, index) => (
-                        <div className="relative group" key={item.link || index}>
-                            <Link 
-                                href={item.link || '#'} 
-                                className="block cursor-pointer transform transition-transform duration-300 hover:scale-102"
-                            >
-                                <div className="pt-6">
-                                    <div className="absolute inset-x-0 top-0 h-12 bg-red rounded-t-3xl"></div>
-                                    <div className="h-80 w-full rounded-3xl border-[1.5px] border-red relative overflow-hidden">
-                                        <Image
-                                            src={
-                                                (typeof item.image === 'object' && item.image?.url)
-                                                    ? item.image.url
-                                                    : item.backgroundImage || '/images/aboutMe/Portrait.webp'
-                                            }
-                                            alt={item.title}
-                                            fill
-                                            className="object-cover z-0"
-                                            priority={index === 0}
-                                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-                                            quality={85}
-                                        />
-                                        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
-                                            <div className="bg-blue rounded-full px-6 py-[6.5px] transition-colors duration-300 group-hover:bg-red">
-                                                <span className="text-[23px] font-medium whitespace-nowrap transition-colors duration-300 group-hover:text-blue">
-                                                    {item.title}
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </Link>
-                            {item.icon && (
-                                <div className="absolute bottom-0 -right-6 lg:-right-26 sm:-right-15 sm:-bottom-5 lg:-bottom-23 w-32 sm:w-40 lg:w-48 rotate-10 z-[30] pointer-events-none transition-transform duration-300 group-hover:rotate-12 group-hover:scale-102">
-                                    {typeof item.icon === 'string' ? (
-                                        <Image 
-                                            src={item.icon} 
-                                            alt={`${item.title} icon`} 
-                                            width={208}
-                                            height={208}
-                                            quality={90}
-                                        />
-                                    ) : item.icon?.url ? (
-                                        <Image 
-                                            src={item.icon.url} 
-                                            alt={item.icon.alt || `${item.title} icon`} 
-                                            width={208}
-                                            height={208}
-                                            quality={90}
-                                        />
-                                    ) : null}
-                                </div>
-                            )}
-                        </div>
+                        <HomeServiceCard
+                            key={item.link || index}
+                            title={item.title}
+                            description={item.description}
+                            icon={item.icon}
+                            link={item.link}
+                            image={item.image}
+                            backgroundImage={item.backgroundImage}
+                            index={index}
+                        />
                     ))}
                 </div>
                 <h2 className="text-2xl md:text-[2.5rem] font-thin py-10 max-w-[100%] lg:max-w-[60%] leading-none">
