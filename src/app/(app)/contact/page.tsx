@@ -113,7 +113,7 @@ const ContactPage = async () => {
                 </div>
             )}
             {/* Hero section */}
-            <div className="px-8 sm:px-16 py-20 md:py-55 text-center">
+            <div className="px-8 sm:px-16 py-16 md:py-40 text-center">
                 <div className="flex items-center justify-center gap-4">
                     <h1 className="text-3xl md:text-5xl xl:text-6xl font-medium">{pageData.contactHeroTitle}</h1>
                 </div>

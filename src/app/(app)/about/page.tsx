@@ -158,7 +158,7 @@ const AboutPage = async () => {
                     </span>
                 </div>
             )}
-            <div className="px-8 sm:px-16 py-20 md:py-55 text-center">
+            <div className="px-8 sm:px-16 py-16 md:py-40 text-center">
                 <div className="flex items-center justify-center gap-4">
                     <h1 className="text-3xl md:text-6xl font-medium">
                         {data.aboutHeroTitle.split('\n').map((line, index) => (

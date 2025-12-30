@@ -203,7 +203,7 @@ const RatesPage = async () => {
                 </div>
             )}
             {/* Hero section with optional background image */}
-            <div className="relative px-8 sm:px-16 py-20 md:py-55 text-center overflow-hidden">
+            <div className="relative px-8 sm:px-16 py-16 md:py-40 text-center overflow-hidden">
                 {/* Mobile background */}
                 {data.ratesHeroShowOnMobile && getMediaUrl(data.ratesHeroBackgroundImage) && (
                     <div className="absolute inset-0 block md:hidden -z-10">

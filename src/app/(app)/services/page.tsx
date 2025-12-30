@@ -268,7 +268,7 @@ const ServicesPage = async () => {
                 </div>
             )}
             {/* Hero section */}
-            <div className="px-6 md:px-16 lg:px-36 py-20 md:py-36 lg:py-55 text-center">
+            <div className="px-6 md:px-16 lg:px-36 py-16 md:py-28 lg:py-40 text-center">
                 <div className="flex items-center justify-center gap-4">
                     <h1 className="text-4xl md:text-5xl lg:text-6xl font-medium">{data.heroTitle}</h1>
                 </div>

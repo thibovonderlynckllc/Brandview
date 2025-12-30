@@ -309,7 +309,7 @@ export default function PortfolioDetailClient({ data, isDraftMode }: PortfolioDe
         </div>
       )}
       {/* Header Section */}
-      <div className="px-8 sm:px-16 py-20 md:py-55">
+      <div className="px-8 sm:px-16 py-16 md:py-40">
         <div className="flex flex-col items-start">
           <div className="w-full text-center">
             <div className="flex items-center justify-center gap-4">
